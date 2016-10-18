@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/go-ini/ini"
 	logging "github.com/op/go-logging"
@@ -24,6 +25,32 @@ type I18n struct {
 	Logger *logging.Logger `inject:""`
 
 	Locales map[string]map[string]string
+}
+
+//Items list all items
+func (p *I18n) Items(lng string) map[string]interface{} {
+	rt := make(map[string]interface{})
+	if items, ok := p.Locales[lng]; ok {
+		for k, v := range items {
+			if strings.HasPrefix(k, "web.") {
+				k = k[4:]
+				codes := strings.Split(k, ".")
+				tmp := rt
+				for i, c := range codes {
+					if i+1 == len(codes) {
+						tmp[c] = v
+					} else {
+						if tmp[c] == nil {
+							tmp[c] = make(map[string]interface{})
+						}
+						tmp = tmp[c].(map[string]interface{})
+					}
+				}
+
+			}
+		}
+	}
+	return rt
 }
 
 //Exist is lang exist?

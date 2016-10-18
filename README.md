@@ -47,7 +47,7 @@ cd demo && go run main.go   # backend server
 
 cd front-react
 npm install
-npm run server # frontend server
+npm run start # frontend server
 ```
 
 ## Database creation

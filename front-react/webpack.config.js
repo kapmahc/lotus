@@ -18,17 +18,17 @@ module.exports = function(options) {
         'react-router',
         'react-bootstrap',
         'react-redux',
-        // 'react-router-redux',
-        // 'react-router-bootstrap',
-        // 'react-timeago',
-        //
-        // 'remarkable',
+        'react-router-redux',
+        'react-router-bootstrap',
+        'react-timeago',
+
+        'remarkable',
         // 'jwt-decode',
         // 'url-parse',
-        //
-        // 'i18next',
-        // 'i18next-xhr-backend',
-        // 'i18next-browser-languagedetector'
+
+        'i18next',
+        'i18next-xhr-backend',
+        'i18next-browser-languagedetector'
     ];
 
     var plugins = [];
@@ -122,7 +122,7 @@ module.exports = function(options) {
         plugins: plugins,
         module: {
             preLoaders: [{
-                test: /\.js$/,
+                test: /\.jsx?$/,
                 loader: "eslint-loader",
                 exclude: /node_modules/
             }],

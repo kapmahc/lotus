@@ -8,6 +8,10 @@ import (
 	"github.com/kapmahc/lotus/web"
 )
 
+func (p *Engine) getLocales(c *gin.Context) {
+	c.JSON(http.StatusOK, p.I18n.Items(c.Param("lang")))
+}
+
 func (p *Engine) getSiteInfo(c *gin.Context) {
 	lang := c.MustGet("locale").(string)
 	info := make(map[string]interface{})

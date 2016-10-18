@@ -1,0 +1,14 @@
+extends: standard
+globals:
+  CONFIG: true
+plugins:
+  - standard
+  - promise
+  - react
+parserOptions:
+  ecmaFeatures:
+    jsx: true
+rules:
+  no-unused-vars: 1
+  react/jsx-uses-react: 1
+  react/jsx-uses-vars: 2
