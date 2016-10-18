@@ -44,7 +44,10 @@ go get -u github.com/kapmahc/lotus
 cd $GOPATH/src/github.com/kapmahc/lotus
 govendor sync
 cd demo && go run main.go   # backend server
-cd front-react && npm run dev # frontend server
+
+cd front-react
+npm install
+npm run server # frontend server
 ```
 
 ## Database creation
@@ -75,9 +78,15 @@ ls -lh dist
 ## Documents
 - [react](https://facebook.github.io/react/docs/getting-started.html)
 - [react-bootstrap](http://react-bootstrap.github.io/)
+- [redux](http://redux.js.org/docs/basics/UsageWithReact.html)
 - [gin](https://github.com/gin-gonic/gin)
-- [goose](https://bitbucket.org/liamstask/goose/)
-- [go-plus](https://atom.io/packages/go-plus)
 - [gorm](http://jinzhu.me/gorm/)
 - [locale](https://blog.golang.org/matchlang)
 - [govendor](https://github.com/kardianos/govendor)
+
+
+- [go-plus](https://atom.io/packages/go-plus)
+- [atom-beautify](https://atom.io/packages/atom-beautify)
+- [react](https://atom.io/packages/react)
+
+- [react dev-tools](https://facebook.github.io/react/blog/2015/09/02/new-react-developer-tools.html)

@@ -60,7 +60,7 @@ module.exports = function(options) {
         template: 'app/index.html',
         filename: 'index.html',
         favicon: path.join(__dirname, 'app', 'favicon.png'),
-        title: 'CHAMPAK'
+        title: 'LOTUS'
     };
 
     if (options.minify) {
