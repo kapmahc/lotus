@@ -27,7 +27,8 @@ func DatabaseURL() string {
 	// }
 	// return args
 	return fmt.Sprintf(
-		"postgres://%s:%s@%s:%d/%s?sslmode=%s",
+		"%s://%s:%s@%s:%d/%s?sslmode=%s",
+		viper.GetString("database.driver"),
 		viper.GetString("database.args.user"),
 		viper.GetString("database.args.password"),
 		viper.GetString("database.args.host"),

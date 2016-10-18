@@ -1,3 +1,5 @@
+
+
 create table shop_products(
   id serial primary key,
   created_at timestamp without time zone not null default now(),

@@ -4,10 +4,12 @@ import (
 	"errors"
 	"path"
 	"strings"
+
+	"github.com/spf13/viper"
 )
 
 func dbMigrationsDir() string {
-	return path.Join("db", "migrations")
+	return path.Join("db", viper.GetString("database.driver"), "migrations")
 }
 
 func errors2(ers []error) error {

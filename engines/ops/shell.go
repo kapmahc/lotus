@@ -48,7 +48,7 @@ func (p *Engine) Shell() []cli.Command {
 				},
 				{
 					Name:    "migrate",
-					Usage:   "migrate the database",
+					Usage:   "applies all available migrations",
 					Aliases: []string{"m"},
 					Action: auth.Action(func(*cli.Context) error {
 						ers, ok := migrate.UpSync(auth.DatabaseURL(), dbMigrationsDir())
@@ -60,7 +60,7 @@ func (p *Engine) Shell() []cli.Command {
 				},
 				{
 					Name:    "rollback",
-					Usage:   "rollback the database",
+					Usage:   "rolls back all migrations",
 					Aliases: []string{"r"},
 					Action: auth.Action(func(*cli.Context) error {
 						ers, ok := migrate.DownSync(auth.DatabaseURL(), dbMigrationsDir())
