@@ -21,7 +21,7 @@ const currentUser = (state = {}, action) => {
   }
 }
 
-const siteInfo = (state = {}, action) => {
+const siteInfo = (state = {bottomLinks: [], topLinks: [], author: {}}, action) => {
   switch (action.type) {
     case REFRESH:
       return action.info

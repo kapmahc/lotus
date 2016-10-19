@@ -11,7 +11,7 @@ const Widget = React.createClass({
     onRefresh()
   },
   render () {
-    const {t} = this.props
+    const {t, info} = this.props
     return (
       <div className="row">
         <hr/>
@@ -23,11 +23,15 @@ const Widget = React.createClass({
             <a href="/?locale=zh-TW"> {t('languages.traditional_chinese')} </a>
           </p>
           <p>
-            &copy; 2016 Company, Inc.
-            &middot;
-            <a href="/?locale=en-US" target='_blank'> {t('languages.english')} </a>
-            &middot;
-            <a href="#">Terms</a>
+            &copy; {info.copyright}
+            {info.bottomLinks.map(function (l, i) {
+              return (
+                <span key={i}>
+                  &middot;
+                  <a href={l.href}> {l.label} </a>
+                </span>
+              )
+            })}
           </p>
         </footer>
       </div>
@@ -37,6 +41,7 @@ const Widget = React.createClass({
 
 Widget.propTypes = {
   t: PropTypes.func.isRequired,
+  info: PropTypes.object.isRequired,
   onRefresh: PropTypes.func.isRequired
 }
 
@@ -44,7 +49,6 @@ const Model = connect(
   state => ({info: state.siteInfo}),
   dispatch => ({
     onRefresh: function () {
-      console.log('refresh')
       get('/siteInfo', null, function (ifo) {
         dispatch(refresh(ifo))
         document.documentElement.lang = ifo.lang
