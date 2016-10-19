@@ -7,6 +7,7 @@ const Widget = ({children}) => (
   <div>
     <Header/>
     <div className="container">
+      <br/>
       {children}
       <Footer/>
     </div>

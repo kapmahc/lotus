@@ -1,14 +1,31 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
+import { translate } from 'react-i18next'
 import {NavDropdown, MenuItem} from 'react-bootstrap'
+import {LinkContainer} from 'react-router-bootstrap'
 
-const Widget = () => (
-<NavDropdown eventKey={3} title="Sign in/up" id="personal-bar">
-  <MenuItem eventKey={3.1}>Action</MenuItem>
-  <MenuItem eventKey={3.2}>Another action</MenuItem>
-  <MenuItem eventKey={3.3}>Something else here</MenuItem>
+const Widget = ({t}) => (
+<NavDropdown eventKey={4} title={t('auth.sign-in-or-up')} id="personal-bar">
+  <LinkContainer to={{pathname: '/users/sign-in'}}>
+    <MenuItem eventKey={4.1}>{t('auth.sign-in')}</MenuItem>
+  </LinkContainer>
+  <LinkContainer to={{pathname: '/users/sign-up'}}>
+    <MenuItem eventKey={4.2}>{t('auth.sign-up')}</MenuItem>
+  </LinkContainer>
   <MenuItem divider />
-  <MenuItem eventKey={3.3}>Separated link</MenuItem>
+  <LinkContainer to={{pathname: '/users/forgot-password'}}>
+    <MenuItem eventKey={4.2}>{t('auth.forgot-your-password')}</MenuItem>
+  </LinkContainer>
+  <LinkContainer to={{pathname: '/users/confirm'}}>
+    <MenuItem eventKey={4.2}>{t('auth.did-not-receive-confirmation-instructions')}</MenuItem>
+  </LinkContainer>
+  <LinkContainer to={{pathname: '/users/unlock'}}>
+    <MenuItem eventKey={4.2}>{t('auth.did-not-receive-unlock-instructions')}</MenuItem>
+  </LinkContainer>
 </NavDropdown>
 )
 
-export default Widget
+Widget.propTypes = {
+  t: PropTypes.func.isRequired
+}
+
+export default translate()(Widget)
