@@ -1,9 +1,19 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 
-export default function App (props) {
-  return (
-    <div>
-      layout
-    </div>
-  )
+import Header from './Header'
+import Footer from './Footer'
+
+const Widget = ({children}) => (
+  <div>
+    <Header/>
+    layout
+    {this.props.children}
+    <Footer/>
+  </div>
+)
+
+Widget.propTypes = {
+  children: PropTypes.node.isRequired
 }
+
+export default Widget

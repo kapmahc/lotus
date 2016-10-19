@@ -21,6 +21,7 @@ module.exports = function(options) {
         'react-router-redux',
         'react-router-bootstrap',
         'react-timeago',
+        'react-i18next',
 
         'remarkable',
         // 'jwt-decode',
