@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Widget = ({children}) => (
+const Widget = () => (
   <div>
     footer
   </div>

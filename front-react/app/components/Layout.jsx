@@ -7,7 +7,7 @@ const Widget = ({children}) => (
   <div>
     <Header/>
     layout
-    {this.props.children}
+    {children}
     <Footer/>
   </div>
 )
