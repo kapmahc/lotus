@@ -79,7 +79,14 @@ const SignUpW = React.createClass({
   },
   handleSubmit (e) {
     e.preventDefault()
-    post('/users/signUp', this.state, function (rst) {
+
+    var data = new window.FormData()
+    data.append('email', this.state.email)
+    data.append('name', this.state.name)
+    data.append('password', this.state.password)
+    data.append('passwordConfirmation', this.state.passwordConfirmation)
+
+    post('/users/signUp', data, function (rst) {
       console.log(rst)
     })
   },

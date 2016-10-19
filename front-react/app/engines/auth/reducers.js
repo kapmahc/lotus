@@ -1,4 +1,6 @@
-import {SIGN_IN, SIGN_OUT, REFRESH} from './actions'
+import {SIGN_IN, SIGN_OUT,
+  MESSAGE_BOX,
+  REFRESH} from './actions'
 
 const key = 'token'
 
@@ -30,5 +32,14 @@ const siteInfo = (state = {bottomLinks: [], topLinks: [], author: {}}, action) =
   }
 }
 
-const reducers = {currentUser, siteInfo}
+const messageBox = (state = {}, action) => {
+  switch (action.type) {
+    case MESSAGE_BOX:
+      return action.info
+    default:
+      return state
+  }
+}
+
+const reducers = {currentUser, siteInfo, messageBox}
 export default reducers

@@ -17,3 +17,18 @@ func (p *Engine) postUsersSignIn(c *gin.Context) {
 	// 	},
 	// })
 }
+
+type fmSignUp struct {
+	Name                 string `form:"name" json:"name" binding:"required"`
+	Email                string `form:"email" json:"email" binding:"required"`
+	Password             string `form:"password" json:"password" binding:"required"`
+	PasswordConfirmation string `form:"passwordConfirmation" json:"passwordConfirmation" binding:"required"`
+}
+
+func (p *Engine) postUsersSignUp(c *gin.Context) (interface{}, error) {
+	var fm fmSignUp
+	if err := c.Bind(&fm); err != nil {
+		return nil, err
+	}
+	return gin.H{}, nil
+}

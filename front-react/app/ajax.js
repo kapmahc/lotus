@@ -14,7 +14,7 @@ export function _delete () {
   // TODO
 }
 
-function call (method, url, data, success, fail) {
+function call (method, url, body, success, fail) {
   if (success == null) {
     success = function (rst) {
       console.log(rst)
@@ -22,14 +22,27 @@ function call (method, url, data, success, fail) {
   }
   if (fail == null) {
     fail = function (err) {
-      console.log('todo')
-      console.log(err)
+      window.alert(err)
     }
   }
-  window.fetch(`${CONFIG.backend}${url}`, {method: method, data: data})
+  window.fetch(
+    `${CONFIG.backend}${url}`,
+    {
+      method: method,
+      body: body,
+      mode: 'cors'
+    }
+  )
   .then(function (response) {
-    return response.json()
+    if (response.ok) {
+      var contentType = response.headers.get('content-type')
+      if (contentType && contentType.indexOf('application/json') !== -1) {
+        return response.json().then(success).catch(fail)
+      }
+      console.log(response)
+    } else {
+      response.text().then(fail)
+    }
   })
-  .then(success)
   .catch(fail)
 }
