@@ -19,10 +19,10 @@ func (p *Engine) postUsersSignIn(c *gin.Context) {
 }
 
 type fmSignUp struct {
-	Name                 string `form:"name" json:"name" binding:"required"`
-	Email                string `form:"email" json:"email" binding:"required"`
-	Password             string `form:"password" json:"password" binding:"required"`
-	PasswordConfirmation string `form:"passwordConfirmation" json:"passwordConfirmation" binding:"required"`
+	Name                 string `form:"name" binding:"max=32,min=2"`
+	Email                string `form:"email" binding:"email"`
+	Password             string `form:"password" binding:"max=50,min=8"`
+	PasswordConfirmation string `form:"passwordConfirmation" binding:"eqfield=Password"`
 }
 
 func (p *Engine) postUsersSignUp(c *gin.Context) (interface{}, error) {
