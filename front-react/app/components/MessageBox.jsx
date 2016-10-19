@@ -2,38 +2,35 @@ import React, { PropTypes } from 'react'
 import { translate } from 'react-i18next'
 import { connect } from 'react-redux'
 import {Modal, Button} from 'react-bootstrap'
+import {messageBox} from '../engines/auth/actions'
 
-const Widget = React.createClass({
-  handleClose (e) {
-    console.log('close')
-  },
-  render () {
-    const {t, info} = this.props
-    return (
-      <Modal show={info.show} onHide={this.handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <h4>{info.title}</h4>
-          <p>{info.body}</p>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={this.handleClose}>{t('buttons.close')}</Button>
-        </Modal.Footer>
-      </Modal>
-    )
-  }
-})
+const Widget = ({t, onClose, info}) => (
+  <Modal show={info.show} onHide={onClose}>
+    <Modal.Header closeButton>
+      <Modal.Title>{info.title}</Modal.Title>
+    </Modal.Header>
+    <Modal.Body>
+      <p>{info.body}</p>
+    </Modal.Body>
+    <Modal.Footer>
+      <Button onClick={onClose}>{t('buttons.close')}</Button>
+    </Modal.Footer>
+  </Modal>
+)
 
 Widget.propTypes = {
   t: PropTypes.func.isRequired,
-  info: PropTypes.object.isRequired
+  info: PropTypes.object.isRequired,
+  onClose: PropTypes.func.isRequired
 }
 
 const Model = connect(
   state => ({info: state.messageBox}),
-  dispatch => ({})
+  dispatch => ({
+    onClose: function (e) {
+      dispatch(messageBox({show: false, title: '', body: ''}))
+    }
+  })
 )(Widget)
 
 export default translate()(Model)

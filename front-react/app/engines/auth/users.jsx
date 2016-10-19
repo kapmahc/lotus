@@ -1,10 +1,12 @@
 import React, { PropTypes } from 'react'
 import { translate } from 'react-i18next'
+import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import {FormGroup, FormControl, HelpBlock,
   Button, ControlLabel} from 'react-bootstrap'
 
 import {post} from '../../ajax'
+import {messageBox} from './actions'
 
 const SignInW = React.createClass({
   getInitialState () {
@@ -79,6 +81,7 @@ const SignUpW = React.createClass({
   },
   handleSubmit (e) {
     e.preventDefault()
+    const {t, showBox} = this.props
 
     var data = new window.FormData()
     data.append('email', this.state.email)
@@ -86,9 +89,10 @@ const SignUpW = React.createClass({
     data.append('password', this.state.password)
     data.append('passwordConfirmation', this.state.passwordConfirmation)
 
-    post('/users/signUp', data, function (rst) {
-      console.log(rst)
-    })
+    post('/users/signUp', data, function (user) {
+      this.setState({password: '', passwordConfirmation: ''})
+      showBox({show: true, title: t('success'), body: t('auth.sign-up-success')})
+    }.bind(this))
   },
   handleChange (e) {
     var o = {}
@@ -157,10 +161,20 @@ const SignUpW = React.createClass({
 })
 
 SignUpW.propTypes = {
-  t: PropTypes.func.isRequired
+  t: PropTypes.func.isRequired,
+  showBox: PropTypes.func.isRequired
 }
 
-export const SignUp = translate()(SignUpW)
+const SignUpM = connect(
+  state => ({info: state.siteInfo}),
+  dispatch => ({
+    showBox: function (info) {
+      dispatch(messageBox(info))
+    }
+  })
+)(SignUpW)
+
+export const SignUp = translate()(SignUpM)
 // -----------------------------------------------------------------------------
 export const ForgotPassword = () => (
   <div> forgot password </div>
