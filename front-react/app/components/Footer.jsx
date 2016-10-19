@@ -2,7 +2,8 @@ import React, { PropTypes } from 'react'
 import { translate } from 'react-i18next'
 import { connect } from 'react-redux'
 
-// import {refresh} from '../engines/auth/actions'
+import {get} from '../ajax'
+import {refresh} from '../engines/auth/actions'
 
 const Widget = React.createClass({
   componentDidMount () {
@@ -44,11 +45,11 @@ const Model = connect(
   dispatch => ({
     onRefresh: function () {
       console.log('refresh')
-      // ajax("get", "/site/info", null, function(ifo){
-      //   dispatch(refresh(ifo));
-      //   document.documentElement.lang = ifo.lang;
-      //   document.title = ifo.title;
-      // });
+      get('/siteInfo', null, function (ifo) {
+        dispatch(refresh(ifo))
+        document.documentElement.lang = ifo.lang
+        document.title = ifo.title
+      })
     }
   })
 )(Widget)
