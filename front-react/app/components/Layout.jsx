@@ -6,9 +6,10 @@ import Footer from './Footer'
 const Widget = ({children}) => (
   <div>
     <Header/>
-    layout
-    {children}
-    <Footer/>
+    <div className="container">
+      {children}
+      <Footer/>
+    </div>
   </div>
 )
 

@@ -1,12 +1,23 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
+import { translate } from 'react-i18next'
 import {NavDropdown, MenuItem} from 'react-bootstrap'
 
-const Widget = () => (
-  <NavDropdown eventKey={3} title="Swtich lang" id="switch-lang-bar">
-    <MenuItem eventKey={3.1}>English</MenuItem>
-    <MenuItem eventKey={3.2}>简体中文</MenuItem>
-    <MenuItem eventKey={3.3}>正體中文</MenuItem>
+const Widget = ({t}) => (
+  <NavDropdown eventKey={3} title={t('languages.switch')} id="switch-lang-bar">
+    <MenuItem eventKey={3.1} href="/?locale=en-US">
+      {t('languages.english')}
+    </MenuItem>
+    <MenuItem eventKey={3.2} href="/?locale=zh-CN">
+      {t('languages.simplified-chinese')}
+    </MenuItem>
+    <MenuItem eventKey={3.3} href="/?locale=zh-TW">
+      {t('languages.traditional_chinese')}
+    </MenuItem>
   </NavDropdown>
 )
 
-export default Widget
+Widget.propTypes = {
+  t: PropTypes.func.isRequired
+}
+
+export default translate()(Widget)
