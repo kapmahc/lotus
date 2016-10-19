@@ -30,5 +30,5 @@ func (p *Engine) postUsersSignUp(c *gin.Context) (interface{}, error) {
 	if err := c.Bind(&fm); err != nil {
 		return nil, err
 	}
-	return gin.H{}, nil
+	return p.Dao.AddEmailUser(fm.Email, fm.Name, fm.Password)
 }

@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/kapmahc/lotus/web"
+	uuid "github.com/satori/go.uuid"
 )
 
 //LeaveWord leave word
@@ -46,10 +47,13 @@ type User struct {
 	ProviderType string `json:"provider_type"`
 	ProviderID   string `json:"provider_id"`
 
-	LastSignIn  *time.Time `json:"last_sign_in"`
-	SignInCount uint       `json:"sign_in_count"`
-	ConfirmedAt *time.Time `json:"confirmed_at"`
-	LockedAt    *time.Time `json:"locked_at"`
+	LastSignInAt    *time.Time `json:"last_sign_in_at"`
+	LastSignInIP    string     `json:"last_sign_in_ip"`
+	CurrentSignInAt *time.Time `json:"current_sign_in_at"`
+	CurrentSignInIP string     `json:"current_sign_in_ip"`
+	SignInCount     uint       `json:"sign_in_count"`
+	ConfirmedAt     *time.Time `json:"confirmed_at"`
+	LockedAt        *time.Time `json:"locked_at"`
 
 	Permissions []Permission `json:"permissions"`
 	Logs        []Log        `json:"logs"`
@@ -74,6 +78,11 @@ func (p *User) IsAvailable() bool {
 func (p *User) SetGravatarLogo() {
 	buf := md5.Sum([]byte(strings.ToLower(p.Email)))
 	p.Logo = fmt.Sprintf("https://gravatar.com/avatar/%s.png", hex.EncodeToString(buf[:]))
+}
+
+//SetUID generate uid
+func (p *User) SetUID() {
+	p.UID = uuid.NewV4().String()
 }
 
 func (p User) String() string {

@@ -6,6 +6,8 @@ create table users(
   password varchar(255),
   provider_id varchar(255) not null,
   provider_type varchar(32) not null,
+  home varchar(255),
+  logo varchar(255),
   sign_in_count int not null default 0,
   current_sign_in_at timestamp without time zone,
   current_sign_in_ip inet,

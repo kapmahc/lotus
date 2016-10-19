@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"github.com/SermoDigital/jose/jws"
-	"github.com/kapmahc/lotus/web"
 	"github.com/jinzhu/gorm"
+	"github.com/kapmahc/lotus/web"
 	logging "github.com/op/go-logging"
 	uuid "github.com/satori/go.uuid"
 	"github.com/spf13/viper"
@@ -125,7 +125,7 @@ func (p *Dao) SignUp(email, name, password string) (*User, error) {
 		u.ProviderID = email
 		u.ProviderType = "email"
 		u.SignInCount = 1
-		u.LastSignIn = &now
+		u.LastSignInAt = &now
 
 		u.SetGravatarLogo()
 		u.Password = p.Encryptor.Sum([]byte(password))
@@ -134,6 +134,37 @@ func (p *Dao) SignUp(email, name, password string) (*User, error) {
 	} else {
 		err = fmt.Errorf("email %s already exists", email)
 	}
+	return &u, err
+}
+
+//AddEmailUser add email user
+func (p *Dao) AddEmailUser(email, name, password string) (*User, error) {
+	var u User
+	var err error
+	var count int
+	if err = p.Db.Model(&u).Where(
+		"(provider_id = ? AND provider_type = ?) OR email = ?",
+		email,
+		"email",
+		email).
+		Count(&count).Error; err != nil {
+		return nil, err
+	}
+	if count != 0 {
+		return nil, fmt.Errorf("%s already exists", email)
+	}
+
+	u.Email = email
+	u.Name = name
+	u.ProviderID = email
+	u.ProviderType = "email"
+	u.SignInCount = 1
+	u.LastSignInIP = "0.0.0.0"
+	u.CurrentSignInIP = "0.0.0.0"
+	u.SetGravatarLogo()
+	u.SetUID()
+	err = p.Db.Create(&u).Error
+
 	return &u, err
 }
 
@@ -147,12 +178,13 @@ func (p *Dao) AddOpenIDUser(pid, pty, email, name, home, logo string) (*User, er
 		u.Name = name
 		u.Logo = logo
 		u.Home = home
-		u.UID = uuid.NewV4().String()
 		u.ProviderID = pid
 		u.ProviderType = pty
 		u.ConfirmedAt = &now
 		u.SignInCount = 1
-		u.LastSignIn = &now
+		u.LastSignInAt = &now
+
+		u.SetUID()
 		err = p.Db.Create(&u).Error
 	} else {
 		err = p.Db.Model(&u).Updates(map[string]interface{}{
