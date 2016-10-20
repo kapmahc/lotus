@@ -35,7 +35,7 @@ func (p *Engine) getSiteInfo(c *gin.Context) {
 			for i := 1; i <= 3; i++ {
 				links = append(
 					links,
-					web.Link{Href: "index", Label: fmt.Sprintf("Link %d", i)},
+					web.Link{Href: "home", Label: fmt.Sprintf("Link %d", i)},
 				)
 			}
 		}
