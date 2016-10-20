@@ -11,20 +11,31 @@ import (
 	"github.com/spf13/viper"
 )
 
-func (p *Engine) postUsersSignIn(c *gin.Context) {
-	// TODO
-	// lang := c.MustGet("locale").(string)
-	// c.HTML(http.StatusOK, "users/non-sign-in", gin.H{
-	// 	"locale": lang,
-	// 	"form": gin.H{
-	// 		"title": p.I18n.T(lang, "auth.users.sign-in"),
-	// 		"fields": []gin.H{
-	// 			gin.H{"type": "email", "id": "email"},
-	// 			gin.H{"type": "password", "id": "password"},
-	// 			gin.H{"type": "password", "id": "passwordConfirm"},
-	// 		},
-	// 	},
-	// })
+type fmSignIn struct {
+	Email    string `form:"email" binding:"email"`
+	Password string `form:"password" binding:"required"`
+}
+
+func (p *Engine) postUsersSignIn(c *gin.Context) (interface{}, error) {
+	var fm fmSignIn
+	if err := c.Bind(&fm); err != nil {
+		return nil, err
+	}
+	user, err := p.Dao.SignIn(fm.Email, fm.Password)
+	if err != nil {
+		return nil, err
+	}
+	if !user.IsAvailable() {
+		return nil, fmt.Errorf("user %s isn't available", user.Email)
+	}
+	p.Dao.Log(user.ID, p.I18n.T(c.MustGet("locale").(string), "log.auth.sign-in"))
+
+	cm := jws.Claims{}
+	cm.Set("uid", user.UID)
+	cm.Set("name", user.Name)
+	cm.Set("roles", p.Dao.Authority(user.ID, "-", 0))
+	tkn, err := p.Jwt.Sum(cm, 7)
+	return gin.H{"token": string(tkn)}, err
 }
 
 type fmSignUp struct {
@@ -41,6 +52,7 @@ func (p *Engine) postUsersSignUp(c *gin.Context) (interface{}, error) {
 	}
 	user, err := p.Dao.AddEmailUser(fm.Email, fm.Name, fm.Password)
 	if err == nil {
+		p.Dao.Log(user.ID, p.I18n.T(c.MustGet("locale").(string), "log.auth.sign-up"))
 		err = p.sendMail(c.MustGet("locale").(string), "confirm", fm.Email, user.UID)
 	}
 	return gin.H{}, err
@@ -91,6 +103,9 @@ func (p *Engine) postUsersChangePassword(c *gin.Context) (interface{}, error) {
 	err = p.Db.Model(&user).Updates(map[string]interface{}{
 		"password": p.Encryptor.Sum([]byte(fm.Password)),
 	}).Error
+	if err == nil {
+		p.Dao.Log(user.ID, p.I18n.T(c.MustGet("locale").(string), "log.auth.reset-password"))
+	}
 	return gin.H{}, err
 }
 
@@ -111,6 +126,9 @@ func (p *Engine) getUsersConfirm(c *gin.Context) (string, error) {
 		err = p.Db.Model(&user).Updates(map[string]interface{}{
 			"confirmed_at": &now,
 		}).Error
+	}
+	if err == nil {
+		p.Dao.Log(user.ID, p.I18n.T(c.MustGet("locale").(string), "log.auth.confirm"))
 	}
 	return fmt.Sprintf("%s/users/sign-in", viper.GetString("home.frontend")), err
 }
@@ -147,6 +165,9 @@ func (p *Engine) getUsersUnlock(c *gin.Context) (string, error) {
 		err = p.Db.Model(&user).Updates(map[string]interface{}{
 			"locked_at": nil,
 		}).Error
+	}
+	if err == nil {
+		p.Dao.Log(user.ID, p.I18n.T(c.MustGet("locale").(string), "log.auth.unlock"))
 	}
 	return fmt.Sprintf("%s/users/sign-in", viper.GetString("home.frontend")), err
 }

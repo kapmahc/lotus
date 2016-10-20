@@ -1,12 +1,12 @@
 import React, { PropTypes } from 'react'
 import { translate } from 'react-i18next'
 import { connect } from 'react-redux'
-import { Link } from 'react-router'
+import { Link, browserHistory } from 'react-router'
 import {FormGroup, FormControl, HelpBlock,
   Button, ControlLabel} from 'react-bootstrap'
 
 import {post} from '../../ajax'
-import {messageBox} from './actions'
+import {messageBox, signIn} from './actions'
 
 const SignInW = React.createClass({
   getInitialState () {
@@ -17,8 +17,17 @@ const SignInW = React.createClass({
   },
   handleSubmit (e) {
     e.preventDefault()
-    console.log(this.state)
-    // TODO
+
+    var data = new window.FormData()
+    data.append('email', this.state.email)
+    data.append('password', this.state.password)
+
+    const {onSignIn} = this.props
+    post('/users/sign-in', data, function (rst) {
+      this.setState({password: ''})
+      onSignIn(rst.token)
+      browserHistory.push('/')
+    }.bind(this))
   },
   handleChange (e) {
     var o = {}
@@ -63,10 +72,21 @@ const SignInW = React.createClass({
 })
 
 SignInW.propTypes = {
-  t: PropTypes.func.isRequired
+  user: PropTypes.object.isRequired,
+  t: PropTypes.func.isRequired,
+  onSignIn: PropTypes.func.isRequired
 }
 
-export const SignIn = translate()(SignInW)
+const SignInM = connect(
+  state => ({user: state.currentUser}),
+  dispatch => ({
+    onSignIn: function (token) {
+      dispatch(signIn(token))
+    }
+  })
+)(SignInW)
+
+export const SignIn = translate()(SignInM)
 
 // -----------------------------------------------------------------------------
 

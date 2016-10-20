@@ -11,7 +11,6 @@ export const refresh = (info) => {
 }
 
 export const signIn = (token) => {
-  console.log(token)
   return {
     type: SIGN_IN,
     token

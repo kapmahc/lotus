@@ -11,7 +11,7 @@ func (p *Engine) Mount(rt *gin.Engine) {
 	rt.GET("/locales/:lang", p.getLocales)
 
 	ug := rt.Group("/users")
-	ug.POST("sign-in", p.postUsersSignIn)
+	ug.POST("sign-in", web.JSON(p.postUsersSignIn))
 	ug.POST("sign-up", web.JSON(p.postUsersSignUp))
 	ug.GET("confirm", web.Redirect(p.getUsersConfirm))
 	ug.POST("confirm", web.JSON(p.postUsersConfirm))

@@ -22,6 +22,7 @@
     "i18next": "^3.4.4",
     "i18next-browser-languagedetector": "^1.0.1",
     "i18next-xhr-backend": "^1.2.0",
+    "jwt-decode": "^2.1.0",
     "path": "^0.12.7",
     "react": "^15.3.2",
     "react-bootstrap": "^0.30.5",

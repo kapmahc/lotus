@@ -101,7 +101,7 @@ func (p *Dao) UserClaims(u *User) jws.Claims {
 //SignIn sign in
 func (p *Dao) SignIn(email, password string) (*User, error) {
 	var u User
-	err := p.Db.Where("provider_id = ? AND provider_type = ?", "email", email).First(&u).Error
+	err := p.Db.Where("provider_type = ? AND provider_id = ?", "email", email).First(&u).Error
 	if err == nil {
 		if !p.Encryptor.Chk([]byte(password), u.Password) {
 			err = errors.New("email and password not match")

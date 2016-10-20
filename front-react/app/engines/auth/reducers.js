@@ -1,3 +1,5 @@
+import jwtDecode from 'jwt-decode'
+
 import {SIGN_IN, SIGN_OUT,
   MESSAGE_BOX,
   REFRESH} from './actions'
@@ -7,13 +9,13 @@ const key = 'token'
 const currentUser = (state = {}, action) => {
   switch (action.type) {
     case SIGN_IN:
-      console.log(action)
-      // TODO parse action
-      window.sessionStorage.setItem(key, action.token)
-      return {
-        name: null,
-        uid: null,
-        roles: []
+      try {
+        var user = jwtDecode(action.token)
+        window.sessionStorage.setItem(key, action.token)
+        return user
+      } catch (e) {
+        console.log(e)
+        return {}
       }
     case SIGN_OUT:
       window.sessionStorage.removeItem(key)

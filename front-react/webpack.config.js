@@ -24,8 +24,7 @@ module.exports = function(options) {
         'react-i18next',
 
         'remarkable',
-        // 'jwt-decode',
-        // 'url-parse',
+        'jwt-decode',        
 
         'i18next',
         'i18next-xhr-backend',
