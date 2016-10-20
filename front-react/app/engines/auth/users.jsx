@@ -177,7 +177,7 @@ const SignUpM = connect(
 export const SignUp = translate()(SignUpM)
 // -----------------------------------------------------------------------------
 export const ForgotPassword = () => (
-  <EmailForm action="change-password" />
+  <EmailForm action="forgot-password" />
 )
 // -----------------------------------------------------------------------------
 // TODO

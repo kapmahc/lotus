@@ -135,6 +135,7 @@ func (p *Dao) AddEmailUser(email, name, password string) (*User, error) {
 	u.SignInCount = 1
 	u.LastSignInIP = "0.0.0.0"
 	u.CurrentSignInIP = "0.0.0.0"
+	u.Password = p.Encryptor.Sum([]byte(password))
 	u.SetGravatarLogo()
 	u.SetUID()
 	u.Home = fmt.Sprintf("%s/users/%s", viper.GetString("server.frontend"), u.UID)

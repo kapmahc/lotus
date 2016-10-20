@@ -39,9 +39,9 @@ func (p *Engine) postUsersSignUp(c *gin.Context) (interface{}, error) {
 	if err := c.Bind(&fm); err != nil {
 		return nil, err
 	}
-	_, err := p.Dao.AddEmailUser(fm.Email, fm.Name, fm.Password)
+	user, err := p.Dao.AddEmailUser(fm.Email, fm.Name, fm.Password)
 	if err == nil {
-		err = p.sendMail(c.MustGet("locale").(string), "confirm", fm.Email)
+		err = p.sendMail(c.MustGet("locale").(string), "confirm", fm.Email, user.UID)
 	}
 	return gin.H{}, err
 }
@@ -62,7 +62,35 @@ func (p *Engine) postUsersForgotPassword(c *gin.Context) (interface{}, error) {
 	if !user.IsAvailable() {
 		return nil, fmt.Errorf("email account %s isn't available", fm.Email)
 	}
-	err = p.sendMail(c.MustGet("locale").(string), "change-password", fm.Email)
+	err = p.sendMail(c.MustGet("locale").(string), "change-password", fm.Email, user.UID)
+	return gin.H{}, err
+}
+
+type fmChangePassword struct {
+	Token                string `form:"token" binding:"required"`
+	Password             string `form:"password" binding:"max=50,min=8"`
+	PasswordConfirmation string `form:"passwordConfirmation" binding:"eqfield=Password"`
+}
+
+func (p *Engine) postUsersChangePassword(c *gin.Context) (interface{}, error) {
+	var fm fmChangePassword
+	if err := c.Bind(&fm); err != nil {
+		return nil, err
+	}
+	cm, err := p.Jwt.Validate([]byte(fm.Token))
+	if err != nil {
+		return nil, err
+	}
+	user, err := p.Dao.GetUserByUID(cm.Get("uid").(string))
+	if err != nil {
+		return nil, err
+	}
+	if !user.IsAvailable() {
+		return nil, fmt.Errorf("user %s isn't available", user.Email)
+	}
+	err = p.Db.Model(&user).Updates(map[string]interface{}{
+		"password": p.Encryptor.Sum([]byte(fm.Password)),
+	}).Error
 	return gin.H{}, err
 }
 
@@ -72,11 +100,10 @@ func (p *Engine) getUsersConfirm(c *gin.Context) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	email := cm.Get("email").(string)
-	user, err := p.Dao.GetUserByEmail(email)
+	user, err := p.Dao.GetUserByUID(cm.Get("uid").(string))
 	if err == nil {
 		if user.IsConfirmed() {
-			err = fmt.Errorf("user %s was confirmed", email)
+			err = fmt.Errorf("user %s was confirmed", user.Email)
 		}
 	}
 	if err == nil {
@@ -100,7 +127,7 @@ func (p *Engine) postUsersConfirm(c *gin.Context) (interface{}, error) {
 	if user.IsConfirmed() {
 		return nil, fmt.Errorf("email account %s was confirmed", fm.Email)
 	}
-	err = p.sendMail(c.MustGet("locale").(string), "confirm", fm.Email)
+	err = p.sendMail(c.MustGet("locale").(string), "confirm", fm.Email, user.UID)
 	return gin.H{}, err
 }
 
@@ -110,11 +137,10 @@ func (p *Engine) getUsersUnlock(c *gin.Context) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	email := cm.Get("email").(string)
-	user, err := p.Dao.GetUserByEmail(email)
+	user, err := p.Dao.GetUserByUID(cm.Get("uid").(string))
 	if err == nil {
 		if !user.IsLocked() {
-			err = fmt.Errorf("user %s wasn't confirmed", email)
+			err = fmt.Errorf("user %s wasn't confirmed", user.Email)
 		}
 	}
 	if err == nil {
@@ -138,14 +164,18 @@ func (p *Engine) postUsersUnlock(c *gin.Context) (interface{}, error) {
 		return nil, fmt.Errorf("email account %s is not locked", fm.Email)
 	}
 	err = p.sendMail(
-		c.MustGet("locale").(string), "unlock", fm.Email)
+		c.MustGet("locale").(string),
+		"unlock",
+		fm.Email,
+		user.UID,
+	)
 	return gin.H{}, err
 }
 
-func (p *Engine) sendMail(lang, act, email string) error {
+func (p *Engine) sendMail(lang, act, email, uid string) error {
 	cm := jws.Claims{}
 	cm.Set("action", act)
-	cm.Set("email", email)
+	cm.Set("uid", uid)
 	tkn, err := p.Jwt.Sum(cm, 1)
 	if err != nil {
 		return err
