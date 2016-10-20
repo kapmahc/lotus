@@ -6,8 +6,8 @@ export function post (url, data, success, fail) {
   call('post', url, data, success, fail)
 }
 
-export function patch () {
-  // TODO
+export function patch (url, data, success, fail) {
+  call('patch', url, data, success, fail)
 }
 
 export function _delete (url, success, fail) {

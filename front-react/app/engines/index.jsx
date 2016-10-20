@@ -26,7 +26,7 @@ const DashboardM = connect(
 const Dashboard = translate()(DashboardM)
 
 // -----------------------------------------------------------------------------
-import {Route} from 'react-router'
+import {Route, IndexRoute} from 'react-router'
 
 import auth from './auth'
 
@@ -36,21 +36,22 @@ const engines = {
 
 export default {
   routes () {
-    var items = Object.keys(engines).reduce(function (obj, en) {
+    // var items = Object.keys(engines).reduce(function (obj, en) {
+    //   return obj.concat(engines[en].routes)
+    // }, [])
+    var items = CONFIG.engines.reduce(function (obj, en) {
       return obj.concat(engines[en].routes)
     }, [])
     items.push(<Route key="dashboard" path="dashboard" component={Dashboard}/>)
+    items.push(<IndexRoute key="home" component={engines[CONFIG.main].home}/>)
     return items
-    // return CHAOS_ENV.engines.reduce(function(obj, en) {
-    //   return obj.concat(engines[en].routes)
-    // }, []);
   },
   reducers () {
-    return Object.keys(engines).reduce(function (obj, en) {
+    // return Object.keys(engines).reduce(function (obj, en) {
+    //   return Object.assign(obj, engines[en].reducers)
+    // }, {})
+    return CONFIG.engines.reduce(function (obj, en) {
       return Object.assign(obj, engines[en].reducers)
     }, {})
-    // return CHAOS_ENV.engines.reduce(function(obj, en) {
-    //   return Object.assign(obj, engines[en].reducers)
-    // }, {});
   }
 }

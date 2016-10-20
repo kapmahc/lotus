@@ -24,7 +24,7 @@ module.exports = function(options) {
         'react-i18next',
 
         'remarkable',
-        'jwt-decode',        
+        'jwt-decode',
 
         'i18next',
         'i18next-xhr-backend',
@@ -46,6 +46,7 @@ module.exports = function(options) {
 
     var env = {
         CONFIG: JSON.stringify({
+            main: options.main,
             backend: options.backend,
             engines: options.engines,
             version: '2016.10.12'
