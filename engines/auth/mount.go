@@ -15,6 +15,7 @@ func (p *Engine) Mount(rt *gin.Engine) {
 	ug.POST("signUp", web.JSON(p.postUsersSignUp))
 	ug.GET("confirm", web.Redirect(p.getUsersConfirm))
 	ug.POST("confirm", web.JSON(p.postUsersConfirm))
+	ug.GET("unlock", web.Redirect(p.getUsersUnlock))
 	ug.POST("unlock", web.JSON(p.postUsersUnlock))
 	ug.POST("forgot-password", web.JSON(p.postUsersForgotPassword))
 }

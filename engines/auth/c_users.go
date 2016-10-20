@@ -104,6 +104,27 @@ func (p *Engine) postUsersConfirm(c *gin.Context) (interface{}, error) {
 	return gin.H{}, err
 }
 
+func (p *Engine) getUsersUnlock(c *gin.Context) (string, error) {
+	token := c.Query("token")
+	cm, err := p.Jwt.Validate([]byte(token))
+	if err != nil {
+		return "", err
+	}
+	email := cm.Get("email").(string)
+	user, err := p.Dao.GetUserByEmail(email)
+	if err == nil {
+		if !user.IsLocked() {
+			err = fmt.Errorf("user %s wasn't confirmed", email)
+		}
+	}
+	if err == nil {
+		err = p.Db.Model(&user).Updates(map[string]interface{}{
+			"locked_at": nil,
+		}).Error
+	}
+	return viper.GetString("home.frontend"), err
+}
+
 func (p *Engine) postUsersUnlock(c *gin.Context) (interface{}, error) {
 	var fm fmEmail
 	if err := c.Bind(&fm); err != nil {
