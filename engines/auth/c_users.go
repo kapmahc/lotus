@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"text/template"
+	"time"
 
 	"github.com/SermoDigital/jose/jws"
 	"github.com/gin-gonic/gin"
@@ -63,6 +64,28 @@ func (p *Engine) postUsersForgotPassword(c *gin.Context) (interface{}, error) {
 	}
 	err = p.sendMail(c.MustGet("locale").(string), "change-password", fm.Email)
 	return gin.H{}, err
+}
+
+func (p *Engine) getUsersConfirm(c *gin.Context) (string, error) {
+	token := c.Query("token")
+	cm, err := p.Jwt.Validate([]byte(token))
+	if err != nil {
+		return "", err
+	}
+	email := cm.Get("email").(string)
+	user, err := p.Dao.GetUserByEmail(email)
+	if err == nil {
+		if user.IsConfirmed() {
+			err = fmt.Errorf("user %s was confirmed", email)
+		}
+	}
+	if err == nil {
+		now := time.Now()
+		err = p.Db.Model(&user).Updates(map[string]interface{}{
+			"confirmed_at": &now,
+		}).Error
+	}
+	return viper.GetString("home.frontend"), err
 }
 
 func (p *Engine) postUsersConfirm(c *gin.Context) (interface{}, error) {
