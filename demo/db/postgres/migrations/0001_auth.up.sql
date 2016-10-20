@@ -46,7 +46,7 @@ create unique index idx_roles_name_resource_type_id on roles(name, resource_type
 create index idx_roles_name on roles(name);
 create index idx_roles_resource_type on roles(resource_type);
 
-create table policies(
+create table permissions(
   id serial primary key,
   user_id int not null,
   role_id int not null,
@@ -55,4 +55,4 @@ create table policies(
   created_at timestamp without time zone not null default now(),
   updated_at timestamp without time zone not null
 );
-create unique index idx_policies_user_role on policies(user_id, role_id);
+create unique index idx_permissions_user_role on permissions(user_id, role_id);

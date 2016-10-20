@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"errors"
 	"fmt"
 	"html/template"
 	"net/http"
@@ -30,8 +31,7 @@ func (p *Engine) Shell() []cli.Command {
 				rt := gin.Default()
 
 				theme := viper.GetString("server.theme")
-				// rt.LoadHTMLGlob(fmt.Sprintf("templates/%s/**/*", viper.GetString("server.theme")))
-				// rt.Static("/assets", fmt.Sprintf("./assets/%s", theme))
+
 				tpl, err := template.
 					New("").
 					Funcs(template.FuncMap{
@@ -44,11 +44,6 @@ func (p *Engine) Shell() []cli.Command {
 					return err
 				}
 				rt.SetHTMLTemplate(tpl)
-
-				// rt.Use(sessions.Sessions(
-				// 	"_session_",
-				// 	sessions.NewCookieStore([]byte(viper.GetString("secrets.session"))),
-				// ))
 
 				rt.Use(i18n.LocaleHandler(p.Logger))
 
@@ -65,7 +60,6 @@ func (p *Engine) Shell() []cli.Command {
 					AllowedHeaders:   []string{"*"},
 					Debug:            !IsProduction(),
 				}).Handler(rt)
-				// hnd := rt
 
 				if IsProduction() {
 					return endless.ListenAndServe(adr, hnd)
@@ -73,6 +67,7 @@ func (p *Engine) Shell() []cli.Command {
 				return http.ListenAndServe(adr, hnd)
 			}),
 		},
+
 		{
 			Name:    "worker",
 			Aliases: []string{"w"},
@@ -86,9 +81,10 @@ func (p *Engine) Shell() []cli.Command {
 				return p.Jobber.Start()
 			}),
 		},
+
 		{
 			Name:    "redis",
-			Aliases: []string{"re"},
+			Aliases: []string{"r"},
 			Usage:   "open redis connection",
 			Action: Action(func(*cli.Context) error {
 				return web.Shell(
@@ -99,6 +95,7 @@ func (p *Engine) Shell() []cli.Command {
 				)
 			}),
 		},
+
 		{
 			Name:    "cache",
 			Aliases: []string{"c"},
@@ -125,6 +122,74 @@ func (p *Engine) Shell() []cli.Command {
 					Aliases: []string{"c"},
 					Action: IocAction(func(*cli.Context, *inject.Graph) error {
 						return p.Cache.Flush()
+					}),
+				},
+			},
+		},
+
+		{
+			Name:    "users",
+			Aliases: []string{"u"},
+			Usage:   "users operations",
+			Subcommands: []cli.Command{
+				{
+					Name:    "list",
+					Usage:   "list all users",
+					Aliases: []string{"l"},
+					Action: IocAction(func(*cli.Context, *inject.Graph) error {
+						var users []User
+						if err := p.Db.Select([]string{"uid", "email", "name"}).Find(&users).Error; err != nil {
+							return err
+						}
+						fmt.Println("UID                                     INFO")
+						for _, u := range users {
+							fmt.Printf("%s\t%s<%s>\n", u.UID, u.Name, u.Email)
+						}
+						return nil
+					}),
+				},
+				{
+					Name:    "role",
+					Usage:   "allow/deny role to user",
+					Aliases: []string{"r"},
+					Flags: []cli.Flag{
+						cli.StringFlag{
+							Name:  "uid,u",
+							Usage: "user's uid.",
+						},
+						cli.StringFlag{
+							Name:  "name,n",
+							Usage: "role's name.",
+						},
+						cli.BoolFlag{
+							Name:  "deny,d",
+							Usage: "deny?",
+						},
+					},
+					Action: IocAction(func(c *cli.Context, _ *inject.Graph) error {
+						uid := c.String("uid")
+						if uid == "" {
+							return errors.New("user's uid mustn't empty")
+						}
+						name := c.String("name")
+						if name == "" {
+							return errors.New("role's name mustn't empty")
+						}
+						deny := c.Bool("deny")
+						user, err := p.Dao.GetUserByUID(uid)
+						if err != nil {
+							return err
+						}
+						role, err := p.Dao.Role(name, "-", 0)
+						if err != nil {
+							return err
+						}
+						if deny {
+							err = p.Dao.Deny(role.ID, user.ID)
+						} else {
+							err = p.Dao.Allow(role.ID, user.ID, 20, 0, 0)
+						}
+						return err
 					}),
 				},
 			},

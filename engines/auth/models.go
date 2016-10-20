@@ -114,28 +114,28 @@ func (p Role) String() string {
 //Permission permission model
 type Permission struct {
 	web.Model
-	User   User
-	UserID uint
-	Role   Role
-	RoleID uint
-	Begin  time.Time
-	End    time.Time
+	User     User
+	UserID   uint
+	Role     Role
+	RoleID   uint
+	StartUp  time.Time
+	ShutDown time.Time
 }
 
-//EndS end to string
-func (p *Permission) EndS() string {
-	return p.End.Format("2006-01-02")
+//End end to string
+func (p *Permission) End() string {
+	return p.ShutDown.Format("2006-01-02")
 }
 
-//BeginS begin to string
-func (p *Permission) BeginS() string {
-	return p.Begin.Format("2006-01-02")
+//Begin begin to string
+func (p *Permission) Begin() string {
+	return p.StartUp.Format("2006-01-02")
 }
 
 //Enable is enable?
 func (p *Permission) Enable() bool {
 	now := time.Now()
-	return now.After(p.Begin) && now.Before(p.End)
+	return now.After(p.StartUp) && now.Before(p.ShutDown)
 }
 
 //Attachment attachment

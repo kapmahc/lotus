@@ -277,15 +277,15 @@ func (p *Dao) Allow(role uint, user uint, years, months, days int) error {
 		Count(&count)
 	if count == 0 {
 		return p.Db.Create(&Permission{
-			UserID: user,
-			RoleID: role,
-			Begin:  begin,
-			End:    end,
+			UserID:   user,
+			RoleID:   role,
+			StartUp:  begin,
+			ShutDown: end,
 		}).Error
 	}
 	return p.Db.
 		Model(&Permission{}).
 		Where("role_id = ? AND user_id = ?", role, user).
-		UpdateColumns(map[string]interface{}{"begin": begin, "end": end}).Error
+		UpdateColumns(map[string]interface{}{"start_up": begin, "shut_down": end}).Error
 
 }
