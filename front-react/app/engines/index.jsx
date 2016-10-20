@@ -9,7 +9,11 @@ const DashboardW = ({t, user}) => {
   return isEmpty(user)
     ? <NoMatch/>
     : (
-      <div>dashboard</div>
+      <div className="row">
+        {CONFIG.engines.map(function (en) {
+          return engines[en].dashboard
+        })}
+      </div>
     )
 }
 
