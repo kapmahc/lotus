@@ -166,7 +166,7 @@ SignUpW.propTypes = {
 }
 
 const SignUpM = connect(
-  state => ({info: state.siteInfo}),
+  state => ({}),
   dispatch => ({
     showBox: function (info) {
       dispatch(messageBox(info))
@@ -177,19 +177,20 @@ const SignUpM = connect(
 export const SignUp = translate()(SignUpM)
 // -----------------------------------------------------------------------------
 export const ForgotPassword = () => (
-  <div> forgot password </div>
+  <EmailForm action="change-password" />
 )
 // -----------------------------------------------------------------------------
+// TODO
 export const ChangePassword = () => (
-  <div> change password </div>
+  <div> change password</div>
 )
 // -----------------------------------------------------------------------------
 export const Confirm = () => (
-  <div> confirm </div>
+  <EmailForm action="confirm" />
 )
 // -----------------------------------------------------------------------------
 export const Unlock = () => (
-  <div> unlock </div>
+  <EmailForm action="unlock" />
 )
 // -----------------------------------------------------------------------------
 const SharedLinksW = ({t}) => (
@@ -200,6 +201,15 @@ const SharedLinksW = ({t}) => (
     <li>
       <Link to="/users/sign-up">{t('auth.sign-up')}</Link>
     </li>
+    <li>
+      <Link to="/users/forgot-password">{t('auth.forgot-password')}</Link>
+    </li>
+    <li>
+      <Link to="/users/confirm">{t('auth.confirm')}</Link>
+    </li>
+    <li>
+      <Link to="/users/unlock">{t('auth.unlock')}</Link>
+    </li>
   </ul>
 )
 
@@ -208,3 +218,71 @@ SharedLinksW.propTypes = {
 }
 
 const SharedLinks = translate()(SharedLinksW)
+
+// -----------------------------------------------------------------------------
+const EmailFormW = React.createClass({
+  getInitialState () {
+    return {
+      email: ''
+    }
+  },
+  handleSubmit (e) {
+    e.preventDefault()
+    const {t, showBox, action} = this.props
+
+    var data = new window.FormData()
+    data.append('email', this.state.email)
+
+    post(`/users/${action}`, data, function (user) {
+      this.setState({password: '', passwordConfirmation: ''})
+      showBox({show: true, title: t('success'), body: t(`auth.${action}-success`)})
+    }.bind(this))
+  },
+  handleChange (e) {
+    var o = {}
+    o[e.target.id] = e.target.value
+    this.setState(o)
+  },
+  render () {
+    const {t, action} = this.props
+    return (
+      <fieldset>
+        <legend>{t(`auth.${action}`)}</legend>
+        <form>
+          <FormGroup
+            controlId="email"
+          >
+            <ControlLabel>{t('attributes.user.email')}</ControlLabel>
+            <FormControl
+              type="email"
+              value={this.state.email}
+              onChange={this.handleChange}
+            />
+          </FormGroup>
+          <Button onClick={this.handleSubmit} type="submit">
+            {t('buttons.submit')}
+          </Button>
+        </form>
+        <br/>
+        <SharedLinks/>
+      </fieldset>
+    )
+  }
+})
+
+EmailFormW.propTypes = {
+  t: PropTypes.func.isRequired,
+  action: PropTypes.string.isRequired,
+  showBox: PropTypes.func.isRequired
+}
+
+const EmailFormM = connect(
+  state => ({}),
+  dispatch => ({
+    showBox: function (info) {
+      dispatch(messageBox(info))
+    }
+  })
+)(EmailFormW)
+
+const EmailForm = translate()(EmailFormM)

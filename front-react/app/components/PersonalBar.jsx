@@ -13,13 +13,13 @@ const Widget = ({t}) => (
   </LinkContainer>
   <MenuItem divider />
   <LinkContainer to={{pathname: '/users/forgot-password'}}>
-    <MenuItem eventKey={4.2}>{t('auth.forgot-your-password')}</MenuItem>
+    <MenuItem eventKey={4.2}>{t('auth.forgot-password')}</MenuItem>
   </LinkContainer>
   <LinkContainer to={{pathname: '/users/confirm'}}>
-    <MenuItem eventKey={4.2}>{t('auth.did-not-receive-confirmation-instructions')}</MenuItem>
+    <MenuItem eventKey={4.2}>{t('auth.confirm')}</MenuItem>
   </LinkContainer>
   <LinkContainer to={{pathname: '/users/unlock'}}>
-    <MenuItem eventKey={4.2}>{t('auth.did-not-receive-unlock-instructions')}</MenuItem>
+    <MenuItem eventKey={4.2}>{t('auth.unlock')}</MenuItem>
   </LinkContainer>
 </NavDropdown>
 )
