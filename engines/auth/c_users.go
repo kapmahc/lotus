@@ -112,7 +112,7 @@ func (p *Engine) getUsersConfirm(c *gin.Context) (string, error) {
 			"confirmed_at": &now,
 		}).Error
 	}
-	return viper.GetString("home.frontend"), err
+	return fmt.Sprintf("%s/users/sign-in", viper.GetString("home.frontend")), err
 }
 
 func (p *Engine) postUsersConfirm(c *gin.Context) (interface{}, error) {
@@ -148,7 +148,7 @@ func (p *Engine) getUsersUnlock(c *gin.Context) (string, error) {
 			"locked_at": nil,
 		}).Error
 	}
-	return viper.GetString("home.frontend"), err
+	return fmt.Sprintf("%s/users/sign-in", viper.GetString("home.frontend")), err
 }
 
 func (p *Engine) postUsersUnlock(c *gin.Context) (interface{}, error) {

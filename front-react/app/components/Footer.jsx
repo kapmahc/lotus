@@ -49,7 +49,7 @@ const Model = connect(
   state => ({info: state.siteInfo}),
   dispatch => ({
     onRefresh: function () {
-      get('/siteInfo', function (ifo) {
+      get('/site-info', function (ifo) {
         dispatch(refresh(ifo))
         document.documentElement.lang = ifo.lang
         document.title = ifo.title

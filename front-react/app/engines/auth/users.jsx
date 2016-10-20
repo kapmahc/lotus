@@ -89,7 +89,7 @@ const SignUpW = React.createClass({
     data.append('password', this.state.password)
     data.append('passwordConfirmation', this.state.passwordConfirmation)
 
-    post('/users/signUp', data, function (user) {
+    post('/users/sign-up', data, function (user) {
       this.setState({password: '', passwordConfirmation: ''})
       showBox({show: true, title: t('success'), body: t('auth.confirm-success')})
     }.bind(this))
@@ -180,10 +180,90 @@ export const ForgotPassword = () => (
   <EmailForm action="forgot-password" />
 )
 // -----------------------------------------------------------------------------
-// TODO
-export const ChangePassword = () => (
-  <div> change password</div>
-)
+
+const ChangePasswordW = React.createClass({
+  getInitialState () {
+    return {
+      password: '',
+      passwordConfirmation: ''
+    }
+  },
+  handleSubmit (e) {
+    e.preventDefault()
+    const {t, showBox, location} = this.props
+
+    var data = new window.FormData()
+    data.append('token', location.query.token)
+    data.append('password', this.state.password)
+    data.append('passwordConfirmation', this.state.passwordConfirmation)
+
+    post('/users/change-password', data, function (user) {
+      this.setState({password: '', passwordConfirmation: ''})
+      showBox({show: true, title: t('success'), body: t('auth.change-password-success')})
+    }.bind(this))
+  },
+  handleChange (e) {
+    var o = {}
+    o[e.target.id] = e.target.value
+    this.setState(o)
+  },
+  render () {
+    const {t} = this.props
+    return (
+      <fieldset>
+        <legend>{t('auth.change-password')}</legend>
+        <form>
+          <FormGroup
+            controlId="password"
+          >
+            <ControlLabel>{t('attributes.user.password')}</ControlLabel>
+            <FormControl
+              type="password"
+              value={this.state.password}
+              onChange={this.handleChange}
+            />
+            <HelpBlock>{t('auth.password-must-in-size')}</HelpBlock>
+          </FormGroup>
+          <FormGroup
+            controlId="passwordConfirmation"
+          >
+            <ControlLabel>
+              {t('attributes.user.passwordConfirmation')}
+            </ControlLabel>
+            <FormControl
+              type="password"
+              value={this.state.passwordConfirmation}
+              onChange={this.handleChange}
+            />
+            <HelpBlock>{t('auth.passwords-must-match')}</HelpBlock>
+          </FormGroup>
+          <Button onClick={this.handleSubmit} type="submit">
+            {t('buttons.submit')}
+          </Button>
+        </form>
+        <br/>
+        <SharedLinks/>
+      </fieldset>
+    )
+  }
+})
+
+ChangePasswordW.propTypes = {
+  t: PropTypes.func.isRequired,
+  showBox: PropTypes.func.isRequired
+}
+
+const ChangePasswordM = connect(
+  state => ({}),
+  dispatch => ({
+    showBox: function (info) {
+      dispatch(messageBox(info))
+    }
+  })
+)(ChangePasswordW)
+
+export const ChangePassword = translate()(ChangePasswordM)
+
 // -----------------------------------------------------------------------------
 export const Confirm = () => (
   <EmailForm action="confirm" />
