@@ -6,6 +6,7 @@ import {LinkContainer} from 'react-router-bootstrap'
 
 import {signIn, signOut} from '../engines/auth/actions'
 import {isEmpty} from '../engines/auth/utils'
+import {_delete} from '../ajax'
 
 const Widget = React.createClass({
   componentDidMount () {
@@ -62,7 +63,9 @@ const Model = connect(
       }
     },
     onSignOut: function () {
-      dispatch(signOut())
+      _delete('/users/sign-out', function () {
+        dispatch(signOut())
+      })
     }
   })
 )(Widget)

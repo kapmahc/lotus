@@ -3,6 +3,7 @@ package auth
 import (
 	"bytes"
 	"fmt"
+	"net/http"
 	"text/template"
 	"time"
 
@@ -191,6 +192,12 @@ func (p *Engine) postUsersUnlock(c *gin.Context) (interface{}, error) {
 		user.UID,
 	)
 	return gin.H{}, err
+}
+
+func (p *Engine) deleteSignOut(c *gin.Context) {
+	user := c.MustGet("user").(*User)
+	p.Dao.Log(user.ID, p.I18n.T(c.MustGet("locale").(string), "log.auth.sign-out"))
+	c.JSON(http.StatusOK, gin.H{})
 }
 
 func (p *Engine) sendMail(lang, act, email, uid string) error {

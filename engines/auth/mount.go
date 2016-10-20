@@ -19,5 +19,5 @@ func (p *Engine) Mount(rt *gin.Engine) {
 	ug.POST("unlock", web.JSON(p.postUsersUnlock))
 	ug.POST("forgot-password", web.JSON(p.postUsersForgotPassword))
 	ug.POST("change-password", web.JSON(p.postUsersChangePassword))
-
+	ug.DELETE("sign-out", p.Jwt.CurrentUserHandler(true), p.deleteSignOut)
 }

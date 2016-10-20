@@ -10,8 +10,8 @@ export function patch () {
   // TODO
 }
 
-export function _delete () {
-  // TODO
+export function _delete (url, success, fail) {
+  call('delete', url, null, success, fail)
 }
 
 function call (method, url, body, success, fail) {
@@ -20,15 +20,21 @@ function call (method, url, body, success, fail) {
       console.log(rst)
     }
   }
+
   if (fail == null) {
     fail = function (err) {
       window.alert(err)
     }
   }
+
+  var headers = new window.Headers()
+  headers.append('Authorization', `Bearer ${window.sessionStorage.getItem('token')}`)
+
   window.fetch(
     `${CONFIG.backend}${url}`,
     {
       method: method,
+      headers: headers,
       body: body,
       mode: 'cors'
     }
