@@ -1,4 +1,8 @@
+import React from 'react'
+import {Route} from 'react-router'
+
 import auth from './auth'
+import Dashboard from '../components/dashboard'
 
 const engines = {
   auth
@@ -6,9 +10,11 @@ const engines = {
 
 export default {
   routes () {
-    return Object.keys(engines).reduce(function (obj, en) {
+    var items = Object.keys(engines).reduce(function (obj, en) {
       return obj.concat(engines[en].routes)
     }, [])
+    items.push(<Route key="dashboard" path="dashboard" component={Dashboard}/>)
+    return items
     // return CHAOS_ENV.engines.reduce(function(obj, en) {
     //   return obj.concat(engines[en].routes)
     // }, []);

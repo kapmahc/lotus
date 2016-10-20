@@ -4,7 +4,7 @@ import { translate } from 'react-i18next'
 import {NavDropdown, MenuItem} from 'react-bootstrap'
 import {LinkContainer} from 'react-router-bootstrap'
 
-import {signIn} from '../engines/auth/actions'
+import {signIn, signOut} from '../engines/auth/actions'
 import {isEmpty} from '../engines/auth/utils'
 
 const Widget = React.createClass({
@@ -13,7 +13,7 @@ const Widget = React.createClass({
     onLoad()
   },
   render () {
-    const {t, user} = this.props
+    const {t, user, onSignOut} = this.props
     return isEmpty(user) ? (
     <NavDropdown eventKey={4} title={t('auth.sign-in-or-up')} id="personal-bar">
       <LinkContainer to={{pathname: '/users/sign-in'}}>
@@ -35,12 +35,11 @@ const Widget = React.createClass({
     </NavDropdown>
     ) : (
       <NavDropdown eventKey={4} title={t('auth.welcome', {name: user.name})} id="personal-bar">
-        <LinkContainer to={{pathname: '/users/confirm'}}>
-          <MenuItem eventKey={4.2}>{t('auth.confirm')}</MenuItem>
+        <LinkContainer to={{pathname: '/dashboard'}}>
+          <MenuItem eventKey={4.1}>{t('dashboard')}</MenuItem>
         </LinkContainer>
-        <LinkContainer to={{pathname: '/users/unlock'}}>
-          <MenuItem eventKey={4.2}>{t('auth.unlock')}</MenuItem>
-        </LinkContainer>
+        <MenuItem divider />
+        <MenuItem onClick={onSignOut} eventKey={4.2}>{t('auth.sign-out')}</MenuItem>
       </NavDropdown>
     )
   }
@@ -49,7 +48,8 @@ const Widget = React.createClass({
 Widget.propTypes = {
   user: PropTypes.object.isRequired,
   t: PropTypes.func.isRequired,
-  onLoad: PropTypes.func.isRequired
+  onLoad: PropTypes.func.isRequired,
+  onSignOut: PropTypes.func.isRequired
 }
 
 const Model = connect(
@@ -60,6 +60,9 @@ const Model = connect(
       if (token) {
         dispatch(signIn(token))
       }
+    },
+    onSignOut: function () {
+      dispatch(signOut())
     }
   })
 )(Widget)
