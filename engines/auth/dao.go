@@ -11,7 +11,6 @@ import (
 	"github.com/jinzhu/gorm"
 	"github.com/kapmahc/lotus/web"
 	logging "github.com/op/go-logging"
-	uuid "github.com/satori/go.uuid"
 	"github.com/spf13/viper"
 )
 
@@ -111,32 +110,6 @@ func (p *Dao) SignIn(email, password string) (*User, error) {
 	return &u, err
 }
 
-//SignUp sign up
-func (p *Dao) SignUp(email, name, password string) (*User, error) {
-	var u User
-	var err error
-	now := time.Now()
-	if p.Db.Where("provider_id = ? AND provider_type = ?", "email", email).First(&u).RecordNotFound() {
-		uid := uuid.NewV4().String()
-		u.Email = email
-		u.Name = name
-		u.Home = fmt.Sprintf("%s/users/%s", viper.GetString("server.front"), uid)
-		u.UID = uid
-		u.ProviderID = email
-		u.ProviderType = "email"
-		u.SignInCount = 1
-		u.LastSignInAt = &now
-
-		u.SetGravatarLogo()
-		u.Password = p.Encryptor.Sum([]byte(password))
-
-		err = p.Db.Create(&u).Error
-	} else {
-		err = fmt.Errorf("email %s already exists", email)
-	}
-	return &u, err
-}
-
 //AddEmailUser add email user
 func (p *Dao) AddEmailUser(email, name, password string) (*User, error) {
 	var u User
@@ -155,6 +128,7 @@ func (p *Dao) AddEmailUser(email, name, password string) (*User, error) {
 	}
 
 	u.Email = email
+
 	u.Name = name
 	u.ProviderID = email
 	u.ProviderType = "email"
@@ -163,6 +137,7 @@ func (p *Dao) AddEmailUser(email, name, password string) (*User, error) {
 	u.CurrentSignInIP = "0.0.0.0"
 	u.SetGravatarLogo()
 	u.SetUID()
+	u.Home = fmt.Sprintf("%s/users/%s", viper.GetString("server.frontend"), u.UID)
 	err = p.Db.Create(&u).Error
 
 	return &u, err

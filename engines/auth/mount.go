@@ -13,4 +13,7 @@ func (p *Engine) Mount(rt *gin.Engine) {
 	ug := rt.Group("/users")
 	ug.POST("signIn", p.postUsersSignIn)
 	ug.POST("signUp", web.JSON(p.postUsersSignUp))
+	ug.POST("confirm", web.JSON(p.postUsersConfirm))
+	ug.POST("unlock", web.JSON(p.postUsersUnlock))
+	ug.POST("forgot-password", web.JSON(p.postUsersForgotPassword))
 }

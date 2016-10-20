@@ -148,8 +148,8 @@ func init() {
 	})
 
 	viper.SetDefault("home", map[string]interface{}{
-		"backend": "http://localhost:8080",
-		"front":   "http://localhost:4200",
+		"backend":  "http://localhost:8080",
+		"frontend": "http://localhost:4200",
 	})
 
 	viper.SetDefault("database", map[string]interface{}{

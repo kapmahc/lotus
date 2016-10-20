@@ -5,24 +5,26 @@ import (
 
 	"github.com/SermoDigital/jose/crypto"
 	"github.com/facebookgo/inject"
+	"github.com/jinzhu/gorm"
 	"github.com/kapmahc/lotus/web"
 	"github.com/kapmahc/lotus/web/cache"
 	"github.com/kapmahc/lotus/web/i18n"
 	"github.com/kapmahc/lotus/web/jobber"
-	"github.com/jinzhu/gorm"
 	logging "github.com/op/go-logging"
 	"github.com/spf13/viper"
 )
 
 //Engine engine model
 type Engine struct {
-	Cache     cache.Store     `inject:""`
-	Dao       *Dao            `inject:""`
-	Db        *gorm.DB        `inject:""`
-	Jobber    jobber.Jobber   `inject:""`
-	Logger    *logging.Logger `inject:""`
-	Encryptor *web.Encryptor  `inject:""`
-	I18n      *i18n.I18n      `inject:""`
+	Cache      cache.Store     `inject:""`
+	Dao        *Dao            `inject:""`
+	Db         *gorm.DB        `inject:""`
+	Jwt        *Jwt            `inject:""`
+	Jobber     jobber.Jobber   `inject:""`
+	MailSender *MailSender     `inject:""`
+	Logger     *logging.Logger `inject:""`
+	Encryptor  *web.Encryptor  `inject:""`
+	I18n       *i18n.I18n      `inject:""`
 }
 
 //Map map objects
@@ -49,7 +51,7 @@ func (p *Engine) Map(inj *inject.Graph) error {
 
 //Worker do background job
 func (p *Engine) Worker() {
-
+	p.MailSender.register()
 }
 
 func init() {

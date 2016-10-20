@@ -91,7 +91,7 @@ const SignUpW = React.createClass({
 
     post('/users/signUp', data, function (user) {
       this.setState({password: '', passwordConfirmation: ''})
-      showBox({show: true, title: t('success'), body: t('auth.sign-up-success')})
+      showBox({show: true, title: t('success'), body: t('auth.confirm-success')})
     }.bind(this))
   },
   handleChange (e) {
