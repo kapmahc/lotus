@@ -35,4 +35,7 @@ func (p *Engine) Mount(rt *gin.Engine) {
 	ag.POST("author", web.JSON(p.postSiteAuthor))
 	ag.GET("nav", web.JSON(p.getSiteNav))
 	ag.POST("nav", web.JSON(p.postSiteNav))
+	ag.GET("seo", web.JSON(p.getSiteSeo))
+	ag.POST("seo", web.JSON(p.postSiteSeo))
+
 }

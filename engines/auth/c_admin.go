@@ -88,3 +88,24 @@ func (p *Engine) postSiteNav(c *gin.Context) (interface{}, error) {
 	}
 	return gin.H{}, nil
 }
+
+func (p *Engine) getSiteSeo(c *gin.Context) (interface{}, error) {
+	ret := make(map[string]string)
+	for _, k := range []string{"google", "baidu"} {
+		var code string
+		if err := p.Dao.Get(fmt.Sprintf("%s.verify.code", k), &code); err != nil {
+			p.Logger.Error(err)
+		}
+		ret[k] = code
+	}
+	return ret, nil
+}
+
+func (p *Engine) postSiteSeo(c *gin.Context) (interface{}, error) {
+	for _, k := range []string{"google", "baidu"} {
+		if err := p.Dao.Set(fmt.Sprintf("%s.verify.code", k), c.PostForm(k), false); err != nil {
+			return nil, err
+		}
+	}
+	return gin.H{}, nil
+}

@@ -5,7 +5,8 @@ import {Modal, ListGroup, ListGroupItem,
   Button, FormGroup, ControlLabel, FormControl
 } from 'react-bootstrap'
 
-import {toggleSiteStatus, toggleSiteBase, toggleSiteAuthor, toggleSiteNav} from './actions'
+import {toggleSiteStatus, toggleSiteBase,
+  toggleSiteAuthor, toggleSiteNav, toggleSiteSeo} from './actions'
 import {post} from '../../ajax'
 
 const StatusW = ({t, status, onClose}) => (
@@ -326,3 +327,79 @@ const NavM = connect(
 )(NavW)
 
 export const Nav = translate()(NavM)
+
+// -----------------------------------------------------------------------------
+const SeoW = React.createClass({
+  getInitialState () {
+    return {
+      google: '',
+      baidu: ''
+    }
+  },
+  handleSubmit (e) {
+    e.preventDefault()
+
+    var data = new window.FormData()
+    data.append('google', this.state.google)
+    data.append('baidu', this.state.baidu)
+
+    const {onClose} = this.props
+    post('/site/seo', data, function (rst) {
+      onClose()
+    })
+  },
+  handleChange (e) {
+    var o = {}
+    o[e.target.id] = e.target.value
+    this.setState(o)
+  },
+  render () {
+    const {t, info, onClose} = this.props
+    return (
+      <form>
+       <Modal show={info.show} onHide={onClose}>
+         <Modal.Header closeButton>
+           <Modal.Title>{t('auth.dashboard.site-seo')}</Modal.Title>
+         </Modal.Header>
+         <Modal.Body>
+           <FormGroup controlId="google">
+             <ControlLabel>Google verify code</ControlLabel>
+             <FormControl
+               type="text"
+               defaultValue={info.google}
+               onChange={this.handleChange} />
+           </FormGroup>
+             <FormGroup controlId="baidu">
+               <ControlLabel>Baidu verify code</ControlLabel>
+               <FormControl
+                 type="text"
+                 defaultValue={info.baidu}
+                 onChange={this.handleChange} />
+             </FormGroup>
+         </Modal.Body>
+         <Modal.Footer>
+           <Button onClick={this.handleSubmit} bsStyle="primary">{t('buttons.submit')}</Button>
+           <Button onClick={onClose}>{t('buttons.close')}</Button>
+         </Modal.Footer>
+       </Modal>
+    </form>
+   )
+  }
+})
+
+SeoW.propTypes = {
+  t: PropTypes.func.isRequired,
+  info: PropTypes.object.isRequired,
+  onClose: PropTypes.func.isRequired
+}
+
+const SeoM = connect(
+  state => ({info: state.adminSiteSeo}),
+  dispatch => ({
+    onClose: function () {
+      dispatch(toggleSiteSeo())
+    }
+  })
+)(SeoW)
+
+export const Seo = translate()(SeoM)

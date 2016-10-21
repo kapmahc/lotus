@@ -10,18 +10,20 @@ import {
   toggleSiteAuthor,
   toggleSiteBase,
   toggleSiteNav,
+  toggleSiteSeo,
 
   toggleUserLogs,
   toggleUserProfile,
   toggleUserPassword
 } from './actions'
-import {get} from '../../ajax'
 import {
   Status as SiteStatus,
   Nav as SiteNav,
   Author as SiteAuthor,
-  Base as SiteBase
+  Base as SiteBase,
+  Seo as SiteSeo
 } from './admin'
+import {get} from '../../ajax'
 
 const Widget = ({user, t, onShow}) => {
   var admin = <br/>
@@ -39,6 +41,7 @@ const Widget = ({user, t, onShow}) => {
         <SiteBase/>
         <SiteAuthor/>
         <SiteNav/>
+        <SiteSeo/>
       </fieldset>
     )
   }
@@ -105,6 +108,11 @@ const Model = connect(
         case 'site-nav':
           get('/site/nav', function (info) {
             dispatch(toggleSiteNav(info))
+          })
+          break
+        case 'site-seo':
+          get('/site/seo', function (info) {
+            dispatch(toggleSiteSeo(info))
           })
           break
         default:

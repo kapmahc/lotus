@@ -11,6 +11,14 @@ export const TOGGLE_SITE_STATUS = 'auth.site.status.toggle'
 export const TOGGLE_SITE_BASE = 'auth.site.base.toggle'
 export const TOGGLE_SITE_AUTHOR = 'auth.site.author.toggle'
 export const TOGGLE_SITE_NAV = 'auth.site.nav.toggle'
+export const TOGGLE_SITE_SEO = 'auth.site.seo.toggle'
+
+export const toggleSiteSeo = (info) => {
+  return {
+    type: TOGGLE_SITE_SEO,
+    info
+  }
+}
 
 export const toggleSiteAuthor = (info) => {
   return {
