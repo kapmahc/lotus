@@ -7,7 +7,7 @@ import (
 
 //Mount mount web point
 func (p *Engine) Mount(rt *gin.Engine) {
-	rt.GET("/site-info", p.getSiteInfo)
+	rt.GET("/site/info", p.getSiteInfo)
 	rt.GET("/locales/:lang", p.getLocales)
 
 	ug := rt.Group("/users")
@@ -26,4 +26,13 @@ func (p *Engine) Mount(rt *gin.Engine) {
 	sg.GET("profile", web.JSON(p.getSelfProfile))
 	sg.POST("profile", web.JSON(p.postSelfProfile))
 	sg.POST("password", web.JSON(p.postSelfPassword))
+
+	ag := rt.Group("/site", p.Jwt.CurrentUserHandler(true), p.Jwt.MustAdminHandler())
+	ag.GET("status", web.JSON(p.getSiteStatus))
+	ag.GET("base", web.JSON(p.getSiteBase))
+	ag.POST("base", web.JSON(p.postSiteBase))
+	ag.GET("author", web.JSON(p.getSiteAuthor))
+	ag.POST("author", web.JSON(p.postSiteAuthor))
+	ag.GET("nav", web.JSON(p.getSiteNav))
+	ag.POST("nav", web.JSON(p.postSiteNav))
 }

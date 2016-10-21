@@ -343,6 +343,10 @@
 			"revisionTime": "2016-09-27T10:08:44Z"
 		},
 		{
+			"path": "github.com/shirou/gopsutil",
+			"revision": ""
+		},
+		{
 			"checksumSHA1": "59wTbS4fE2282Q88NrBYImbFGbo=",
 			"path": "github.com/spf13/afero",
 			"revision": "52e4a6cfac46163658bd4f123c49b6ee7dc75f78",

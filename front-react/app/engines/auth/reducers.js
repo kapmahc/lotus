@@ -8,15 +8,45 @@ import {SIGN_IN, SIGN_OUT,
   TOGGLE_USER_PASSWORD,
 
   TOGGLE_SITE_STATUS,
+  TOGGLE_SITE_BASE,
+  TOGGLE_SITE_NAV,
+  TOGGLE_SITE_AUTHOR,
 
   REFRESH} from './actions'
 
 const key = 'token'
 
-const siteStatus = (state = {}, action) => {
+const adminSiteNav = (state = {os: []}, action) => {
+  switch (action.type) {
+    case TOGGLE_SITE_NAV:
+      return action.info ? Object.assign({show: true}, action.info) : {show: false}
+    default:
+      return state
+  }
+}
+
+const adminSiteAuthor = (state = {os: []}, action) => {
+  switch (action.type) {
+    case TOGGLE_SITE_AUTHOR:
+      return action.info ? Object.assign({show: true}, action.info) : {show: false}
+    default:
+      return state
+  }
+}
+
+const adminSiteBase = (state = {os: []}, action) => {
+  switch (action.type) {
+    case TOGGLE_SITE_BASE:
+      return action.info ? Object.assign({show: true}, action.info) : {show: false}
+    default:
+      return state
+  }
+}
+
+const adminSiteStatus = (state = {os: []}, action) => {
   switch (action.type) {
     case TOGGLE_SITE_STATUS:
-      return action.status
+      return action.status ? Object.assign({show: true}, action.status) : {os: []}
     default:
       return state
   }
@@ -95,6 +125,9 @@ const reducers = {
   userProfile,
   userPassword,
 
-  siteStatus
+  adminSiteStatus,
+  adminSiteNav,
+  adminSiteBase,
+  adminSiteAuthor
 }
 export default reducers

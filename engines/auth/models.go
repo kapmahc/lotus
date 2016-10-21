@@ -29,9 +29,9 @@ type Notice struct {
 type Setting struct {
 	web.Model
 
-	Key    string
-	Val    []byte
-	Encode bool
+	Key  string
+	Val  []byte
+	Flag bool
 }
 
 //User user model

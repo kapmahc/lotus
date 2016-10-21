@@ -43,7 +43,7 @@ func (p *Dao) Set(k string, v interface{}, f bool) error {
 	} else {
 		m.Val = buf.Bytes()
 	}
-	m.Encode = f
+	m.Flag = f
 
 	if null {
 		err = p.Db.Create(&m).Error
@@ -63,7 +63,7 @@ func (p *Dao) Get(k string, v interface{}) error {
 	if err != nil {
 		return err
 	}
-	if m.Encode {
+	if m.Flag {
 		if m.Val, err = p.Encryptor.Decrypt(m.Val); err != nil {
 			return err
 		}

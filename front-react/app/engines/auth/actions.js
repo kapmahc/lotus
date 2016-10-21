@@ -8,10 +8,35 @@ export const TOGGLE_USER_PROFILE = 'auth.user.profile.toggle'
 export const TOGGLE_USER_PASSWORD = 'auth.user.password.toggle'
 
 export const TOGGLE_SITE_STATUS = 'auth.site.status.toggle'
+export const TOGGLE_SITE_BASE = 'auth.site.base.toggle'
+export const TOGGLE_SITE_AUTHOR = 'auth.site.author.toggle'
+export const TOGGLE_SITE_NAV = 'auth.site.nav.toggle'
+
+export const toggleSiteAuthor = (info) => {
+  return {
+    type: TOGGLE_SITE_AUTHOR,
+    info
+  }
+}
+
+export const toggleSiteNav = (info) => {
+  return {
+    type: TOGGLE_SITE_NAV,
+    info
+  }
+}
+
+export const toggleSiteBase = (info) => {
+  return {
+    type: TOGGLE_SITE_BASE,
+    info
+  }
+}
 
 export const toggleSiteStatus = (status) => {
   return {
-    type: TOGGLE_SITE_STATUS
+    type: TOGGLE_SITE_STATUS,
+    status
   }
 }
 

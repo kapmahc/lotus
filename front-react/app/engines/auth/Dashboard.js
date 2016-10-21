@@ -5,9 +5,23 @@ import {ButtonGroup, Button} from 'react-bootstrap'
 
 import {isAdmin} from './utils'
 import {Logs as SelfLogs, Profile as SelfProfile, Password as SelfPassword} from './self'
-import {toggleUserLogs, toggleUserProfile, toggleUserPassword} from './actions'
+import {
+  toggleSiteStatus,
+  toggleSiteAuthor,
+  toggleSiteBase,
+  toggleSiteNav,
+
+  toggleUserLogs,
+  toggleUserProfile,
+  toggleUserPassword
+} from './actions'
 import {get} from '../../ajax'
-import {Status as SiteStatus} from './admin'
+import {
+  Status as SiteStatus,
+  Nav as SiteNav,
+  Author as SiteAuthor,
+  Base as SiteBase
+} from './admin'
 
 const Widget = ({user, t, onShow}) => {
   var admin = <br/>
@@ -16,12 +30,15 @@ const Widget = ({user, t, onShow}) => {
       <fieldset>
         <legend>{t('auth.dashboard.site')}</legend>
         <ButtonGroup>
-          {['status', 'info', 'seo', 'nav', 'users', 'leavewords', 'notices'].map(function (n, i) {
+          {['status', 'base', 'author', 'seo', 'nav', 'users', 'leavewords', 'notices'].map(function (n, i) {
             n = `site-${n}`
             return <Button key={i} onClick={() => onShow(n)}>{t(`auth.dashboard.${n}`)}</Button>
           })}
         </ButtonGroup>
         <SiteStatus/>
+        <SiteBase/>
+        <SiteAuthor/>
+        <SiteNav/>
       </fieldset>
     )
   }
@@ -69,6 +86,26 @@ const Model = connect(
           break
         case 'self-password':
           dispatch(toggleUserPassword())
+          break
+        case 'site-status':
+          get('/site/status', function (status) {
+            dispatch(toggleSiteStatus(status))
+          })
+          break
+        case 'site-base':
+          get('/site/base', function (info) {
+            dispatch(toggleSiteBase(info))
+          })
+          break
+        case 'site-author':
+          get('/site/author', function (info) {
+            dispatch(toggleSiteAuthor(info))
+          })
+          break
+        case 'site-nav':
+          get('/site/nav', function (info) {
+            dispatch(toggleSiteNav(info))
+          })
           break
         default:
           console.log(`click: ${act}`)
