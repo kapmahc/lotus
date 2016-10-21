@@ -107,6 +107,13 @@ func (p *Dao) SignIn(email, password string) (*User, error) {
 			err = errors.New("email and password not match")
 		}
 	}
+	if err == nil {
+		now := time.Now()
+		err = p.Db.Model(&u).Updates(map[string]interface{}{
+			"sign_in_count":   u.SignInCount + 1,
+			"last_sign_in_at": &now,
+		}).Error
+	}
 	return &u, err
 }
 
@@ -164,12 +171,12 @@ func (p *Dao) AddOpenIDUser(pid, pty, email, name, home, logo string) (*User, er
 		err = p.Db.Create(&u).Error
 	} else {
 		err = p.Db.Model(&u).Updates(map[string]interface{}{
-			"email":         email,
-			"name":          name,
-			"logo":          logo,
-			"home":          home,
-			"sign_in_count": u.SignInCount + 1,
-			"last_sign_in":  &now,
+			"email":           email,
+			"name":            name,
+			"logo":            logo,
+			"home":            home,
+			"sign_in_count":   u.SignInCount + 1,
+			"last_sign_in_at": &now,
 		}).Error
 	}
 	return &u, err

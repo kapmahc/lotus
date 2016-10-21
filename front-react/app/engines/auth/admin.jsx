@@ -2,10 +2,13 @@ import React, { PropTypes } from 'react'
 import { translate } from 'react-i18next'
 import { connect } from 'react-redux'
 import {Modal, ListGroup, ListGroupItem,
-  Button, FormGroup, ControlLabel, FormControl
+  Button, FormGroup, ControlLabel, FormControl,
+  Table
 } from 'react-bootstrap'
+import TimeAgo from 'react-timeago'
 
 import {toggleSiteStatus, toggleSiteBase,
+  toggleSiteUsers,
   toggleSiteAuthor, toggleSiteNav, toggleSiteSeo} from './actions'
 import {post} from '../../ajax'
 
@@ -403,3 +406,57 @@ const SeoM = connect(
 )(SeoW)
 
 export const Seo = translate()(SeoM)
+
+// -----------------------------------------------------------------------------
+
+const UserListW = ({t, users, onClose}) => (
+  <Modal bsSize="large" show={users.show} onHide={onClose}>
+    <Modal.Header closeButton>
+      <Modal.Title>{t('auth.dashboard.site-users')}</Modal.Title>
+    </Modal.Header>
+    <Modal.Body>
+      <Table striped bordered condensed hover>
+        <thead>
+          <tr>
+            <th>{t('attributes.user.name')}</th>
+            <th>{t('attributes.user.email')}</th>
+            <th>{t('attributes.user.lastSignInAt')}</th>
+            <th>{t('attributes.user.signInCount')}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.items.map(function (u, i) {
+            return (
+              <tr key={i}>
+                <td>{u.name}</td>
+                <td>{u.email}</td>
+                <td><TimeAgo date={u.last_sign_in_at}/></td>
+                <td>{u.sign_in_count}</td>
+              </tr>
+            )
+          })}
+        </tbody>
+      </Table>
+    </Modal.Body>
+    <Modal.Footer>
+      <Button onClick={onClose}>{t('buttons.close')}</Button>
+    </Modal.Footer>
+  </Modal>
+)
+
+UserListW.propTypes = {
+  t: PropTypes.func.isRequired,
+  users: PropTypes.object.isRequired,
+  onClose: PropTypes.func.isRequired
+}
+
+const UserListM = connect(
+  state => ({users: state.adminSiteUsers}),
+  dispatch => ({
+    onClose: function () {
+      dispatch(toggleSiteUsers())
+    }
+  })
+)(UserListW)
+
+export const UserList = translate()(UserListM)

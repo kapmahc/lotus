@@ -12,10 +12,20 @@ import {SIGN_IN, SIGN_OUT,
   TOGGLE_SITE_NAV,
   TOGGLE_SITE_AUTHOR,
   TOGGLE_SITE_SEO,
+  TOGGLE_SITE_USERS,
 
   REFRESH} from './actions'
 
 const key = 'token'
+
+const adminSiteUsers = (state = {items: []}, action) => {
+  switch (action.type) {
+    case TOGGLE_SITE_USERS:
+      return action.users ? {show: true, items: action.users} : {items: []}
+    default:
+      return state
+  }
+}
 
 const adminSiteSeo = (state = {os: []}, action) => {
   switch (action.type) {
@@ -139,6 +149,7 @@ const reducers = {
   adminSiteNav,
   adminSiteBase,
   adminSiteAuthor,
-  adminSiteSeo
+  adminSiteSeo,
+  adminSiteUsers
 }
 export default reducers

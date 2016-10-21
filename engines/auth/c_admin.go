@@ -109,3 +109,9 @@ func (p *Engine) postSiteSeo(c *gin.Context) (interface{}, error) {
 	}
 	return gin.H{}, nil
 }
+
+func (p *Engine) getSiteUsers(c *gin.Context) (interface{}, error) {
+	var users []User
+	err := p.Db.Select([]string{"uid", "name", "email", "last_sign_in_at", "sign_in_count"}).Order("id DESC").Find(&users).Error
+	return users, err
+}

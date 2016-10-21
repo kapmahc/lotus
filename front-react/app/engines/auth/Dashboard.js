@@ -11,6 +11,7 @@ import {
   toggleSiteBase,
   toggleSiteNav,
   toggleSiteSeo,
+  toggleSiteUsers,
 
   toggleUserLogs,
   toggleUserProfile,
@@ -21,7 +22,8 @@ import {
   Nav as SiteNav,
   Author as SiteAuthor,
   Base as SiteBase,
-  Seo as SiteSeo
+  Seo as SiteSeo,
+  UserList as SiteUserList
 } from './admin'
 import {get} from '../../ajax'
 
@@ -42,6 +44,7 @@ const Widget = ({user, t, onShow}) => {
         <SiteAuthor/>
         <SiteNav/>
         <SiteSeo/>
+        <SiteUserList/>
       </fieldset>
     )
   }
@@ -113,6 +116,11 @@ const Model = connect(
         case 'site-seo':
           get('/site/seo', function (info) {
             dispatch(toggleSiteSeo(info))
+          })
+          break
+        case 'site-users':
+          get('/site/users', function (rst) {
+            dispatch(toggleSiteUsers(rst))
           })
           break
         default:
