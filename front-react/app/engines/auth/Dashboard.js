@@ -5,7 +5,8 @@ import {ButtonGroup, Button} from 'react-bootstrap'
 
 import {isAdmin} from './utils'
 import {Logs as UserLogs} from './users'
-import {hideUserLogs} from './actions'
+import {showUserLogs} from './actions'
+import {get} from '../../ajax'
 
 const Widget = ({user, t, onShow}) => {
   var admin = <br/>
@@ -30,8 +31,10 @@ const Widget = ({user, t, onShow}) => {
       <fieldset>
         <legend>{t('auth.dashboard.self')}</legend>
         <ButtonGroup>
-          <Button>{t('auth.dashboard.self-profile')}</Button>
-          <Button onClick={onShow('self.log')}>{t('auth.dashboard.self-logs')}</Button>
+          {['profile', 'logs'].map(function (n, i) {
+            n = `self-${n}`
+            return <Button key={i} onClick={() => onShow(n)}>{t(`auth.dashboard.${n}`)}</Button>
+          })}
         </ButtonGroup>
       </fieldset>
       <br/>
@@ -52,8 +55,10 @@ const Model = connect(
   dispatch => ({
     onShow: function (act) {
       switch (act) {
-        case 'users.logs':
-          console.log("logs")
+        case 'self-logs':
+          get('/users/logs', function (logs) {
+            dispatch(showUserLogs(logs))
+          })
           break
         default:
       }

@@ -7,12 +7,12 @@ import {SIGN_IN, SIGN_OUT,
 
 const key = 'token'
 
-const userLogs = (state = {items: []}, action) => {
+const userLogs = (state = {show: false, items: []}, action) => {
   switch (action.type) {
     case SHOW_USER_LOGS:
       return {show: true, items: action.logs}
     case HIDE_USER_LOGS:
-      return {show: false}
+      return {show: false, items: []}
     default:
       return state
   }

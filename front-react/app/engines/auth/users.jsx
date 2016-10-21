@@ -6,6 +6,7 @@ import {FormGroup, FormControl, HelpBlock,
   Modal,
   ListGroup, ListGroupItem,
   Button, ControlLabel} from 'react-bootstrap'
+import TimeAgo from 'react-timeago'
 
 import {post} from '../../ajax'
 import {messageBox, signIn, hideUserLogs} from './actions'
@@ -13,17 +14,22 @@ import {messageBox, signIn, hideUserLogs} from './actions'
 const LogsW = ({t, logs, onClose}) => (
   <Modal show={logs.show} onHide={onClose}>
     <Modal.Header closeButton>
-      <Modal.Title>{t('web.auth.dashboard.self-logs')}</Modal.Title>
+      <Modal.Title>{t('auth.dashboard.self-logs')}</Modal.Title>
     </Modal.Header>
     <Modal.Body>
       <ListGroup>
         {logs.items.map(function (l, i) {
-          return <ListGroupItem key={i}>{l.created_at}: {l.message}</ListGroupItem>
+          return (
+            <ListGroupItem key={i}>
+              <TimeAgo date={l.created_at}/>
+              : {l.message}
+            </ListGroupItem>
+          )
         })}
       </ListGroup>
     </Modal.Body>
     <Modal.Footer>
-      <Button onClick={onClose}>Close</Button>
+      <Button onClick={onClose}>{t('buttons.close')}</Button>
     </Modal.Footer>
   </Modal>
 )
