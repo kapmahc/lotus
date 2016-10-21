@@ -38,4 +38,7 @@ func (p *Engine) Mount(rt *gin.Engine) {
 	ag.GET("seo", web.JSON(p.getSiteSeo))
 	ag.POST("seo", web.JSON(p.postSiteSeo))
 	ag.GET("users", web.JSON(p.getSiteUsers))
+
+	rt.GET("/notices", web.JSON(p.getNotices))
+
 }

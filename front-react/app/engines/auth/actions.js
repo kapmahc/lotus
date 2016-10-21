@@ -13,6 +13,14 @@ export const TOGGLE_SITE_AUTHOR = 'auth.site.author.toggle'
 export const TOGGLE_SITE_NAV = 'auth.site.nav.toggle'
 export const TOGGLE_SITE_SEO = 'auth.site.seo.toggle'
 export const TOGGLE_SITE_USERS = 'auth.site.users.toggle'
+export const TOGGLE_SITE_NOTICES = 'auth.site.notices.toggle'
+
+export const toggleSiteNotices = (notices) => {
+  return {
+    type: TOGGLE_SITE_NOTICES,
+    notices
+  }
+}
 
 export const toggleSiteUsers = (users) => {
   return {
