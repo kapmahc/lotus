@@ -29,11 +29,11 @@ func (p *Engine) postSelfPassword(c *gin.Context) (interface{}, error) {
 	if err := c.Bind(&fm); err != nil {
 		return nil, err
 	}
-	if !p.Encryptor.Chk([]byte(fm.Password), user.Password) {
+	if !p.Encryptor.Chk([]byte(fm.CurrentPassword), user.Password) {
 		return nil, errors.New("wrong current password")
 	}
 
-	err := p.Db.Updates(map[string]interface{}{
+	err := p.Db.Model(user).Updates(map[string]interface{}{
 		"password": p.Encryptor.Sum([]byte(fm.Password)),
 	}).Error
 	if err == nil {
@@ -55,7 +55,7 @@ func (p *Engine) postSelfProfile(c *gin.Context) (interface{}, error) {
 		return nil, err
 	}
 
-	err := p.Db.Updates(map[string]interface{}{
+	err := p.Db.Model(user).Updates(map[string]interface{}{
 		"name": fm.Name,
 		"logo": fm.Logo,
 		"home": fm.Home,

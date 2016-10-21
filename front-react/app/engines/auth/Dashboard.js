@@ -4,8 +4,8 @@ import { translate } from 'react-i18next'
 import {ButtonGroup, Button} from 'react-bootstrap'
 
 import {isAdmin} from './utils'
-import {Logs as SelfLogs, Profile as SelfProfile} from './self'
-import {showUserLogs, showUserProfile} from './actions'
+import {Logs as SelfLogs, Profile as SelfProfile, Password as SelfPassword} from './self'
+import {showUserLogs, showUserProfile, toggleUserPassword} from './actions'
 import {get} from '../../ajax'
 
 const Widget = ({user, t, onShow}) => {
@@ -22,6 +22,7 @@ const Widget = ({user, t, onShow}) => {
         </ButtonGroup>
         <SelfLogs/>
         <SelfProfile/>
+        <SelfPassword/>
       </fieldset>
     )
   }
@@ -63,6 +64,9 @@ const Model = connect(
           get('/self/profile', function (info) {
             dispatch(showUserProfile(info))
           })
+          break
+        case 'self-password':
+          dispatch(toggleUserPassword())
           break
         default:
           console.log(`click: ${act}`)

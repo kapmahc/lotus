@@ -6,6 +6,13 @@ export const SHOW_USER_LOGS = 'auth.user.logs.show'
 export const HIDE_USER_LOGS = 'auth.user.logs.hide'
 export const SHOW_USER_PROFILE = 'auth.user.profile.show'
 export const HIDE_USER_PROFILE = 'auth.user.profile.hide'
+export const TOGGLE_USER_PROFILE = 'auth.user.password.toggle'
+
+export const toggleUserPassword = () => {
+  return {
+    type: TOGGLE_USER_PROFILE
+  }
+}
 
 export const showUserProfile = (info) => {
   return {

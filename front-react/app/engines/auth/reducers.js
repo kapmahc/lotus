@@ -4,9 +4,19 @@ import {SIGN_IN, SIGN_OUT,
   MESSAGE_BOX,
   SHOW_USER_LOGS, HIDE_USER_LOGS,
   SHOW_USER_PROFILE, HIDE_USER_PROFILE,
+  TOGGLE_USER_PROFILE,
   REFRESH} from './actions'
 
 const key = 'token'
+
+const userPassword = (state = {show: false}, action) => {
+  switch (action.type) {
+    case TOGGLE_USER_PROFILE:
+      return {show: !state.show}
+    default:
+      return state
+  }
+}
 
 const userProfile = (state = {}, action) => {
   switch (action.type) {
@@ -67,5 +77,5 @@ const messageBox = (state = {}, action) => {
   }
 }
 
-const reducers = {currentUser, siteInfo, messageBox, userLogs, userProfile}
+const reducers = {currentUser, siteInfo, messageBox, userLogs, userProfile, userPassword}
 export default reducers
