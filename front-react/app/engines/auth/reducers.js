@@ -2,9 +2,21 @@ import jwtDecode from 'jwt-decode'
 
 import {SIGN_IN, SIGN_OUT,
   MESSAGE_BOX,
+  SHOW_USER_LOGS, HIDE_USER_LOGS,
   REFRESH} from './actions'
 
 const key = 'token'
+
+const userLogs = (state = {items: []}, action) => {
+  switch (action.type) {
+    case SHOW_USER_LOGS:
+      return {show: true, items: action.logs}
+    case HIDE_USER_LOGS:
+      return {show: false}
+    default:
+      return state
+  }
+}
 
 const currentUser = (state = {}, action) => {
   switch (action.type) {
@@ -43,5 +55,5 @@ const messageBox = (state = {}, action) => {
   }
 }
 
-const reducers = {currentUser, siteInfo, messageBox}
+const reducers = {currentUser, siteInfo, messageBox, userLogs}
 export default reducers

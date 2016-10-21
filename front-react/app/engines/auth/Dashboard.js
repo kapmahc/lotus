@@ -4,8 +4,10 @@ import { translate } from 'react-i18next'
 import {ButtonGroup, Button} from 'react-bootstrap'
 
 import {isAdmin} from './utils'
+import {Logs as UserLogs} from './users'
+import {hideUserLogs} from './actions'
 
-const Widget = ({user, t}) => {
+const Widget = ({user, t, onShow}) => {
   var admin = <br/>
   if (isAdmin(user)) {
     admin = (
@@ -16,7 +18,10 @@ const Widget = ({user, t}) => {
           <Button>{t('auth.dashboard.site-info')}</Button>
           <Button>{t('auth.dashboard.site-seo')}</Button>
           <Button>{t('auth.dashboard.site-users')}</Button>
+          <Button>{t('auth.dashboard.site-leavewords')}</Button>
+          <Button>{t('auth.dashboard.site-notices')}</Button>
         </ButtonGroup>
+        <UserLogs/>
       </fieldset>
     )
   }
@@ -26,7 +31,7 @@ const Widget = ({user, t}) => {
         <legend>{t('auth.dashboard.self')}</legend>
         <ButtonGroup>
           <Button>{t('auth.dashboard.self-profile')}</Button>
-          <Button>{t('auth.dashboard.self-logs')}</Button>
+          <Button onClick={onShow('self.log')}>{t('auth.dashboard.self-logs')}</Button>
         </ButtonGroup>
       </fieldset>
       <br/>
@@ -38,12 +43,22 @@ const Widget = ({user, t}) => {
 
 Widget.propTypes = {
   user: PropTypes.object.isRequired,
-  t: PropTypes.func.isRequired
+  t: PropTypes.func.isRequired,
+  onShow: PropTypes.func.isRequired
 }
 
 const Model = connect(
   state => ({user: state.currentUser}),
-  dispatch => ({})
+  dispatch => ({
+    onShow: function (act) {
+      switch (act) {
+        case 'users.logs':
+          console.log("logs")
+          break
+        default:
+      }
+    }
+  })
 )(Widget)
 
 export default translate()(Model)
