@@ -200,13 +200,6 @@ func (p *Engine) deleteSignOut(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{})
 }
 
-func (p *Engine) getUserLogs(c *gin.Context) (interface{}, error) {
-	user := c.MustGet("user").(*User)
-	var logs []Log
-	err := p.Db.Where("user_id = ?", user.ID).Order("id DESC").Find(&logs).Limit(64).Error
-	return logs, err
-}
-
 // -----------------------------------------------------------------------------
 
 func (p *Engine) sendMail(lang, act, email, uid string) error {
