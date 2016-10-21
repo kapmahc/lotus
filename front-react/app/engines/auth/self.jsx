@@ -7,7 +7,7 @@ import {Modal, ListGroup, ListGroupItem,
   Button, FormGroup, ControlLabel, FormControl
 } from 'react-bootstrap'
 
-import {hideUserLogs, hideUserProfile, toggleUserPassword} from './actions'
+import {toggleUserLogs, hideUserProfile, toggleUserPassword} from './actions'
 import {post} from '../../ajax'
 
 const LogsW = ({t, logs, onClose}) => (
@@ -43,7 +43,7 @@ const LogsM = connect(
   state => ({logs: state.userLogs}),
   dispatch => ({
     onClose: function () {
-      dispatch(hideUserLogs())
+      dispatch(toggleUserLogs())
     }
   })
 )(LogsW)

@@ -5,8 +5,9 @@ import {ButtonGroup, Button} from 'react-bootstrap'
 
 import {isAdmin} from './utils'
 import {Logs as SelfLogs, Profile as SelfProfile, Password as SelfPassword} from './self'
-import {showUserLogs, showUserProfile, toggleUserPassword} from './actions'
+import {toggleUserLogs, showUserProfile, toggleUserPassword} from './actions'
 import {get} from '../../ajax'
+import {Status as SiteStatus} from './admin'
 
 const Widget = ({user, t, onShow}) => {
   var admin = <br/>
@@ -15,14 +16,12 @@ const Widget = ({user, t, onShow}) => {
       <fieldset>
         <legend>{t('auth.dashboard.site')}</legend>
         <ButtonGroup>
-          {['status', 'info', 'seo', 'users', 'leavewords', 'notices'].map(function (n, i) {
+          {['status', 'info', 'seo', 'nav', 'users', 'leavewords', 'notices'].map(function (n, i) {
             n = `site-${n}`
             return <Button key={i} onClick={() => onShow(n)}>{t(`auth.dashboard.${n}`)}</Button>
           })}
         </ButtonGroup>
-        <SelfLogs/>
-        <SelfProfile/>
-        <SelfPassword/>
+        <SiteStatus/>
       </fieldset>
     )
   }
@@ -36,6 +35,9 @@ const Widget = ({user, t, onShow}) => {
             return <Button key={i} onClick={() => onShow(n)}>{t(`auth.dashboard.${n}`)}</Button>
           })}
         </ButtonGroup>
+        <SelfLogs/>
+        <SelfProfile/>
+        <SelfPassword/>
       </fieldset>
       <br/>
       {admin}
@@ -57,7 +59,7 @@ const Model = connect(
       switch (act) {
         case 'self-logs':
           get('/self/logs', function (logs) {
-            dispatch(showUserLogs(logs))
+            dispatch(toggleUserLogs(logs))
           })
           break
         case 'self-profile':

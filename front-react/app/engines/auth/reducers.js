@@ -2,12 +2,22 @@ import jwtDecode from 'jwt-decode'
 
 import {SIGN_IN, SIGN_OUT,
   MESSAGE_BOX,
-  SHOW_USER_LOGS, HIDE_USER_LOGS,
+  TOGGLE_USER_LOGS,
   SHOW_USER_PROFILE, HIDE_USER_PROFILE,
   TOGGLE_USER_PROFILE,
+  TOGGLE_SITE_STATUS,
   REFRESH} from './actions'
 
 const key = 'token'
+
+const siteStatus = (state = {}, action) => {
+  switch (action.type) {
+    case TOGGLE_SITE_STATUS:
+      return action.status
+    default:
+      return state
+  }
+}
 
 const userPassword = (state = {show: false}, action) => {
   switch (action.type) {
@@ -31,10 +41,8 @@ const userProfile = (state = {}, action) => {
 
 const userLogs = (state = {items: []}, action) => {
   switch (action.type) {
-    case SHOW_USER_LOGS:
-      return {show: true, items: action.logs}
-    case HIDE_USER_LOGS:
-      return {show: false, items: []}
+    case TOGGLE_USER_LOGS:
+      return action.logs ? {show: true, items: action.logs} : {show: false, items: []}
     default:
       return state
   }
@@ -77,5 +85,15 @@ const messageBox = (state = {}, action) => {
   }
 }
 
-const reducers = {currentUser, siteInfo, messageBox, userLogs, userProfile, userPassword}
+const reducers = {
+  currentUser,
+  siteInfo,
+  messageBox,
+
+  userLogs,
+  userProfile,
+  userPassword,
+
+  siteStatus
+}
 export default reducers

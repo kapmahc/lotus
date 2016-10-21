@@ -2,11 +2,18 @@ export const SIGN_IN = 'auth.sign-in'
 export const SIGN_OUT = 'auth.sign-out'
 export const REFRESH = 'auth.refresh'
 export const MESSAGE_BOX = 'auth.message-box'
-export const SHOW_USER_LOGS = 'auth.user.logs.show'
-export const HIDE_USER_LOGS = 'auth.user.logs.hide'
+
+export const TOGGLE_USER_LOGS = 'auth.user.logs.toggle'
 export const SHOW_USER_PROFILE = 'auth.user.profile.show'
 export const HIDE_USER_PROFILE = 'auth.user.profile.hide'
 export const TOGGLE_USER_PROFILE = 'auth.user.password.toggle'
+export const TOGGLE_SITE_STATUS = 'auth.site.status.toggle'
+
+export const toggleSiteStatus = (status) => {
+  return {
+    type: TOGGLE_SITE_STATUS
+  }
+}
 
 export const toggleUserPassword = () => {
   return {
@@ -27,16 +34,10 @@ export const hideUserProfile = () => {
   }
 }
 
-export const showUserLogs = (logs) => {
+export const toggleUserLogs = (logs) => {
   return {
-    type: SHOW_USER_LOGS,
+    type: TOGGLE_USER_LOGS,
     logs
-  }
-}
-
-export const hideUserLogs = () => {
-  return {
-    type: HIDE_USER_LOGS
   }
 }
 
