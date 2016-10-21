@@ -7,7 +7,7 @@ import {Modal, ListGroup, ListGroupItem,
   Button, FormGroup, ControlLabel, FormControl
 } from 'react-bootstrap'
 
-import {toggleUserLogs, hideUserProfile, toggleUserPassword} from './actions'
+import {toggleUserLogs, toggleUserProfile, toggleUserPassword} from './actions'
 import {post} from '../../ajax'
 
 const LogsW = ({t, logs, onClose}) => (
@@ -149,7 +149,7 @@ const ProfileM = connect(
   state => ({profile: state.userProfile}),
   dispatch => ({
     onClose: function () {
-      dispatch(hideUserProfile())
+      dispatch(toggleUserProfile())
     }
   })
 )(ProfileW)

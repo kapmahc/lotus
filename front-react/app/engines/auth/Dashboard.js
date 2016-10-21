@@ -5,7 +5,7 @@ import {ButtonGroup, Button} from 'react-bootstrap'
 
 import {isAdmin} from './utils'
 import {Logs as SelfLogs, Profile as SelfProfile, Password as SelfPassword} from './self'
-import {toggleUserLogs, showUserProfile, toggleUserPassword} from './actions'
+import {toggleUserLogs, toggleUserProfile, toggleUserPassword} from './actions'
 import {get} from '../../ajax'
 import {Status as SiteStatus} from './admin'
 
@@ -64,7 +64,7 @@ const Model = connect(
           break
         case 'self-profile':
           get('/self/profile', function (info) {
-            dispatch(showUserProfile(info))
+            dispatch(toggleUserProfile(info))
           })
           break
         case 'self-password':

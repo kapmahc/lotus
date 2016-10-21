@@ -4,9 +4,9 @@ export const REFRESH = 'auth.refresh'
 export const MESSAGE_BOX = 'auth.message-box'
 
 export const TOGGLE_USER_LOGS = 'auth.user.logs.toggle'
-export const SHOW_USER_PROFILE = 'auth.user.profile.show'
-export const HIDE_USER_PROFILE = 'auth.user.profile.hide'
-export const TOGGLE_USER_PROFILE = 'auth.user.password.toggle'
+export const TOGGLE_USER_PROFILE = 'auth.user.profile.toggle'
+export const TOGGLE_USER_PASSWORD = 'auth.user.password.toggle'
+
 export const TOGGLE_SITE_STATUS = 'auth.site.status.toggle'
 
 export const toggleSiteStatus = (status) => {
@@ -17,20 +17,14 @@ export const toggleSiteStatus = (status) => {
 
 export const toggleUserPassword = () => {
   return {
-    type: TOGGLE_USER_PROFILE
+    type: TOGGLE_USER_PASSWORD
   }
 }
 
-export const showUserProfile = (info) => {
+export const toggleUserProfile = (info) => {
   return {
-    type: SHOW_USER_PROFILE,
+    type: TOGGLE_USER_PROFILE,
     info
-  }
-}
-
-export const hideUserProfile = () => {
-  return {
-    type: HIDE_USER_PROFILE
   }
 }
 
