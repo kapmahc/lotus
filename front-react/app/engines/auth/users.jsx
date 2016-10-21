@@ -60,7 +60,7 @@ const SignInW = React.createClass({
               onChange={this.handleChange}
             />
           </FormGroup>
-          <Button onClick={this.handleSubmit} type="submit">
+          <Button onClick={this.handleSubmit} type="submit" bsStyle="primary">
             {t('buttons.submit')}
           </Button>
         </form>
@@ -169,7 +169,7 @@ const SignUpW = React.createClass({
             />
             <HelpBlock>{t('auth.passwords-must-match')}</HelpBlock>
           </FormGroup>
-          <Button onClick={this.handleSubmit} type="submit">
+          <Button onClick={this.handleSubmit} type="submit" bsStyle="primary">
             {t('buttons.submit')}
           </Button>
         </form>
@@ -257,7 +257,7 @@ const ChangePasswordW = React.createClass({
             />
             <HelpBlock>{t('auth.passwords-must-match')}</HelpBlock>
           </FormGroup>
-          <Button onClick={this.handleSubmit} type="submit">
+          <Button onClick={this.handleSubmit} type="submit" bsStyle="primary">
             {t('buttons.submit')}
           </Button>
         </form>
@@ -359,7 +359,7 @@ const EmailFormW = React.createClass({
               onChange={this.handleChange}
             />
           </FormGroup>
-          <Button onClick={this.handleSubmit} type="submit">
+          <Button onClick={this.handleSubmit} type="submit" bsStyle="primary">
             {t('buttons.submit')}
           </Button>
         </form>

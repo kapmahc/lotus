@@ -6,7 +6,7 @@ import {Modal, ListGroup, ListGroupItem,
   Button
 } from 'react-bootstrap'
 
-import {hideUserLogs} from './actions'
+import {hideUserLogs, hideUserProfile} from './actions'
 
 const LogsW = ({t, logs, onClose}) => (
   <Modal show={logs.show} onHide={onClose}>
@@ -49,3 +49,37 @@ const LogsM = connect(
 export const Logs = translate()(LogsM)
 
 // -----------------------------------------------------------------------------
+
+const ProfileW = ({t, profile, onClose}) => (
+  <Modal show={profile.show} onHide={onClose}>
+    <Modal.Header closeButton>
+      <Modal.Title>{t('auth.dashboard.self-profile')}</Modal.Title>
+    </Modal.Header>
+    <Modal.Body>
+      <ListGroup>
+
+      </ListGroup>
+    </Modal.Body>
+    <Modal.Footer>
+      <Button onClick={onClose} bsStyle="primary">{t('buttons.submit')}</Button>
+      <Button onClick={onClose}>{t('buttons.close')}</Button>
+    </Modal.Footer>
+  </Modal>
+)
+
+ProfileW.propTypes = {
+  t: PropTypes.func.isRequired,
+  profile: PropTypes.object.isRequired,
+  onClose: PropTypes.func.isRequired
+}
+
+const ProfileM = connect(
+  state => ({profile: state.userProfile}),
+  dispatch => ({
+    onClose: function () {
+      dispatch(hideUserProfile())
+    }
+  })
+)(ProfileW)
+
+export const Profile = translate()(ProfileM)

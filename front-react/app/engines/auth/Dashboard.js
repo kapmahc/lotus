@@ -4,8 +4,8 @@ import { translate } from 'react-i18next'
 import {ButtonGroup, Button} from 'react-bootstrap'
 
 import {isAdmin} from './utils'
-import {Logs as SelfLogs} from './self'
-import {showUserLogs} from './actions'
+import {Logs as SelfLogs, Profile as SelfProfile} from './self'
+import {showUserLogs, showUserProfile} from './actions'
 import {get} from '../../ajax'
 
 const Widget = ({user, t, onShow}) => {
@@ -21,6 +21,7 @@ const Widget = ({user, t, onShow}) => {
           })}
         </ButtonGroup>
         <SelfLogs/>
+        <SelfProfile/>
       </fieldset>
     )
   }
@@ -56,6 +57,11 @@ const Model = connect(
         case 'self-logs':
           get('/self/logs', function (logs) {
             dispatch(showUserLogs(logs))
+          })
+          break
+        case 'self-profile':
+          get('/self/profile', function (info) {
+            dispatch(showUserProfile(info))
           })
           break
         default:

@@ -63,8 +63,9 @@ const Model = connect(
       }
     },
     onSignOut: function () {
-      dispatch(signOut())
-      _delete('/users/sign-out')
+      _delete('/users/sign-out', function () {
+        dispatch(signOut())
+      })
     }
   })
 )(Widget)
