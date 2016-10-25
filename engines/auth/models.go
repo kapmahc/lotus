@@ -44,6 +44,11 @@ type User struct {
 	LockedAt        *time.Time `json:"locked_at"`
 }
 
+//TableName table name
+func (p *User) TableName() string {
+	return "users"
+}
+
 //SetPassword sum password
 func (p *User) SetPassword(password string) {
 	p.Password = string(p.sumHmac(password))

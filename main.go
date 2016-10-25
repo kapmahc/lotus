@@ -9,6 +9,7 @@ import (
 )
 
 func main() {
+	orm.Debug = beego.AppConfig.String("runmode") != "prod"
 	orm.RegisterDriver("postgres", orm.DRPostgres)
 	orm.RegisterDataBase(
 		"default",
