@@ -2,7 +2,7 @@ package auth
 
 import "github.com/astaxie/beego"
 
-//Controller auth main controller
+//Controller auth controller
 type Controller struct {
 	beego.Controller
 }

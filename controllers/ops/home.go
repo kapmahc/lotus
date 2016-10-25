@@ -2,7 +2,7 @@ package ops
 
 import "github.com/astaxie/beego"
 
-//Controller ops main controller
+//Controller ops controller
 type Controller struct {
 	beego.Controller
 }

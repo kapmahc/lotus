@@ -2,7 +2,7 @@ package books
 
 import "github.com/astaxie/beego"
 
-//Controller books main controller
+//Controller books controller
 type Controller struct {
 	beego.Controller
 }

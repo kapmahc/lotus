@@ -2,7 +2,7 @@ package shop
 
 import "github.com/astaxie/beego"
 
-//Controller shop main controller
+//Controller shop controller
 type Controller struct {
 	beego.Controller
 }

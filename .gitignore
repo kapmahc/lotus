@@ -1,2 +1,3 @@
-/lotus.tar.gz
-/lotus
+/lotus*
+/lastupdate.tmp
+/routers/comments*.go
