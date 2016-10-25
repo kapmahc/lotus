@@ -1,4 +1,4 @@
-package ops
+package vpn
 
 import "github.com/astaxie/beego"
 
@@ -10,5 +10,5 @@ type Controller struct {
 //GetHome homepage
 // @router / [get]
 func (p *Controller) GetHome() {
-	p.TplName = "ops/index.html"
+	p.TplName = "ops/vpn/index.html"
 }
