@@ -2,6 +2,7 @@ package routers
 
 import (
 	"github.com/astaxie/beego"
+	"github.com/kapmahc/lotus/controllers"
 	"github.com/kapmahc/lotus/controllers/auth"
 	"github.com/kapmahc/lotus/controllers/forum"
 	"github.com/kapmahc/lotus/controllers/ops"
@@ -9,7 +10,7 @@ import (
 )
 
 func init() {
-	// beego.Router("/", &controllers.Controller{})
+	beego.Include(&controllers.Controller{})
 	beego.AddNamespace(
 		beego.NewNamespace("/users", beego.NSInclude(&auth.Controller{})),
 		beego.NewNamespace("/forum", beego.NSInclude(&forum.Controller{})),
