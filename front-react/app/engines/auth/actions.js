@@ -14,6 +14,14 @@ export const TOGGLE_SITE_NAV = 'auth.site.nav.toggle'
 export const TOGGLE_SITE_SEO = 'auth.site.seo.toggle'
 export const TOGGLE_SITE_USERS = 'auth.site.users.toggle'
 export const TOGGLE_SITE_NOTICES = 'auth.site.notices.toggle'
+export const TOGGLE_NOTICE_FORM = 'auth.site.notice.form.toggle'
+
+export const toggleNoticeForm = (notice) => {
+  return {
+    type: TOGGLE_NOTICE_FORM,
+    notice
+  }
+}
 
 export const toggleSiteNotices = (notices) => {
   return {

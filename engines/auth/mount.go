@@ -39,6 +39,7 @@ func (p *Engine) Mount(rt *gin.Engine) {
 	ag.POST("seo", web.JSON(p.postSiteSeo))
 	ag.GET("users", web.JSON(p.getSiteUsers))
 
-	rt.GET("/notices", web.JSON(p.getNotices))
+	ng := rt.Group("/notices", p.Jwt.CurrentUserHandler(true), p.Jwt.MustAdminHandler())
+	ng.GET("", web.JSON(p.getNotices))
 
 }
