@@ -1,11 +1,11 @@
-package controllers
+package site
 
 //GetBaidu baidu verify file
 // @router /baidu_verify_:id([\w]+).html [get]
 func (p *Controller) GetBaidu() {
 	// TODO
 	p.Data["code"] = p.Ctx.Input.Param(":id")
-	p.TplName = "baidu.html"
+	p.TplName = "site/baidu.html"
 }
 
 //GetGoogle google verify file
@@ -13,7 +13,7 @@ func (p *Controller) GetBaidu() {
 func (p *Controller) GetGoogle() {
 	// TODO
 	p.Data["code"] = p.Ctx.Input.Param(":id")
-	p.TplName = "google.html"
+	p.TplName = "site/google.html"
 }
 
 //GetRobots robots.txt
