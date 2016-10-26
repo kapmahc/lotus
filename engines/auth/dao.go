@@ -99,7 +99,7 @@ func AddOpenIDUser(pid, pty, email, name, home, logo string) (*User, error) {
 		u.Name = name
 		u.Logo = logo
 		u.Home = home
-		u.SignInCount = u.SignInCount + 1
+		u.SignInCount++
 		u.LastSignInAt = &now
 		_, err = o.Update(
 			&u,

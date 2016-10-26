@@ -1,8 +1,7 @@
 package reading
 
 import (
-	"time"
-
+	"github.com/astaxie/beego/orm"
 	"github.com/kapmahc/lotus/engines/base"
 )
 
@@ -16,8 +15,10 @@ type Book struct {
 	Type        string
 	Lang        string
 	File        string
+	Subject     string
+	Description string
 	Vote        int
-	PublishedAt time.Time
+	PublishedAt string
 }
 
 //TableName table name
@@ -38,4 +39,13 @@ type Note struct {
 //TableName table name
 func (p *Note) TableName() string {
 	return "reading_notes"
+}
+
+//------------------------------------------------------------------------------
+
+func init() {
+	orm.RegisterModel(
+		new(Book),
+		new(Note),
+	)
 }
