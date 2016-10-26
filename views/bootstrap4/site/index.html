@@ -2,12 +2,11 @@
 <html lang="{{.locale}}">
   <head>
   {{template "../meta.html" .}}
-  <title>{{T .locale "site-pages.install"}}</title>
+  <title>{{T .locale "site.subTitle"}}-{{T .locale "site.title"}}</title>
   </head>
   <body>
     <div class="container">
       {{template "../flash.html" .}}
-      {{template "../form.html" .form}}
       {{template "../footer.html" .}}
     </div>
   </body>
