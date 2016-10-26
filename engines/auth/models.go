@@ -11,19 +11,13 @@ import (
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
+	"github.com/kapmahc/lotus/models"
 	uuid "github.com/satori/go.uuid"
 )
 
-//Model base model
-type Model struct {
-	ID        uint       `json:"id"`
-	UpdatedAt *time.Time `json:"updated_at"`
-	CreatedAt time.Time  `json:"created_at"`
-}
-
 //User user model
 type User struct {
-	Model
+	models.Base
 
 	Email    string `json:"email"`
 	UID      string `json:"uid"`
@@ -115,7 +109,7 @@ const (
 
 //Role role model
 type Role struct {
-	Model
+	models.Base
 
 	Name         string
 	ResourceType string
@@ -130,7 +124,7 @@ func (p Role) String() string {
 
 //Permission permission model
 type Permission struct {
-	Model
+	models.Base
 
 	UserID   uint
 	RoleID   uint

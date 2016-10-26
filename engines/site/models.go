@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/astaxie/beego/orm"
-	"github.com/kapmahc/lotus/engines/auth"
+	"github.com/kapmahc/lotus/models"
 )
 
 //LeaveWord leave word
@@ -16,14 +16,15 @@ type LeaveWord struct {
 
 //Notice notice
 type Notice struct {
-	auth.Model
+	models.Base
+
 	Lang    string `json:"lang"`
 	Content string `json:"content"`
 }
 
 //Setting setting
 type Setting struct {
-	auth.Model
+	models.Base
 
 	Key  string
 	Val  string
@@ -32,7 +33,7 @@ type Setting struct {
 
 //Attachment attachment
 type Attachment struct {
-	auth.Model
+	models.Base
 
 	Title     string
 	Name      string
@@ -44,7 +45,8 @@ type Attachment struct {
 
 //Locale locale mdoe
 type Locale struct {
-	auth.Model
+	models.Base
+
 	Code    string
 	Lang    string
 	Message string
@@ -52,7 +54,8 @@ type Locale struct {
 
 //Page page model
 type Page struct {
-	auth.Model
+	models.Base
+
 	Loc     string
 	Picture string
 	Title   string

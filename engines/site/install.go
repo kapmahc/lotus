@@ -10,6 +10,7 @@ import (
 // @router /install [get]
 func (p *Controller) GetInstall() {
 	p.mustEmptyDb()
+	p.Data["form"] = &fmInstall{}
 	p.TplName = "site/install.html"
 }
 
