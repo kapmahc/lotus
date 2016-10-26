@@ -2,21 +2,20 @@
 A web application build by go-lang.
 
 ## Development(for archlinux)
-### Install go
-
+* install gvm
 ```
-sudo pacman -S go go-tools
+bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
 ```
+Or if you are using zsh just change bash with zsh
 
-### Add to your .bashrc or .zshrc
-
+* after re-signin, install go
 ```
-GOPATH=$HOME/go
-PATH=$GOPATH/bin:$PATH
-export GOPATH PATH
+gvm install go1.7.3 -B
+gvm use go1.7.3 --default
 ```
 
-### For development
+
+* install tools
 
 ```
 go get -u github.com/nsf/gocode
