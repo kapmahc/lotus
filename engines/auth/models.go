@@ -97,7 +97,7 @@ func (p User) String() string {
 
 //Log model
 type Log struct {
-	ID        uint      `json:"id"`
+	ID        uint      `json:"id" orm:"column(id)"`
 	UserID    uint      `json:"-" orm:"column(user_id)"`
 	Message   string    `json:"message"`
 	CreatedAt time.Time `json:"created_at" orm:"auto_now_add"`
@@ -114,7 +114,7 @@ const (
 	//DefaultResourceType default resource-type
 	DefaultResourceType = "-"
 	//DefaultResourceID default resource-id
-	DefaultResourceID = "0"
+	DefaultResourceID = 0
 )
 
 //Role role model

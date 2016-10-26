@@ -14,12 +14,22 @@ type LeaveWord struct {
 	CreatedAt time.Time `json:"created_at"`
 }
 
+//TableName table name
+func (p *LeaveWord) TableName() string {
+	return "leave_words"
+}
+
 //Notice notice
 type Notice struct {
 	base.Model
 
 	Lang    string `json:"lang"`
 	Content string `json:"content"`
+}
+
+//TableName table name
+func (p *Notice) TableName() string {
+	return "notices"
 }
 
 //Setting setting
@@ -29,6 +39,11 @@ type Setting struct {
 	Key  string
 	Val  string
 	Flag bool
+}
+
+//TableName table name
+func (p *Setting) TableName() string {
+	return "settings"
 }
 
 //Attachment attachment
@@ -43,6 +58,11 @@ type Attachment struct {
 	UserID uint
 }
 
+//TableName table name
+func (p *Attachment) TableName() string {
+	return "attachments"
+}
+
 //Page page model
 type Page struct {
 	base.Model
@@ -53,6 +73,11 @@ type Page struct {
 	Summary string
 	Href    string
 	Lang    string
+}
+
+//TableName table name
+func (p *Page) TableName() string {
+	return "pages"
 }
 
 func init() {

@@ -4,5 +4,5 @@ type fmInstall struct {
 	Name                 string `form:"name" valid:"Required; MaxSize(32)"`
 	Email                string `form:"email" valid:"Email; MaxSize(255)"`
 	Password             string `form:"password" valid:"Required; MaxSize(128)"`
-	PasswordConfirmation string `form:"password_confirmation"`
+	PasswordConfirmation string `form:"passwordConfirmation"`
 }

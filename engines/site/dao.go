@@ -4,22 +4,25 @@ import (
 	"bytes"
 	"encoding/gob"
 
+	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 )
 
 //Set save setting
-func Set(k string, v interface{}, f bool) error {
+func Set(k string, v interface{}, f bool) {
 	var buf bytes.Buffer
 	enc := gob.NewEncoder(&buf)
 	err := enc.Encode(v)
 	if err != nil {
-		return err
+		beego.Error(err)
+		return
 	}
 	val := buf.Bytes()
 	if f {
 		val, err = Encrypt(buf.Bytes())
 		if err != nil {
-			return err
+			beego.Error(err)
+			return
 		}
 	}
 
@@ -29,7 +32,7 @@ func Set(k string, v interface{}, f bool) error {
 	if err == nil {
 		m.Flag = f
 		m.Val = string(val)
-		_, err = o.Update(&m, "val")
+		_, err = o.Update(&m, "val", "updated_at")
 	} else if err == orm.ErrNoRows {
 		m.Key = k
 		m.Flag = f
@@ -37,7 +40,9 @@ func Set(k string, v interface{}, f bool) error {
 		_, err = o.Insert(&m)
 	}
 
-	return err
+	if err != nil {
+		beego.Error(err)
+	}
 }
 
 //Get get setting value by key

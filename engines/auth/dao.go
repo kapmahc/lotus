@@ -28,6 +28,16 @@ func GenerateUserClaims(u *User) jws.Claims {
 	return cm
 }
 
+//ConfirmUser confirm user
+func ConfirmUser(user *User) {
+	now := time.Now()
+	user.ConfirmedAt = &now
+
+	if _, err := orm.NewOrm().Update(user, "confirmed_at", "updated_at"); err != nil {
+		beego.Error(err)
+	}
+}
+
 //SignIn sign in
 func SignIn(email, password string) (*User, error) {
 	var u User
@@ -99,6 +109,7 @@ func AddOpenIDUser(pid, pty, email, name, home, logo string) (*User, error) {
 			"home",
 			"sign_in_count",
 			"last_sign_in_at",
+			"updated_at",
 		)
 	}
 	if err == orm.ErrNoRows {
@@ -166,24 +177,21 @@ func GetAuthority(user uint, rty string, rid uint) []string {
 
 //Is is role ?
 func Is(user uint, name string) bool {
-	return Can(user, name, "-", 0)
+	return Can(user, name, DefaultResourceType, DefaultResourceID)
 }
 
 //Can can?
 func Can(user uint, name string, rty string, rid uint) bool {
-	var r Role
-	o := orm.NewOrm()
-	if err := o.QueryTable(&r).
-		Filter("name", name).
-		Filter("resource_type", rty).
-		Filter("resource_id", rid).One(&r); err != nil {
+	role, err := getRole(name, rty, rid)
+	if err != nil {
 		beego.Error(err)
 		return false
 	}
+	o := orm.NewOrm()
 	var pm Permission
 	if err := o.QueryTable(&pm).
 		Filter("user_id", user).
-		Filter("role_id", r.ID).
+		Filter("role_id", role.ID).
 		One(&pm); err != nil {
 		return false
 	}
@@ -191,8 +199,7 @@ func Can(user uint, name string, rty string, rid uint) bool {
 	return pm.Enable()
 }
 
-//GetRole check role exist
-func GetRole(name string, rty string, rid uint) (*Role, error) {
+func getRole(name string, rty string, rid uint) (*Role, error) {
 	r := Role{}
 	o := orm.NewOrm()
 	err := o.QueryTable(&r).
@@ -211,33 +218,48 @@ func GetRole(name string, rty string, rid uint) (*Role, error) {
 }
 
 //Deny deny permission
-func Deny(role uint, user uint) error {
-	_, err := orm.NewOrm().
-		QueryTable(new(Permission)).
-		Filter("role_id", role).
-		Filter("user_id", user).
-		Delete()
-	return err
+func Deny(user uint, name, rty string, rid uint) {
+	role, err := getRole(name, rty, rid)
+	if err == nil {
+		_, err = orm.NewOrm().
+			QueryTable(new(Permission)).
+			Filter("role_id", role.ID).
+			Filter("user_id", user).
+			Delete()
+	}
+	if err != nil {
+		beego.Error(err)
+	}
 }
 
 //Allow allow permission
-func Allow(role uint, user uint, years, months, days int) error {
-	begin := time.Now()
-	end := begin.AddDate(years, months, days)
-	var pm Permission
-	o := orm.NewOrm()
-	err := o.QueryTable(&pm).Filter("role_id", role).Filter("user_id", user).One(&pm)
+func Allow(user uint, name, rty string, rid uint, years, months, days int) {
+	role, err := getRole(name, rty, rid)
 	if err == nil {
-		pm.StartUp = begin
-		pm.ShutDown = end
-		_, err = o.Update(&pm, "start_up", "shut_down")
 
-	} else if err == orm.ErrNoRows {
-		pm.UserID = user
-		pm.RoleID = role
-		pm.StartUp = begin
-		pm.ShutDown = end
-		_, err = o.Insert(&pm)
+		begin := time.Now()
+		end := begin.AddDate(years, months, days)
+		var pm Permission
+		o := orm.NewOrm()
+		err = o.QueryTable(&pm).
+			Filter("role_id", role.ID).
+			Filter("user_id", user).
+			One(&pm)
+		if err == nil {
+			pm.StartUp = begin
+			pm.ShutDown = end
+			_, err = o.Update(&pm, "start_up", "shut_down", "updated_at")
+
+		} else if err == orm.ErrNoRows {
+			pm.UserID = user
+			pm.RoleID = role.ID
+			pm.StartUp = begin
+			pm.ShutDown = end
+			_, err = o.Insert(&pm)
+		}
 	}
-	return err
+
+	if err != nil {
+		beego.Error(err)
+	}
 }

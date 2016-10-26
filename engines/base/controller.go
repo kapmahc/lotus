@@ -17,7 +17,7 @@ type Controller struct {
 }
 
 //ParseForm parse form
-func (p *Controller) ParseForm(form interface{}) bool {
+func (p *Controller) ParseForm(form interface{}) (*beego.FlashData, bool) {
 	flash := beego.NewFlash()
 	var valid validation.Validation
 	err := p.Controller.ParseForm(form)
@@ -38,9 +38,8 @@ func (p *Controller) ParseForm(form interface{}) bool {
 
 	if err != nil {
 		flash.Error(err.Error())
-		flash.Store(&p.Controller)
 	}
-	return err == nil
+	return flash, err == nil
 }
 
 //NewForm new form model
