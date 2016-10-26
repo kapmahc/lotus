@@ -18,5 +18,6 @@ func main() {
 		beego.AppConfig.DefaultInt("databasemaxidle", 6),
 		beego.AppConfig.DefaultInt("databasemaxconn", 180),
 	)
+
 	beego.Run()
 }
