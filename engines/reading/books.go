@@ -1,4 +1,4 @@
-package books
+package reading
 
 import (
 	"os"
@@ -8,15 +8,10 @@ import (
 	"github.com/kapmahc/epub"
 )
 
-//Controller books controller
-type Controller struct {
-	beego.Controller
-}
-
-//GetHome homepage
-// @router / [get]
-func (p *Controller) GetHome() {
-	p.TplName = "books/index.html"
+//GetBooks list books
+// @router /books [get]
+func (p *Controller) GetBooks() {
+	p.TplName = "reading/books.html"
 }
 
 //GetScan scan books

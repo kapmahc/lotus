@@ -5,6 +5,11 @@ import "html/template"
 const (
 	//MethodPost post method
 	MethodPost = "post"
+
+	//TypeMarkdown markdown type
+	TypeMarkdown = "markdown"
+	//TypeHTML html type
+	TypeHTML = "html"
 )
 
 //Form form model

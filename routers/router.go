@@ -7,10 +7,10 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/beego/i18n"
 	"github.com/kapmahc/lotus/engines/auth"
-	"github.com/kapmahc/lotus/engines/books"
 	"github.com/kapmahc/lotus/engines/forum"
 	"github.com/kapmahc/lotus/engines/ops/mail"
 	"github.com/kapmahc/lotus/engines/ops/vpn"
+	"github.com/kapmahc/lotus/engines/reading"
 	"github.com/kapmahc/lotus/engines/shop"
 	"github.com/kapmahc/lotus/engines/site"
 )
@@ -42,7 +42,7 @@ func init() {
 		beego.NewNamespace("/users", beego.NSInclude(&auth.Controller{})),
 
 		beego.NewNamespace("/forum", beego.NSInclude(&forum.Controller{})),
-		beego.NewNamespace("/books", beego.NSInclude(&books.Controller{})),
+		beego.NewNamespace("/reading", beego.NSInclude(&reading.Controller{})),
 		beego.NewNamespace("/shop", beego.NSInclude(&shop.Controller{})),
 		beego.NewNamespace(
 			"/ops",
