@@ -1,0 +1,15 @@
+<hr/>
+<footer>
+  <p class="float-xs-right">
+    {{$locale := .locale}}
+    {{T $locale "languages.other"}}
+    {{range .languages}}
+        <a href="/?locale={{.}}">{{T $locale (printf "languages.%s" .)}}</a>
+    {{end}}
+  </p>
+  <p>
+    &copy; {{.copyright}}
+    &middot; <a href="#">Privacy</a>
+    &middot; <a href="#">Terms</a>
+  </p>
+</footer>
