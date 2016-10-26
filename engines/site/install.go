@@ -42,9 +42,10 @@ func (p *Controller) GetInstall() {
 // @router /install [post]
 func (p *Controller) PostInstall() {
 	p.mustEmptyDb()
-	flash := beego.NewFlash()
-	flash.Error("Settings invalid!")
-	flash.Store(&p.Controller.Controller)
+	var fm fmInstall
+	if p.ParseForm(&fm) {
+
+	}
 	p.Redirect(p.URLFor("site.Controller.GetInstall"), 302)
 }
 

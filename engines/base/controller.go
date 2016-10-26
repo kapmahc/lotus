@@ -1,9 +1,12 @@
 package base
 
 import (
+	"errors"
+	"fmt"
 	"html/template"
 
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/validation"
 	"github.com/beego/i18n"
 )
 
@@ -11,6 +14,33 @@ import (
 type Controller struct {
 	beego.Controller
 	Locale string
+}
+
+//ParseForm parse form
+func (p *Controller) ParseForm(form interface{}) bool {
+	flash := beego.NewFlash()
+	var valid validation.Validation
+	err := p.Controller.ParseForm(form)
+	if err == nil {
+		if b, e := valid.Valid(form); e == nil {
+			if !b {
+				msg := "<ul>"
+				for k, v := range valid.ErrorsMap {
+					msg += fmt.Sprintf("<li>%s: %s</li>", k, v)
+				}
+				msg += "</ul>"
+				err = errors.New(msg)
+			}
+		} else {
+			err = e
+		}
+	}
+
+	if err != nil {
+		flash.Error(err.Error())
+		flash.Store(&p.Controller)
+	}
+	return err == nil
 }
 
 //NewForm new form model

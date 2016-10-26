@@ -3,7 +3,7 @@
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">&times;</span>
   </button>
-  <strong>{{T .locale "flash.error"}}</strong> {{.flash.error}}
+  <strong>{{T .locale "flash.error"}}</strong> {{str2html .flash.error}}
 </div>
 {{end}}
 {{if .flash.warning}}
@@ -11,7 +11,7 @@
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">&times;</span>
   </button>
-  <strong>{{T .locale "flash.warning"}}</strong> {{.flash.warning}}
+  <strong>{{T .locale "flash.warning"}}</strong> {{str2html .flash.warning}}
 </div>
 {{end}}
 {{if .flash.notice}}
@@ -19,6 +19,6 @@
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">&times;</span>
   </button>
-  <strong>{{T .locale "flash.notice"}}</strong> {{.flash.notice}}
+  <strong>{{T .locale "flash.notice"}}</strong> {{str2html .flash.notice}}
 </div>
 {{end}}
