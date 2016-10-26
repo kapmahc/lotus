@@ -1,7 +1,15 @@
 package base
 
+import "html/template"
+
+const (
+	//MethodPost post method
+	MethodPost = "post"
+)
+
 //Form form model
 type Form struct {
+	XSRF   template.HTML
 	Locale string
 	ID     string
 	Title  string

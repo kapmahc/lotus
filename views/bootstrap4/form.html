@@ -7,27 +7,28 @@
 <h3>{{.Title}}</h3>
 <hr/>
 <form method="{{.Method}}" action="{{.Action}}">
+  {{.XSRF}}
   {{range .Fields}}
     {{if eq .Type "text"}}
       <div class="form-group">
         <label for="{{.ID}}">{{.Label}}</label>
-        <input type="text" class="form-control" id="{{.ID}}" aria-describedby="{{.ID}}Help"/>
+        <input type="text" class="form-control" name="{{.ID}}" aria-describedby="{{.ID}}Help"/>
         {{template "form-field-helper" .}}
       </div>
     {{else if eq .Type "email"}}
       <div class="form-group">
         <label for="{{.ID}}">{{.Label}}</label>
-        <input type="email" class="form-control" id="{{.ID}}" aria-describedby="{{.ID}}Help"/>
+        <input type="email" class="form-control" name="{{.ID}}" aria-describedby="{{.ID}}Help"/>
         {{template "form-field-helper" .}}
       </div>
     {{else if eq .Type "password"}}
       <div class="form-group">
         <label for="{{.ID}}">{{.Label}}</label>
-        <input type="password" class="form-control" id="{{.ID}}" aria-describedby="{{.ID}}Help"/>
+        <input type="password" class="form-control" name="{{.ID}}" aria-describedby="{{.ID}}Help"/>
         {{template "form-field-helper" .}}
       </div>
     {{else}}
-      <input type="hidden" id="{{.ID}}" value="{{.Value}}"/>
+      <input type="hidden" name="{{.ID}}" value="{{.Value}}"/>
     {{end}}
   {{end}}
 

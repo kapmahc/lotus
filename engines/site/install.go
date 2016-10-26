@@ -11,13 +11,12 @@ import (
 // @router /install [get]
 func (p *Controller) GetInstall() {
 	p.mustEmptyDb()
-	p.Data["form"] = &base.Form{
-		Locale: p.Locale,
-		ID:     "fm-install",
-		Method: "post",
-		Title:  base.T(p.Locale, "site-forms.administrator"),
-		Action: p.URLFor("site.Controller.GetInstall"),
-		Fields: []base.Field{
+	p.Data["form"] = p.NewForm(
+		"fm-install",
+		base.T(p.Locale, "site-forms.administrator"),
+		base.MethodPost,
+		p.URLFor("site.Controller.PostInstall"),
+		[]base.Field{
 			&base.TextField{
 				ID:    "name",
 				Label: base.T(p.Locale, "site-attributes.user-name"),
@@ -35,7 +34,7 @@ func (p *Controller) GetInstall() {
 				Label: base.T(p.Locale, "attributes.passwordConfirmation"),
 			},
 		},
-	}
+	)
 	p.TplName = "site/install.html"
 }
 
@@ -43,6 +42,10 @@ func (p *Controller) GetInstall() {
 // @router /install [post]
 func (p *Controller) PostInstall() {
 	p.mustEmptyDb()
+	flash := beego.NewFlash()
+	flash.Error("Settings invalid!")
+	flash.Store(&p.Controller.Controller)
+	p.Redirect(p.URLFor("site.Controller.GetInstall"), 302)
 }
 
 func (p *Controller) mustEmptyDb() {

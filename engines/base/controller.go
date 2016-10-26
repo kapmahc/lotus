@@ -1,6 +1,8 @@
 package base
 
 import (
+	"html/template"
+
 	"github.com/astaxie/beego"
 	"github.com/beego/i18n"
 )
@@ -9,6 +11,19 @@ import (
 type Controller struct {
 	beego.Controller
 	Locale string
+}
+
+//NewForm new form model
+func (p *Controller) NewForm(id, title, method, action string, fields []Field) *Form {
+	return &Form{
+		XSRF:   template.HTML(p.XSRFFormHTML()),
+		ID:     id,
+		Locale: p.Locale,
+		Title:  title,
+		Method: method,
+		Action: action,
+		Fields: fields,
+	}
 }
 
 //SetLocale set locale

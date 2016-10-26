@@ -1,6 +1,9 @@
 package site
 
-import "github.com/kapmahc/lotus/engines/base"
+import (
+	"github.com/astaxie/beego"
+	"github.com/kapmahc/lotus/engines/base"
+)
 
 //Controller home controller
 type Controller struct {
@@ -9,6 +12,7 @@ type Controller struct {
 
 //Prepare prepare
 func (p *Controller) Prepare() {
+	beego.ReadFromRequest(&p.Controller.Controller)
 	p.SetLocale()
 }
 
