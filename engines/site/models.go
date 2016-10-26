@@ -43,15 +43,6 @@ type Attachment struct {
 	UserID uint
 }
 
-//Locale locale mdoe
-type Locale struct {
-	base.Model
-
-	Code    string
-	Lang    string
-	Message string
-}
-
 //Page page model
 type Page struct {
 	base.Model
@@ -67,7 +58,6 @@ type Page struct {
 func init() {
 	orm.RegisterModel(
 		new(Setting),
-		new(Locale),
 		new(LeaveWord),
 		new(Notice),
 		new(Attachment),

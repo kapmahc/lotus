@@ -2,6 +2,7 @@ package base
 
 //Form form model
 type Form struct {
+	Locale string
 	ID     string
 	Title  string
 	Action string

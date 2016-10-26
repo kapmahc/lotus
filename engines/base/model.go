@@ -1,10 +1,32 @@
 package base
 
-import "time"
+import (
+	"time"
+
+	"github.com/astaxie/beego/orm"
+)
 
 //Model base model
 type Model struct {
-	ID        uint       `json:"id"`
+	ID        uint       `json:"id" orm:"column(id)"`
 	UpdatedAt *time.Time `json:"updated_at"`
 	CreatedAt time.Time  `json:"created_at"`
+}
+
+//Locale locale mdoe
+type Locale struct {
+	Model
+
+	Code    string
+	Lang    string
+	Message string
+}
+
+//TableName table name
+func (p *Locale) TableName() string {
+	return "locales"
+}
+
+func init() {
+	orm.RegisterModel(new(Locale))
 }

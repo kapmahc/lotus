@@ -3,7 +3,6 @@ package site
 import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
-	"github.com/beego/i18n"
 	"github.com/kapmahc/lotus/engines/auth"
 	"github.com/kapmahc/lotus/engines/base"
 )
@@ -13,26 +12,27 @@ import (
 func (p *Controller) GetInstall() {
 	p.mustEmptyDb()
 	p.Data["form"] = &base.Form{
+		Locale: p.Locale,
 		ID:     "fm-install",
 		Method: "post",
-		Title:  i18n.Tr(p.Locale, "site-forms.administrator"),
+		Title:  base.T(p.Locale, "site-forms.administrator"),
 		Action: p.URLFor("site.Controller.GetInstall"),
 		Fields: []base.Field{
 			&base.TextField{
 				ID:    "name",
-				Label: i18n.Tr(p.Locale, "site-attributes.user-name"),
+				Label: base.T(p.Locale, "site-attributes.user-name"),
 			},
 			&base.EmailField{
 				ID:    "email",
-				Label: i18n.Tr(p.Locale, "attributes.email"),
+				Label: base.T(p.Locale, "attributes.email"),
 			},
 			&base.PasswordField{
 				ID:    "password",
-				Label: i18n.Tr(p.Locale, "attributes.password"),
+				Label: base.T(p.Locale, "attributes.password"),
 			},
 			&base.PasswordField{
 				ID:    "passwordConfirmation",
-				Label: i18n.Tr(p.Locale, "attributes.passwordConfirmation"),
+				Label: base.T(p.Locale, "attributes.passwordConfirmation"),
 			},
 		},
 	}
