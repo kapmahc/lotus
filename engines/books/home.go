@@ -25,6 +25,9 @@ func (p *Controller) GetScan() {
 	// TODO admin?
 	const ext = ".epub"
 	if err := filepath.Walk(filepath.Join("tmp", "books"), func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
 		if info.Mode().IsRegular() && filepath.Ext(info.Name()) == ext {
 			beego.Info("find file ", path)
 		}

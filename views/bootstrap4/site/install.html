@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{.locale}}">
   <head>
   {{template "../meta.html" .}}
   </head>
   <body>
-    <h1>install</h1>
+    <div class="container">
+    {{template "../form.html" .form}}
+    </div>
   </body>
 </html>

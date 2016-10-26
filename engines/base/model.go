@@ -1,9 +1,9 @@
-package models
+package base
 
 import "time"
 
-//Base base model
-type Base struct {
+//Model base model
+type Model struct {
 	ID        uint       `json:"id"`
 	UpdatedAt *time.Time `json:"updated_at"`
 	CreatedAt time.Time  `json:"created_at"`

@@ -1,7 +1,11 @@
 package routers
 
 import (
+	"os"
+	"path/filepath"
+
 	"github.com/astaxie/beego"
+	"github.com/beego/i18n"
 	"github.com/kapmahc/lotus/engines/auth"
 	"github.com/kapmahc/lotus/engines/books"
 	"github.com/kapmahc/lotus/engines/forum"
@@ -12,6 +16,27 @@ import (
 )
 
 func init() {
+	// load locales
+	if err := filepath.Walk(filepath.Join("conf", "locales"), func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		const ext = ".ini"
+		name := info.Name()
+		if info.Mode().IsRegular() && filepath.Ext(name) == ext {
+			lang := name[0 : len(name)-len(ext)]
+			beego.Info("Loading language: ", lang)
+			if err := i18n.SetMessage(lang, path); err != nil {
+				beego.Error(err)
+				return err
+			}
+		}
+		return nil
+	}); err != nil {
+		beego.Error(err)
+	}
+
+	// register controllers
 	beego.Include(&site.Controller{})
 	beego.AddNamespace(
 		beego.NewNamespace("/users", beego.NSInclude(&auth.Controller{})),
