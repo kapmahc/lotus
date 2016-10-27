@@ -115,6 +115,11 @@ const (
 	DefaultResourceType = "-"
 	//DefaultResourceID default resource-id
 	DefaultResourceID = 0
+
+	//AdminRole admin
+	AdminRole = "admin"
+	//RootRole root
+	RootRole = "root"
 )
 
 //Role role model

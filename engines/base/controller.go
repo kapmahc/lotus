@@ -80,6 +80,7 @@ func (p *Controller) NewForm(id, title, method, action string, fields []Field) *
 //SetLocale set locale
 func (p *Controller) SetLocale() {
 	const key = "locale"
+	write := false
 
 	// 1. Check URL arguments.
 	lang := p.Input().Get(key)
@@ -87,6 +88,8 @@ func (p *Controller) SetLocale() {
 	// 2. Get language information from cookies.
 	if len(lang) == 0 {
 		lang = p.Ctx.GetCookie(key)
+	} else {
+		write = true
 	}
 
 	// 3. Get language information from 'Accept-Language'.
@@ -95,20 +98,19 @@ func (p *Controller) SetLocale() {
 		if len(al) > 4 {
 			al = al[:5] // Only compare first 5 letters.
 		}
+		write = true
 	}
 
-	// 4: Check lang
+	// 4. Default language is English.
 	if !i18n.IsExist(lang) {
-		lang = ""
-	}
-
-	// 5. Default language is English.
-	if len(lang) == 0 {
 		lang = "en-US"
+		write = true
 	}
 
 	// Save language information in cookies.
-	p.Ctx.SetCookie(key, lang, 1<<31-1, "/")
+	if write {
+		p.Ctx.SetCookie(key, lang, 1<<31-1, "/")
+	}
 
 	// Set language properties.
 	p.Locale = lang

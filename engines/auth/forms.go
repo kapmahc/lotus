@@ -3,7 +3,7 @@ package auth
 type fmSignUp struct {
 	Name                 string `form:"name" valid:"Required; MaxSize(32)"`
 	Email                string `form:"email" valid:"Email; MaxSize(255)"`
-	Password             string `form:"password" valid:"Required; MaxSize(128)"`
+	Password             string `form:"password" valid:"Required; MaxSize(128); MinSize(6)"`
 	PasswordConfirmation string `form:"passwordConfirmation"`
 }
 
@@ -18,6 +18,6 @@ type fmEmail struct {
 
 type fmResetPassword struct {
 	Token                string `form:"token" valid:"Required"`
-	Password             string `form:"password" valid:"Required; MaxSize(128)"`
+	Password             string `form:"password" valid:"Required; MaxSize(128); MinSize(6)"`
 	PasswordConfirmation string `form:"passwordConfirmation"`
 }

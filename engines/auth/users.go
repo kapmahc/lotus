@@ -31,7 +31,26 @@ func (p *Controller) GetSignIn() {
 //PostSignIn sign in
 // @router /sign-in [post]
 func (p *Controller) PostSignIn() {
+	var fm fmSignIn
+	fl, er := p.ParseForm(&fm)
+	var user *User
+	if er == nil {
+		user, er = SignIn(fm.Email, fm.Password)
+	}
+	if er == nil {
+		p.SetSession("uid", user.UID)
+		p.Redirect(fl, "auth.Controller.GetDashboard")
+		return
+	}
+	fl.Error(er.Error())
+	p.Redirect(fl, "auth.Controller.GetSignIn")
+}
 
+//GetSignOut sign out
+// @router /sign-out [get]
+func (p *Controller) GetSignOut() {
+	p.DestroySession()
+	p.Redirect(nil, "auth.Controller.GetSignIn")
 }
 
 //GetSignUp sign up form
