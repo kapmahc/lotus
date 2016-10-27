@@ -3,7 +3,6 @@ package site
 import (
 	"time"
 
-	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	"github.com/kapmahc/lotus/engines/auth"
 	"github.com/kapmahc/lotus/engines/base"
@@ -59,10 +58,7 @@ func (p *Controller) PostInstall() {
 				}
 				Set("site.install", time.Now(), false)
 			}
-			if err != nil {
-				beego.Error(err)
-				p.Abort("500")
-			}
+			p.Check(err)
 			p.Redirect(p.URLFor("auth.Controller.GetSignIn"), 302)
 			return
 		}
@@ -75,10 +71,7 @@ func (p *Controller) PostInstall() {
 func (p *Controller) mustEmptyDb() {
 	o := orm.NewOrm()
 	ct, er := o.QueryTable(new(auth.User)).Count()
-	if er != nil {
-		beego.Error(er)
-		p.Abort("500")
-	}
+	p.Check(er)
 	if ct > 0 {
 		p.Abort("404")
 	}

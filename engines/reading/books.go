@@ -3,7 +3,9 @@ package reading
 import (
 	"fmt"
 	"html/template"
+	"io/ioutil"
 	"os"
+	"path"
 	"path/filepath"
 	"strings"
 
@@ -21,9 +23,7 @@ func (p *Controller) GetBooks() {
 	const size = 60
 	page, _ := p.GetInt64("page", 1)
 	count, err := o.QueryTable(new(Book)).Count()
-	if err != nil {
-		beego.Error(err)
-	}
+	p.Check(err)
 
 	var books []Book
 	_, err = o.QueryTable(new(Book)).
@@ -31,9 +31,7 @@ func (p *Controller) GetBooks() {
 		Offset((page - 1) * size).
 		Limit(size).
 		All(&books)
-	if err != nil {
-		beego.Error(err)
-	}
+	p.Check(err)
 
 	p.Data["pager"] = base.NewPaginator(
 		p.URLFor("reading.Controller.GetBooks"),
@@ -53,7 +51,7 @@ func (p *Controller) GetScan() {
 	// TODO admin?
 	const ext = ".epub"
 	count := 0
-	if err := filepath.Walk(filepath.Join("tmp", "books"), func(path string, info os.FileInfo, err error) error {
+	err := filepath.Walk(filepath.Join("tmp", "books"), func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
@@ -102,10 +100,8 @@ func (p *Controller) GetScan() {
 			count++
 		}
 		return nil
-	}); err != nil {
-		beego.Error(err)
-		p.Abort("500")
-	}
+	})
+	p.Check(err)
 	p.Data["json"] = map[string]interface{}{"count": count}
 	p.ServeJSON()
 }
@@ -116,18 +112,20 @@ func (p *Controller) getBook() *Book {
 		QueryTable(&book).
 		Filter("id", p.Ctx.Input.Param(":id")).
 		One(&book)
-	if err != nil {
-		beego.Error(err)
-		p.Abort("404")
-	}
+	p.Check(err)
 	return &book
 }
 
-func points2html(points []epub.NavPoint) string {
+func (p *Controller) points2html(href string, points []epub.NavPoint) string {
 	str := "<ol>"
-	for _, p := range points {
-		str += fmt.Sprintf(`<li><a href="%s" target="_blank">%s</a></li>`, p.Content.Src, p.Text)
-		str += points2html(p.Points)
+	for _, pt := range points {
+		str += fmt.Sprintf(
+			`<li><a href="%s/%s" target="_blank">%s</a></li>`,
+			href,
+			pt.Content.Src,
+			pt.Text,
+		)
+		str += p.points2html(href, pt.Points)
 	}
 	str += "</ol>"
 	return str
@@ -139,13 +137,15 @@ func (p *Controller) GetBookIndex() {
 	book := p.getBook()
 	p.Data["title"] = book.Title
 	bk, err := epub.Open(book.File)
-	if err != nil {
-		beego.Error(err)
-		p.Abort("500")
-	}
+	p.Check(err)
 	defer bk.Close()
 
-	p.Data["ncx"] = template.HTML(points2html(bk.Ncx.Points))
+	p.Data["ncx"] = template.HTML(
+		p.points2html(
+			p.URLFor("reading.Controller.GetBookIndex", ":id", book.ID),
+			bk.Ncx.Points,
+		),
+	)
 	p.Layout = "reading/layout.html"
 	p.TplName = "reading/book.html"
 }
@@ -153,9 +153,49 @@ func (p *Controller) GetBookIndex() {
 //GetBook show book page
 // @router /books/:id/* [get]
 func (p *Controller) GetBook() {
-	uid := p.Ctx.Input.Param(":id")
+	book := p.getBook()
+	bk, err := epub.Open(book.File)
+	p.Check(err)
+	defer bk.Close()
 	name := p.Ctx.Input.Param(":splat")
-	// name := fmt.Sprintf("%s.%s", p.Ctx.Input.Param(":ext"), p.Ctx.Input.Param(":path"))
-	beego.Debug("show book uid=", uid, " name=", name)
-	p.ServeJSON()
+
+	// switch path.Ext(name) {
+	// case ".css":
+	// 	p.Ctx.Output.Header("Content-Type", "text/css; charset=utf-8")
+	// 	p.Ctx.Output.Body(buf)
+	// case ".xhtml":
+	// 	p.Ctx.Output.Header("Content-Type", "application/xhtml+xml; charset=utf-8")
+	// 	p.Ctx.Output.Body(buf)
+	// default:
+	// 	beego.Error("bad file", name)
+	// 	p.Abort("404")
+	// }
+
+	fd, err := bk.Open(name)
+	p.Check(err)
+	defer fd.Close()
+	if path.Ext(name) == ".xhtml" {
+		p.Data["title"], p.Data["body"] = p.parseHTML(fd)
+		p.Layout = "reading/layout.html"
+		p.TplName = "reading/page.html"
+		return
+	}
+	for _, ext := range []string{".css", ".jpg"} {
+		if path.Ext(name) == ext {
+			for _, m := range bk.Opf.Manifest {
+				if strings.HasPrefix(name, m.Href) {
+					// p.Ctx.Output.ContentType(m.MediaType)
+					buf, err := ioutil.ReadAll(fd)
+					p.Check(err)
+
+					p.Ctx.Output.Header("Content-Type", m.MediaType)
+					p.Ctx.Output.Body(buf)
+					return
+				}
+			}
+		}
+	}
+	beego.Error("bad file", name)
+	p.Abort("404")
+
 }

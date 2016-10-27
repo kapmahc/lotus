@@ -16,6 +16,14 @@ type Controller struct {
 	Locale string
 }
 
+//Check check error
+func (p *Controller) Check(err error) {
+	if err != nil {
+		beego.Error(err)
+		p.Abort("500")
+	}
+}
+
 //ParseForm parse form
 func (p *Controller) ParseForm(form interface{}) (*beego.FlashData, bool) {
 	flash := beego.NewFlash()
