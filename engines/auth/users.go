@@ -39,7 +39,8 @@ func (p *Controller) PostSignIn() {
 	}
 	if er == nil {
 		p.SetSession("uid", user.UID)
-		p.Redirect(fl, "auth.Controller.GetDashboard")
+		p.SetSession("name", user.Name)
+		p.Redirect(fl, "auth.Controller.GetProfile")
 		return
 	}
 	fl.Error(er.Error())

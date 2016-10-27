@@ -5,8 +5,8 @@
   <title>{{T .locale "site-pages.install"}}</title>
   </head>
   <body>
+    {{template "../header.html" .}}
     <div class="container">
-      {{template "../header.html" .}}
       {{template "../flash.html" .}}
       {{template "../form.html" .form}}
       {{template "../footer.html" .}}

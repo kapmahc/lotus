@@ -8,11 +8,15 @@
         {{T .locale "site-pages.home"}}
         <span class="sr-only">(current)</span>
       </a>
-    </li>    
-    {{range NL .locale "top"}}
+    </li>
+    {{range NL .locale "header"}}
       <li class="nav-item">
         <a class="nav-link" href="{{.Href}}">{{.Label}}</a>
       </li>
     {{end}}
+  </ul>
+  <ul class="nav navbar-nav float-xs-right">
+    {{template "switch-lang-bar.html" .}}
+    {{template "personal-bar.html" .}}
   </ul>
 </nav>

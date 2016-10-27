@@ -1,13 +1,8 @@
 package reading
 
-import "github.com/kapmahc/lotus/engines/base"
+import "github.com/kapmahc/lotus/engines/auth"
 
 //Controller books controller
 type Controller struct {
-	base.Controller
-}
-
-//Prepare prepare
-func (p *Controller) Prepare() {
-	p.SetLocale()
+	auth.BaseController
 }

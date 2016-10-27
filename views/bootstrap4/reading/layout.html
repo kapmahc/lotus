@@ -5,8 +5,8 @@
   <title>{{.title}}-{{T .locale "site.subTitle"}}-{{T .locale "site.title"}}</title>
   </head>
   <body>
+    {{template "../header.html" .}}
     <div class="container">
-      {{template "../header.html" .}}
       {{template "../flash.html" .}}
       {{.LayoutContent}}
       {{template "../footer.html" .}}
