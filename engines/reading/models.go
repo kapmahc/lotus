@@ -8,7 +8,6 @@ import (
 //Book book
 type Book struct {
 	base.Model
-	UID         string `orm:"column(uid)"`
 	Author      string
 	Publisher   string
 	Title       string

@@ -13,7 +13,9 @@
             {{.Author}} <br/>
             {{.Description}} <br/>
           </p>
-          <a href="#" class="btn btn-primary">{{$view}}</a>
+          <a href="{{urlfor "reading.Controller.GetBookIndex" ":id" .ID}}" class="btn btn-primary">
+            {{$view}}
+          </a>
         </div>
       </div>
     </div>

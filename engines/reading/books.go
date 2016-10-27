@@ -2,6 +2,7 @@ package reading
 
 import (
 	"fmt"
+	"html/template"
 	"os"
 	"path/filepath"
 	"strings"
@@ -10,7 +11,6 @@ import (
 	"github.com/astaxie/beego/orm"
 	"github.com/kapmahc/epub"
 	"github.com/kapmahc/lotus/engines/base"
-	uuid "github.com/satori/go.uuid"
 )
 
 //GetBooks list books
@@ -85,7 +85,6 @@ func (p *Controller) GetScan() {
 			book.Title = strings.Join(bk.Opf.Metadata.Title, "-")
 			book.Publisher = strings.Join(bk.Opf.Metadata.Publisher, ",")
 			book.Author = strings.Join(authors, "-")
-			book.UID = uuid.NewV4().String()
 			book.Lang = strings.Join(bk.Opf.Metadata.Language, ",")
 			book.Subject = strings.Join(bk.Opf.Metadata.Subject, ",")
 			book.Description = strings.Join(bk.Opf.Metadata.Description, ",")
@@ -111,19 +110,52 @@ func (p *Controller) GetScan() {
 	p.ServeJSON()
 }
 
+func (p *Controller) getBook() *Book {
+	var book Book
+	err := orm.NewOrm().
+		QueryTable(&book).
+		Filter("id", p.Ctx.Input.Param(":id")).
+		One(&book)
+	if err != nil {
+		beego.Error(err)
+		p.Abort("404")
+	}
+	return &book
+}
+
+func points2html(points []epub.NavPoint) string {
+	str := "<ol>"
+	for _, p := range points {
+		str += fmt.Sprintf(`<li><a href="%s" target="_blank">%s</a></li>`, p.Content.Src, p.Text)
+		str += points2html(p.Points)
+	}
+	str += "</ol>"
+	return str
+}
+
 //GetBookIndex show book index
-// @router /books/:uid:string [get]
+// @router /books/:id [get]
 func (p *Controller) GetBookIndex() {
-	uid := p.Ctx.Input.Param(":uid")
-	beego.Debug("show book uid=", uid)
-	p.ServeJSON()
+	book := p.getBook()
+	p.Data["title"] = book.Title
+	bk, err := epub.Open(book.File)
+	if err != nil {
+		beego.Error(err)
+		p.Abort("500")
+	}
+	defer bk.Close()
+
+	p.Data["ncx"] = template.HTML(points2html(bk.Ncx.Points))
+	p.Layout = "reading/layout.html"
+	p.TplName = "reading/book.html"
 }
 
 //GetBook show book page
-// @router /books/:uid:string/*.* [get]
+// @router /books/:id/* [get]
 func (p *Controller) GetBook() {
-	uid := p.Ctx.Input.Param(":uid")
-	name := fmt.Sprintf("%s.%s", p.Ctx.Input.Param(":ext"), p.Ctx.Input.Param(":path"))
+	uid := p.Ctx.Input.Param(":id")
+	name := p.Ctx.Input.Param(":splat")
+	// name := fmt.Sprintf("%s.%s", p.Ctx.Input.Param(":ext"), p.Ctx.Input.Param(":path"))
 	beego.Debug("show book uid=", uid, " name=", name)
 	p.ServeJSON()
 }
