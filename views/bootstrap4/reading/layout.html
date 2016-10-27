@@ -4,8 +4,10 @@
   {{template "../meta.html" .}}
   <title>{{.title}}-{{T .locale "site.subTitle"}}-{{T .locale "site.title"}}</title>
   </head>
-  <body>    
+  <body>
     <div class="container">
+      {{template "../header.html" .}}
+      {{template "../flash.html" .}}
       {{.LayoutContent}}
       {{template "../footer.html" .}}
     </div>
