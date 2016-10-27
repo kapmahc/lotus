@@ -40,7 +40,7 @@ func (p *Controller) GetBooks() {
 		size,
 		books,
 	)
-	p.Data["title"] = base.T(p.Locale, "reading-page.books")
+	p.Data["title"] = base.T(p.Locale, "reading-pages.books")
 	p.Layout = "reading/layout.html"
 	p.TplName = "reading/books.html"
 }

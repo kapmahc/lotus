@@ -6,7 +6,7 @@ import "github.com/kapmahc/lotus/engines/base"
 // @router /sign-in [get]
 func (p *Controller) GetSignIn() {
 	p.Data["form"] = p.NewForm(
-		"fm-install",
+		"fm-sign-in",
 		base.T(p.Locale, "auth-pages.sign-in"),
 		base.MethodPost,
 		p.URLFor("auth.Controller.PostSignIn"),
@@ -33,7 +33,31 @@ func (p *Controller) PostSignIn() {
 //GetSignUp sign up form
 // @router /sign-up [get]
 func (p *Controller) GetSignUp() {
-	p.TplName = "auth/sign-up.html"
+	p.Data["form"] = p.NewForm(
+		"fm-sign-up",
+		base.T(p.Locale, "auth-pages.sign-up"),
+		base.MethodPost,
+		p.URLFor("auth.Controller.PostSignUp"),
+		[]base.Field{
+			&base.TextField{
+				ID:    "name",
+				Label: base.T(p.Locale, "auth-attributes.user-name"),
+			},
+			&base.EmailField{
+				ID:    "email",
+				Label: base.T(p.Locale, "attributes.email"),
+			},
+			&base.PasswordField{
+				ID:    "password",
+				Label: base.T(p.Locale, "attributes.password"),
+			},
+			&base.PasswordField{
+				ID:    "passwordConfirmation",
+				Label: base.T(p.Locale, "attributes.passwordConfirmation"),
+			},
+		},
+	)
+	p.TplName = "auth/form.html"
 }
 
 //PostSignUp sign up form
@@ -45,7 +69,19 @@ func (p *Controller) PostSignUp() {
 //GetConfirm confirm form
 // @router /confirm [get]
 func (p *Controller) GetConfirm() {
-	p.TplName = "auth/confirm.html"
+	p.Data["form"] = p.NewForm(
+		"fm-confirm",
+		base.T(p.Locale, "auth-pages.confirm"),
+		base.MethodPost,
+		p.URLFor("auth.Controller.PostConfirm"),
+		[]base.Field{
+			&base.EmailField{
+				ID:    "email",
+				Label: base.T(p.Locale, "attributes.email"),
+			},
+		},
+	)
+	p.TplName = "auth/form.html"
 }
 
 //PostConfirm confirm
@@ -57,7 +93,19 @@ func (p *Controller) PostConfirm() {
 //GetForgotPassword forgot password form
 // @router /forgot-password [get]
 func (p *Controller) GetForgotPassword() {
-	p.TplName = "auth/forgot-password.html"
+	p.Data["form"] = p.NewForm(
+		"fm-forgot-password",
+		base.T(p.Locale, "auth-pages.forgot-password"),
+		base.MethodPost,
+		p.URLFor("auth.Controller.PostForgotPassword"),
+		[]base.Field{
+			&base.EmailField{
+				ID:    "email",
+				Label: base.T(p.Locale, "attributes.email"),
+			},
+		},
+	)
+	p.TplName = "auth/form.html"
 }
 
 //PostForgotPassword forgot password
@@ -69,7 +117,23 @@ func (p *Controller) PostForgotPassword() {
 //GetResetPassword reset password form
 // @router /reset-password [get]
 func (p *Controller) GetResetPassword() {
-	p.TplName = "auth/reset-password.html"
+	p.Data["form"] = p.NewForm(
+		"fm-reset-password",
+		base.T(p.Locale, "auth-pages.reset-password"),
+		base.MethodPost,
+		p.URLFor("auth.Controller.PostResetPassword"),
+		[]base.Field{
+			&base.PasswordField{
+				ID:    "password",
+				Label: base.T(p.Locale, "attributes.password"),
+			},
+			&base.PasswordField{
+				ID:    "passwordConfirmation",
+				Label: base.T(p.Locale, "attributes.passwordConfirmation"),
+			},
+		},
+	)
+	p.TplName = "auth/form.html"
 }
 
 //PostResetPassword reset password form

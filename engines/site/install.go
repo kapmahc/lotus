@@ -20,7 +20,7 @@ func (p *Controller) GetInstall() {
 		[]base.Field{
 			&base.TextField{
 				ID:    "name",
-				Label: base.T(p.Locale, "site-attributes.user-name"),
+				Label: base.T(p.Locale, "auth.attributes.user-name"),
 			},
 			&base.EmailField{
 				ID:    "email",

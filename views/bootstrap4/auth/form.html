@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="{{.locale}}">
+  <head>
+  {{template "../meta.html" .}}
+  <title>{{.form.Title}}-{{T .locale "site.subTitle"}}-{{T .locale "site.title"}}</title>
+  </head>
+  <body>
+    <div class="container">
+      {{template "../header.html" .}}
+      {{template "../flash.html" .}}
+      {{template "../form.html" .form}}
+      <br/>
+      <div class="row">
+        <ul>
+          <li><a href="{{urlfor "auth.Controller.GetSignIn"}}">{{T .locale "auth-pages.sign-in"}}</a></li>
+          <li><a href="{{urlfor "auth.Controller.GetSignUp"}}">{{T .locale "auth-pages.sign-up"}}</a></li>
+          <li><a href="{{urlfor "auth.Controller.GetConfirm"}}">{{T .locale "auth-pages.confirm"}}</a></li>
+          <li><a href="{{urlfor "auth.Controller.GetForgotPassword"}}">{{T .locale "auth-pages.forgot-password"}}</a></li>
+        </ul>
+      </div>
+      {{template "../footer.html" .}}
+    </div>
+  </body>
+</html>
