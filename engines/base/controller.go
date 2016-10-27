@@ -16,6 +16,16 @@ type Controller struct {
 	Locale string
 }
 
+//T translate
+func (p *Controller) T(code string, args ...interface{}) string {
+	return T(p.Locale, code, args)
+}
+
+//Error create error
+func (p *Controller) Error(code string, args ...interface{}) error {
+	return errors.New(T(p.Locale, code, args))
+}
+
 //Check check error
 func (p *Controller) Check(err error) {
 	if err != nil {
@@ -25,7 +35,7 @@ func (p *Controller) Check(err error) {
 }
 
 //ParseForm parse form
-func (p *Controller) ParseForm(form interface{}) (*beego.FlashData, bool) {
+func (p *Controller) ParseForm(form interface{}) (*beego.FlashData, error) {
 	flash := beego.NewFlash()
 	var valid validation.Validation
 	err := p.Controller.ParseForm(form)
@@ -43,11 +53,7 @@ func (p *Controller) ParseForm(form interface{}) (*beego.FlashData, bool) {
 			err = e
 		}
 	}
-
-	if err != nil {
-		flash.Error(err.Error())
-	}
-	return flash, err == nil
+	return flash, err
 }
 
 //NewForm new form model

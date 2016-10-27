@@ -67,3 +67,14 @@ type PasswordField struct {
 func (p *PasswordField) Type() string {
 	return "password"
 }
+
+//HiddenField hidden
+type HiddenField struct {
+	ID    string
+	Value string
+}
+
+//Type type
+func (p *HiddenField) Type() string {
+	return "hidden"
+}
