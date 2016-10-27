@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="{{.locale}}">
+  <head>
+  {{template "../meta.html" .}}
+  <title>{{.title}}-{{T .locale "site.subTitle"}}-{{T .locale "site.title"}}</title>
+  </head>
+  <body>    
+    <div class="container">
+      {{.LayoutContent}}
+      {{template "../footer.html" .}}
+    </div>
+  </body>
+</html>

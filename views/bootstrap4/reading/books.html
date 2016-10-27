@@ -1,0 +1,22 @@
+<div class="row">
+  <h3>{{.title}}</h3>
+  <hr/>
+  {{$view := T .locale "buttons.view"}}
+  {{range .pager.List}}
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-block">
+          <h4 class="card-title">{{.Title}}</h4>
+          <p class="card-text">
+            {{.Subject}} <br/>
+            {{.Publisher}} <br/>
+            {{.Author}} <br/>
+            {{.Description}} <br/>
+          </p>
+          <a href="#" class="btn btn-primary">{{$view}}</a>
+        </div>
+      </div>
+    </div>
+  {{end}}
+</div>
+{{template "../paginator.html" .pager}}

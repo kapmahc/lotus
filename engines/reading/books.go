@@ -1,6 +1,7 @@
 package reading
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -8,12 +9,41 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	"github.com/kapmahc/epub"
+	"github.com/kapmahc/lotus/engines/base"
 	uuid "github.com/satori/go.uuid"
 )
 
 //GetBooks list books
 // @router /books [get]
 func (p *Controller) GetBooks() {
+	o := orm.NewOrm()
+
+	const size = 60
+	page, _ := p.GetInt64("page", 1)
+	count, err := o.QueryTable(new(Book)).Count()
+	if err != nil {
+		beego.Error(err)
+	}
+
+	var books []Book
+	_, err = o.QueryTable(new(Book)).
+		OrderBy("-vote").
+		Offset((page - 1) * size).
+		Limit(size).
+		All(&books)
+	if err != nil {
+		beego.Error(err)
+	}
+
+	p.Data["pager"] = base.NewPaginator(
+		p.URLFor("reading.Controller.GetBooks"),
+		count,
+		page,
+		size,
+		books,
+	)
+	p.Data["title"] = base.T(p.Locale, "reading-page.books")
+	p.Layout = "reading/layout.html"
 	p.TplName = "reading/books.html"
 }
 
@@ -81,14 +111,19 @@ func (p *Controller) GetScan() {
 	p.ServeJSON()
 }
 
-//GetBook show book index
-// @router /:id:int/:name:string [get]
+//GetBookIndex show book index
+// @router /books/:uid:string [get]
+func (p *Controller) GetBookIndex() {
+	uid := p.Ctx.Input.Param(":uid")
+	beego.Debug("show book uid=", uid)
+	p.ServeJSON()
+}
+
+//GetBook show book page
+// @router /books/:uid:string/*.* [get]
 func (p *Controller) GetBook() {
-	book, err := epub.Open("tmp/books/")
-	if err != nil {
-		beego.Error(err)
-		p.Abort("500")
-	}
-	defer book.Close()
-	beego.Debug(book.Files())
+	uid := p.Ctx.Input.Param(":uid")
+	name := fmt.Sprintf("%s.%s", p.Ctx.Input.Param(":ext"), p.Ctx.Input.Param(":path"))
+	beego.Debug("show book uid=", uid, " name=", name)
+	p.ServeJSON()
 }
