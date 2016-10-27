@@ -14,9 +14,6 @@
   </body>
 </html>
 
-{{define "nav-link"}}
-{{end}}
-
 {{define "header"}}
 <nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
   <a href="{{urlfor "site.Controller.GetHome"}}" class="navbar-brand">
@@ -29,6 +26,21 @@
         <span class="sr-only">(current)</span>
       </a>
     </li>
+    {{$locale := .locale}}
+    {{range .navBar}}
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" id="top-nav-{{.ID}}-bar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{T $locale .Label}}
+        </a>
+        <div class="dropdown-menu" aria-labelledby="top-nav-{{.ID}}-bar">
+          {{range .Links}}
+              <a class="dropdown-item" href="{{urlfor .Href}}">
+                {{T $locale .Label}}
+              </a>
+          {{end}}
+        </div>
+      </li>
+    {{end}}
   </ul>
   <ul class="nav navbar-nav float-xs-right">
     <li class="nav-item">

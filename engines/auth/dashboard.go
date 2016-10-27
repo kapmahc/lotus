@@ -2,30 +2,34 @@ package auth
 
 import "github.com/kapmahc/lotus/engines/base"
 
-//Dashboard dashboard nav-links
-type Dashboard func(*User) (string, []base.Link)
+//NavBarFunc nav-bar
+type NavBarFunc func(*User) base.Dropdown
 
-var dashboards []Dashboard
+var dashboard []NavBarFunc
 
 //Register register dashboard
-func Register(args ...Dashboard) {
-	dashboards = append(dashboards, args...)
+func Register(args ...NavBarFunc) {
+	dashboard = append(dashboard, args...)
 }
 
 func init() {
-	Register(func(user *User) (string, []base.Link) {
-		return "auth-pages.profile", []base.Link{
-			{
-				Href:  "auth.Controller.GetInfo",
-				Label: "auth-pages.info",
-			},
-			{
-				Href:  "auth.Controller.GetChangePassword",
-				Label: "auth-pages.change-password",
-			},
-			{
-				Href:  "auth.Controller.GetLogs",
-				Label: "auth-pages.logs",
+	Register(func(user *User) base.Dropdown {
+		return base.Dropdown{
+			ID:    "auth",
+			Label: "auth-pages.profile",
+			Links: []base.Link{
+				{
+					Href:  "auth.Controller.GetInfo",
+					Label: "auth-pages.info",
+				},
+				{
+					Href:  "auth.Controller.GetChangePassword",
+					Label: "auth-pages.change-password",
+				},
+				{
+					Href:  "auth.Controller.GetLogs",
+					Label: "auth-pages.logs",
+				},
 			},
 		}
 	})
