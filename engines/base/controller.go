@@ -16,6 +16,14 @@ type Controller struct {
 	Locale string
 }
 
+//Redirect redirect with flash
+func (p *Controller) Redirect(flash *beego.FlashData, action string, args ...interface{}) {
+	if flash != nil {
+		flash.Store(&p.Controller)
+	}
+	p.Controller.Redirect(p.URLFor(action, args...), 302)
+}
+
 //T translate
 func (p *Controller) T(code string, args ...interface{}) string {
 	return T(p.Locale, code, args)

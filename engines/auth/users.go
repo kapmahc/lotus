@@ -88,12 +88,12 @@ func (p *Controller) PostSignUp() {
 		}
 		p.Check(err)
 		p.sendMail(actConfirm, user.Email, user.UID)
-		p.Redirect(p.URLFor("auth.Controller.GetSignIn"), 302)
+		fl.Notice(p.T("auth-pages.confirm-success"))
+		p.Redirect(fl, "auth.Controller.GetSignIn")
 		return
 	}
 	fl.Error(er.Error())
-	fl.Store(&p.Controller.Controller)
-	p.Redirect(p.URLFor("auth.Controller.GetSignIn"), 302)
+	p.Redirect(fl, "auth.Controller.GetSignUp")
 }
 
 //GetConfirm confirm form
@@ -102,8 +102,10 @@ func (p *Controller) GetConfirm() {
 	token := p.GetString("token")
 	if token != "" {
 		cm, er := base.ParseToken([]byte(token))
-		if cm.Get("act").(string) != actConfirm {
-			er = p.Error("auth-logs.bad-token")
+		if er == nil {
+			if cm.Get("act").(string) != actConfirm {
+				er = p.Error("auth-logs.bad-token")
+			}
 		}
 		var user *User
 		if er == nil {
@@ -117,7 +119,7 @@ func (p *Controller) GetConfirm() {
 		if er == nil {
 			ConfirmUser(user)
 			AddLog(user.ID, p.T("auth-logs.confirm"))
-			p.Redirect(p.URLFor("auth.Controller.GetSignIn"), 302)
+			p.Redirect(nil, "auth.Controller.GetSignIn")
 			return
 		}
 	}
@@ -155,12 +157,12 @@ func (p *Controller) PostConfirm() {
 
 	if er == nil {
 		p.sendMail(actConfirm, user.Email, user.UID)
-		p.Redirect(p.URLFor("auth.Controller.GetSignIn"), 302)
+		fl.Notice(p.T("auth-pages.confirm-success"))
+		p.Redirect(fl, "auth.Controller.GetSignIn")
 		return
 	}
 	fl.Error(er.Error())
-	fl.Store(&p.Controller.Controller)
-	p.Redirect(p.URLFor("auth.Controller.GetConfirm"), 302)
+	p.Redirect(fl, "auth.Controller.GetConfirm")
 }
 
 //GetForgotPassword forgot password form
@@ -194,12 +196,12 @@ func (p *Controller) PostForgotPassword() {
 
 	if er == nil {
 		p.sendMail(actResetPassword, user.Email, user.UID)
-		p.Redirect(p.URLFor("auth.Controller.GetSignIn"), 302)
+		fl.Notice(p.T("auth-pages.forgot-password-success"))
+		p.Redirect(fl, "auth.Controller.GetSignIn")
 		return
 	}
 	fl.Error(er.Error())
-	fl.Store(&p.Controller.Controller)
-	p.Redirect(p.URLFor("auth.Controller.GetResetPassword"), 302)
+	p.Redirect(fl, "auth.Controller.GetResetPassword")
 }
 
 //GetResetPassword reset password form
@@ -256,11 +258,11 @@ func (p *Controller) PostResetPassword() {
 			AddLog(user.ID, p.T("auth-logs.reset-password"))
 		}
 		p.Check(err)
-		p.Redirect(p.URLFor("auth.Controller.GetSignIn"), 302)
+		fl.Notice(p.T("auth-pages.reset-password-success"))
+		p.Redirect(fl, "auth.Controller.GetSignIn")
 		return
 	}
 
 	fl.Error(er.Error())
-	fl.Store(&p.Controller.Controller)
-	p.Redirect(p.URLFor("auth.Controller.GetSignIn"), 302)
+	p.Redirect(fl, "auth.Controller.GetResetPassword")
 }

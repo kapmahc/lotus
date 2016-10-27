@@ -63,12 +63,12 @@ func (p *Controller) PostInstall() {
 			Set("site.install", time.Now(), false)
 		}
 		p.Check(err)
-		p.Redirect(p.URLFor("auth.Controller.GetSignIn"), 302)
+		p.Redirect(nil, "auth.Controller.GetSignIn")
 		return
 	}
 	fl.Error(er.Error())
 	fl.Store(&p.Controller.Controller)
-	p.Redirect(p.URLFor("site.Controller.GetInstall"), 302)
+	p.Redirect(fl, "site.Controller.GetInstall")
 }
 
 func (p *Controller) mustEmptyDb() {

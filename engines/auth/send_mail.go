@@ -18,7 +18,7 @@ const (
 
 func (p *Controller) sendMail(act, email, uid string) {
 	cm := jws.Claims{}
-	cm.Set("action", act)
+	cm.Set("act", act)
 	cm.Set("uid", uid)
 	tkn, err := base.SumToken(cm, 1)
 	p.Check(err)
