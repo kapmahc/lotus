@@ -8,8 +8,9 @@
     {{end}}
   </p>
   <p>
-    &copy; {{T $locale "site.copyright"}}
-    &middot; <a href="#">Privacy</a>
-    &middot; <a href="#">Terms</a>
+    &copy; {{T $locale "site.copyright"}}    
+    {{range NL .locale "bottom"}}
+      &middot; <a href="{{.Href}}">{{.Label}}</a>
+    {{end}}
   </p>
 </footer>
