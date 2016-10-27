@@ -5,16 +5,37 @@
     <title>{{.title}}-{{T .locale "site.subTitle"}}-{{T .locale "site.title"}}</title>
   </head>
   <body>
-    {{template "../header.html" .}}
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-3">
-        </div>
-        <div class="col-md-9">
-          {{template "../flash.html" .}}
-        </div>
-      </div>
+    {{template "header" .}}
+    <div class="container">
+      {{template "../flash.html" .}}
+      {{.LayoutContent}}
       {{template "../footer.html" .}}
     </div>
   </body>
 </html>
+
+{{define "nav-link"}}
+{{end}}
+
+{{define "header"}}
+<nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
+  <a href="{{urlfor "site.Controller.GetHome"}}" class="navbar-brand">
+    {{T .locale "site.subTitle"}}
+  </a>
+  <ul class="nav navbar-nav">
+    <li class="nav-item">
+      <a class="nav-link" href="{{urlfor "site.Controller.GetHome"}}">
+        {{T .locale "site-pages.home"}}
+        <span class="sr-only">(current)</span>
+      </a>
+    </li>
+  </ul>
+  <ul class="nav navbar-nav float-xs-right">
+    <li class="nav-item">
+      <a class="nav-link" href="{{urlfor "auth.Controller.GetSignOut"}}">
+        {{T .locale "auth-pages.sign-out"}}
+      </a>
+    </li>
+  </ul>
+</nav>
+{{end}}

@@ -25,7 +25,7 @@ func (p *Controller) GetSignIn() {
 			},
 		},
 	)
-	p.TplName = "auth/form.html"
+	p.TplName = "auth/non-sign-in.html"
 }
 
 //PostSignIn sign in
@@ -40,7 +40,7 @@ func (p *Controller) PostSignIn() {
 	if er == nil {
 		p.SetSession("uid", user.UID)
 		p.SetSession("name", user.Name)
-		p.Redirect(fl, "auth.Controller.GetProfile")
+		p.Redirect(fl, "auth.Controller.GetLogs")
 		return
 	}
 	fl.Error(er.Error())
@@ -82,7 +82,7 @@ func (p *Controller) GetSignUp() {
 			},
 		},
 	)
-	p.TplName = "auth/form.html"
+	p.TplName = "auth/non-sign-in.html"
 }
 
 //PostSignUp sign up form
@@ -156,7 +156,7 @@ func (p *Controller) GetConfirm() {
 			},
 		},
 	)
-	p.TplName = "auth/form.html"
+	p.TplName = "auth/non-sign-in.html"
 }
 
 //PostConfirm confirm
@@ -200,7 +200,7 @@ func (p *Controller) GetForgotPassword() {
 			},
 		},
 	)
-	p.TplName = "auth/form.html"
+	p.TplName = "auth/non-sign-in.html"
 }
 
 //PostForgotPassword forgot password
@@ -247,7 +247,7 @@ func (p *Controller) GetResetPassword() {
 			},
 		},
 	)
-	p.TplName = "auth/form.html"
+	p.TplName = "auth/non-sign-in.html"
 }
 
 //PostResetPassword reset password form
