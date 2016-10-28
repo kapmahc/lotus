@@ -37,6 +37,14 @@ func init() {
 						Href:  "site.Controller.GetAdminNavBar",
 						Label: "site-pages.admin-nav-bar",
 					},
+					{
+						Href:  "site.Controller.IndexLeavewords",
+						Label: "site-pages.leavewords",
+					},
+					{
+						Href:  "site.Controller.IndexNotices",
+						Label: "site-pages.notices",
+					},
 				},
 			}
 		}
