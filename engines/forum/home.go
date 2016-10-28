@@ -1,10 +1,10 @@
 package forum
 
-import "github.com/astaxie/beego"
+import "github.com/kapmahc/lotus/engines/auth"
 
 //Controller forum controller
 type Controller struct {
-	beego.Controller
+	auth.BaseController
 }
 
 //GetHome homepage
