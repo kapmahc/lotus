@@ -48,6 +48,21 @@ func (p *Controller) GetInfo() {
 // @router /info [post]
 func (p *Controller) PostInfo() {
 	p.MustSignIn()
+	var fm fmInfo
+	fl, er := p.ParseForm(&fm)
+
+	if er == nil {
+		user := p.CurrentUser()
+		user.Home = fm.Home
+		user.Logo = fm.Logo
+		user.Name = fm.Name
+		_, err := orm.NewOrm().Update(user, "updated_at", "name", "home", "logo")
+		p.Check(err)
+		fl.Notice(p.T("site-pages.success"))
+	} else {
+		fl.Error(er.Error())
+	}
+	p.Redirect(fl, "auth.Controller.GetInfo")
 }
 
 //GetChangePassword change-password page
@@ -86,8 +101,29 @@ func (p *Controller) GetChangePassword() {
 // @router /change-password [post]
 func (p *Controller) PostChangePassword() {
 	p.MustSignIn()
-	p.Data["title"] = p.T("auth-pages.change-password")
-	p.TplName = "auth/change-password.html"
+	var fm fmChangePassword
+	fl, er := p.ParseForm(&fm)
+	if er == nil {
+		if fm.NewPassword != fm.PasswordConfirmation {
+			er = p.Error("auth-logs.passwords-not-match")
+		}
+	}
+	user := p.CurrentUser()
+	if er == nil {
+		if !user.IsPassword(fm.CurrentPassword) {
+			er = p.Error("auth-logs.email-password-not-match")
+		}
+	}
+
+	if er == nil {
+		user.SetPassword(fm.NewPassword)
+		_, err := orm.NewOrm().Update(user, "updated_at", "password")
+		p.Check(err)
+		fl.Notice(p.T("site-pages.success"))
+	} else {
+		fl.Error(er.Error())
+	}
+	p.Redirect(fl, "auth.Controller.GetChangePassword")
 }
 
 //GetLogs logs page

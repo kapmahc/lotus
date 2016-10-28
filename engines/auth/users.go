@@ -33,15 +33,22 @@ func (p *Controller) GetSignIn() {
 func (p *Controller) PostSignIn() {
 	var fm fmSignIn
 	fl, er := p.ParseForm(&fm)
-	var user *User
+
 	if er == nil {
-		user, er = SignIn(fm.Email, fm.Password)
-	}
-	if er == nil {
-		p.SetSession("uid", user.UID)
-		p.SetSession("name", user.Name)
-		p.Redirect(fl, "auth.Controller.GetLogs")
-		return
+		var user User
+		err := orm.NewOrm().
+			QueryTable(&user).
+			Filter("provider_type", ProvideByEmail).
+			Filter("provider_id", fm.Email).One(&user)
+
+		if err == nil && user.IsPassword(fm.Password) {
+			AddLog(user.ID, p.T("auth-logs.sign-in"))
+			p.SetSession("uid", user.UID)
+			p.SetSession("name", user.Name)
+			p.Redirect(fl, "auth.Controller.GetLogs")
+			return
+		}
+		er = p.Error("auth-logs.email-password-not-match")
 	}
 	fl.Error(er.Error())
 	p.Redirect(fl, "auth.Controller.GetSignIn")

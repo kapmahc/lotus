@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"errors"
 	"fmt"
 	"time"
 
@@ -36,22 +35,6 @@ func ConfirmUser(user *User) {
 	if _, err := orm.NewOrm().Update(user, "confirmed_at", "updated_at"); err != nil {
 		beego.Error(err)
 	}
-}
-
-//SignIn sign in
-func SignIn(email, password string) (*User, error) {
-	var u User
-	err := orm.NewOrm().
-		QueryTable(&u).
-		Filter("provider_type", ProvideByEmail).
-		Filter("provider_id", email).One(&u)
-
-	if err == nil {
-		if u.IsPassword(password) {
-			err = errors.New("email and password not match")
-		}
-	}
-	return &u, err
 }
 
 //AddEmailUser add email user
