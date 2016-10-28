@@ -33,7 +33,7 @@ func (p *Controller) DestroyLeaveword() {
 	p.Check(err)
 
 	p.Data["json"] = map[string]string{
-		"to": p.URLFor("site.Controller.IndexLeaveword"),
+		"to": p.URLFor("site.Controller.IndexLeavewords"),
 	}
 	p.ServeJSON()
 }
@@ -41,7 +41,7 @@ func (p *Controller) DestroyLeaveword() {
 //CreateLeaveword create leaveword
 // @router /leavewords [post]
 func (p *Controller) CreateLeaveword() {
-	var fm fmLeaveword
+	var fm fmContent
 	fl, er := p.ParseForm(&fm)
 	if er == nil {
 		lw := LeaveWord{Content: fm.Content}
@@ -58,7 +58,7 @@ func (p *Controller) CreateLeaveword() {
 // @router /leavewords/new [get]
 func (p *Controller) NewLeaveword() {
 	p.Data["form"] = p.NewForm(
-		"fm-admin-base",
+		"fm-new-leaveword",
 		p.T("site-pages.new-leaveword"),
 		base.MethodPost,
 		p.URLFor("site.Controller.CreateLeaveword"),
@@ -70,5 +70,6 @@ func (p *Controller) NewLeaveword() {
 			},
 		},
 	)
+	p.Layout = ""
 	p.TplName = "auth/non-sign-in.html"
 }

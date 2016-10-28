@@ -5,6 +5,8 @@ import "html/template"
 const (
 	//MethodPost post method
 	MethodPost = "post"
+	//MethodPatch patch method
+	MethodPatch = "patch"
 
 	//TypeMarkdown markdown type
 	TypeMarkdown = "markdown"
@@ -85,7 +87,7 @@ func (p *PasswordField) Type() string {
 //HiddenField hidden
 type HiddenField struct {
 	ID    string
-	Value string
+	Value interface{}
 }
 
 //Type type

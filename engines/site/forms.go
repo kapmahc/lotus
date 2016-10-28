@@ -7,7 +7,7 @@ type fmInstall struct {
 	PasswordConfirmation string `form:"passwordConfirmation"`
 }
 
-type fmLeaveword struct {
+type fmContent struct {
 	Content string `form:"content" valid:"Required"`
 }
 

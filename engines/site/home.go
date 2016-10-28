@@ -10,6 +10,6 @@ type Controller struct {
 //GetHome homepage
 // @router / [get]
 func (p *Controller) GetHome() {
-
+	p.Layout = ""
 	p.TplName = "site/index.html"
 }
