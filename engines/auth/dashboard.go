@@ -3,7 +3,7 @@ package auth
 import "github.com/kapmahc/lotus/engines/base"
 
 //NavBarFunc nav-bar
-type NavBarFunc func(*User) base.Dropdown
+type NavBarFunc func(*User) *base.Dropdown
 
 var dashboard []NavBarFunc
 
@@ -13,8 +13,8 @@ func Register(args ...NavBarFunc) {
 }
 
 func init() {
-	Register(func(user *User) base.Dropdown {
-		return base.Dropdown{
+	Register(func(user *User) *base.Dropdown {
+		return &base.Dropdown{
 			ID:    "auth",
 			Label: "auth-pages.profile",
 			Links: []base.Link{

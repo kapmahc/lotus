@@ -20,7 +20,7 @@ func (p *Controller) GetInstall() {
 		[]base.Field{
 			&base.TextField{
 				ID:    "name",
-				Label: p.T("auth.attributes.user-name"),
+				Label: p.T("auth-attributes.user-name"),
 			},
 			&base.EmailField{
 				ID:    "email",

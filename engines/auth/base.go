@@ -24,10 +24,12 @@ func (p *BaseController) Prepare() {
 func (p *BaseController) Dashboard() {
 	p.MustSignIn()
 	user := p.CurrentUser()
-	var links []base.Dropdown
+	var links []*base.Dropdown
 	for _, fn := range dashboard {
 		lk := fn(user)
-		links = append(links, lk)
+		if lk != nil {
+			links = append(links, lk)
+		}
 	}
 	p.Data["navBar"] = links
 	p.Layout = "auth/dashboard.html"

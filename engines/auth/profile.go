@@ -134,7 +134,10 @@ func (p *Controller) GetLogs() {
 	p.Dashboard()
 	p.Data["title"] = p.T("auth-pages.logs")
 	var logs []Log
-	_, err := orm.NewOrm().QueryTable(new(Log)).OrderBy("-id").Limit(120).All(&logs)
+	_, err := orm.NewOrm().
+		QueryTable(new(Log)).
+		Filter("user_id", p.CurrentUser().ID).
+		OrderBy("-id").Limit(120).All(&logs)
 	p.Check(err)
 	p.Data["logs"] = logs
 	p.TplName = "auth/logs.html"
