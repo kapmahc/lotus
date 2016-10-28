@@ -35,7 +35,7 @@ func init() {
 					},
 					{
 						Href:  "site.Controller.GetAdminNavBar",
-						Label: "site-pages.admin-navBar",
+						Label: "site-pages.admin-nav-bar",
 					},
 				},
 			}

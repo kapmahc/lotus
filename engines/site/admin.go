@@ -3,6 +3,7 @@ package site
 import (
 	"fmt"
 	"runtime"
+	"strings"
 
 	"github.com/astaxie/beego/orm"
 	"github.com/kapmahc/lotus/engines/auth"
@@ -217,8 +218,81 @@ func (p *Controller) GetAdminUsers() {
 	p.TplName = "site/admin/users.html"
 }
 
+//LinkSeperator link seperator
+const LinkSeperator = " = "
+
 //GetAdminNavBar nav-bar
 // @router /admin/nav-bar [get]
 func (p *Controller) GetAdminNavBar() {
+	p.Dashboard()
+	p.MustAdmin()
+	title := p.T("site-pages.admin-nav-bar")
+	p.Data["title"] = title
 
+	link2str := func(links []base.Link) string {
+		var s string
+		for _, l := range links {
+			s += fmt.Sprintf("%s%s%s\n", l.Href, LinkSeperator, l.Label)
+		}
+		return s
+	}
+
+	p.Data["form"] = p.NewForm(
+		"fm-admin-nav-bar",
+		title,
+		base.MethodPost,
+		p.URLFor("site.Controller.PostAdminNavBar"),
+		[]base.Field{
+			&base.Textarea{
+				ID:     "header",
+				Label:  p.T("site-attributes.header-links"),
+				Value:  link2str(NavLinks(p.Locale, "header")),
+				Helper: p.T("site-pages.one-link-per-line"),
+			},
+			&base.Textarea{
+				ID:     "footer",
+				Label:  p.T("site-attributes.footer-links"),
+				Value:  link2str(NavLinks(p.Locale, "footer")),
+				Helper: p.T("site-pages.one-link-per-line"),
+			},
+		},
+	)
+	p.TplName = "auth/form.html"
+}
+
+//PostAdminNavBar nav-bar
+// @router /admin/nav-bar [post]
+func (p *Controller) PostAdminNavBar() {
+	p.MustAdmin()
+	var fm fmNavBar
+	fl, er := p.ParseForm(&fm)
+
+	save := func(code, lines string) error {
+		var links []base.Link
+		for _, line := range strings.Split(lines, "\n") {
+			ss := strings.Split(line, LinkSeperator)
+			if len(ss) != 2 {
+				return p.Error("site-logs.bad-format")
+			}
+			links = append(links, base.Link{Href: ss[0], Label: ss[1]})
+		}
+		Set(fmt.Sprintf("%s://nav-links/%s", p.Locale, code), links, false)
+		return nil
+	}
+	if er == nil {
+		er = save("header", fm.Header)
+	}
+	if er == nil {
+		er = save("footer", fm.Footer)
+	}
+
+	if er == nil {
+		user := p.CurrentUser()
+		user.Log(p.T("site-logs.update-nav-bar"))
+
+		fl.Notice(p.T("site-pages.success"))
+	} else {
+		fl.Error(er.Error())
+	}
+	p.Redirect(fl, "site.Controller.GetAdminNavBar")
 }

@@ -24,3 +24,8 @@ type fmSeo struct {
 	Google string `form:"google"`
 	Baidu  string `form:"baidu"`
 }
+
+type fmNavBar struct {
+	Header string `form:"header"`
+	Footer string `form:"footer"`
+}
