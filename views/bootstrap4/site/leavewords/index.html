@@ -1,0 +1,18 @@
+<h3>{{.title}}</h3>
+<hr/>
+{{$locale := .locale}}
+{{range .leavewords}}
+  <blockquote class="blockquote">
+    <p class="mb-0 markdown">
+      {{.Content}}
+    </p>
+    <footer class="blockquote-footer">
+      {{.CreatedAt}}
+      <cite>
+        <button id="btn-remove-{{urlfor "site.Controller.DestroyLeaveword" ":id" .ID}}" class="btn btn-sm btn-danger">
+          {{T $locale "buttons.remove"}}
+        </button>
+      </cite>
+    </footer>
+  </blockquote>
+{{end}}

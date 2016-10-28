@@ -35,8 +35,7 @@ create index idx_notices_lang on notices(lang);
 create table leave_words(
   id serial primary key,
   content text not null,
-  created_at timestamp without time zone not null default now(),
-  updated_at timestamp without time zone not null
+  created_at timestamp without time zone not null default now()
 );
 
 create table attachments(

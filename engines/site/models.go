@@ -9,9 +9,9 @@ import (
 
 //LeaveWord leave word
 type LeaveWord struct {
-	ID        uint      `json:"id"`
+	ID        uint      `json:"id" orm:"column(id)"`
 	Content   string    `json:"content"`
-	CreatedAt time.Time `json:"created_at"`
+	CreatedAt time.Time `json:"created_at" orm:"auto_now_add"`
 }
 
 //TableName table name

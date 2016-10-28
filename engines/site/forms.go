@@ -7,6 +7,10 @@ type fmInstall struct {
 	PasswordConfirmation string `form:"passwordConfirmation"`
 }
 
+type fmLeaveword struct {
+	Content string `form:"content" valid:"Required"`
+}
+
 type fmBase struct {
 	Title       string `form:"title" valid:"Required"`
 	SubTitle    string `form:"subTitle" valid:"Required; MaxSize(32)"`

@@ -18,6 +18,7 @@ func (p *BaseController) Prepare() {
 	beego.ReadFromRequest(&p.Controller.Controller)
 	p.SetLocale()
 	p.SetCurrentUser()
+	p.Data["xsrf_token"] = p.XSRFToken()
 }
 
 //Dashboard prepare dashboard
