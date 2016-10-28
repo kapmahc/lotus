@@ -1,5 +1,11 @@
 package site
 
+import (
+	"text/template"
+
+	"github.com/astaxie/beego"
+)
+
 //GetBaidu baidu verify file
 // @router /baidu_verify_:id([\w]+).html [get]
 func (p *Controller) GetBaidu() {
@@ -25,9 +31,27 @@ func (p *Controller) GetGoogle() {
 }
 
 //GetRobots robots.txt
+//See http://www.robotstxt.org/robotstxt.html for documentation on how to use the robots.txt file
 // @router /robots.txt [get]
 func (p *Controller) GetRobots() {
-	// TODO
+	txt := `
+User-agent: *
+Disallow:
+
+SITEMAP: {{.Home}}/sitemap.xml.gz
+`
+	tpl, err := template.New("").Parse(txt)
+	if err == nil {
+		err = tpl.Execute(p.Ctx.ResponseWriter, struct {
+			Home string
+		}{
+			Home: beego.AppConfig.String("homeurl"),
+		})
+	}
+	if err != nil {
+		beego.Error(err)
+		p.Abort("500")
+	}
 }
 
 //GetSitemap sitemap.xml.gz
