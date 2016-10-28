@@ -3,21 +3,29 @@ package site
 //GetBaidu baidu verify file
 // @router /baidu_verify_:id([\w]+).html [get]
 func (p *Controller) GetBaidu() {
-	// TODO
-	p.Data["code"] = p.Ctx.Input.Param(":id")
+	var code string
+	Get("baidu.verify.code", &code)
+	if code != p.Ctx.Input.Param(":id") {
+		p.Abort("404")
+	}
+	p.Data["code"] = code
 	p.TplName = "site/baidu.html"
 }
 
 //GetGoogle google verify file
 // @router /google:id([\w]+).html [get]
 func (p *Controller) GetGoogle() {
-	// TODO
-	p.Data["code"] = p.Ctx.Input.Param(":id")
+	var code string
+	Get("google.verify.code", &code)
+	if code != p.Ctx.Input.Param(":id") {
+		p.Abort("404")
+	}
+	p.Data["code"] = code
 	p.TplName = "site/google.html"
 }
 
 //GetRobots robots.txt
-// @router /sitemap.xml.gz [get]
+// @router /robots.txt [get]
 func (p *Controller) GetRobots() {
 	// TODO
 }

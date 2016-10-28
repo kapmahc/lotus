@@ -48,8 +48,7 @@ func (p *Controller) GetBooks() {
 //GetScan scan books
 // @router /scan [get]
 func (p *Controller) GetScan() {
-	// TODO admin?
-
+	p.MustAdmin()
 	goworker.Enqueue(&goworker.Job{
 		Queue: base.QueueLow,
 		Payload: goworker.Payload{
