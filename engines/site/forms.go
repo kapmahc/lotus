@@ -29,6 +29,14 @@ type fmSeo struct {
 	Baidu  string `form:"baidu"`
 }
 
+type fmSMTP struct {
+	Host                 string `form:"host" valid:"Required"`
+	Port                 int    `form:"port" valid:"Required"`
+	Username             string `form:"username" valid:"Required"`
+	Password             string `form:"password" valid:"Required"`
+	PasswordConfirmation string `form:"passwordConfirmation"`
+}
+
 type fmNavBar struct {
 	Header string `form:"header"`
 	Footer string `form:"footer"`

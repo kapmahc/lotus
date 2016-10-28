@@ -26,6 +26,10 @@ func init() {
 						Label: "site-pages.admin-seo",
 					},
 					{
+						Href:  "site.Controller.GetAdminSMTP",
+						Label: "site-pages.admin-smtp",
+					},
+					{
 						Href:  "site.Controller.GetAdminStatus",
 						Label: "site-pages.admin-status",
 					},

@@ -45,6 +45,16 @@
         {{end}}
         {{template "form-field-helper" .}}
       </div>
+    {{else if eq .Type "select"}}
+      <div class="form-group">
+        <label for="{{.ID}}">{{.Label}}</label>
+        <select value="{{.Value}}" class="form-control" name="{{.ID}}">
+          {{range $k, $v := .Options}}
+            <option value="{{$k}}">{{$v}}</option>
+          {{end}}
+        </select>
+        {{template "form-field-helper" .}}
+      </div>
     {{else}}
       <input type="hidden" name="{{.ID}}" value="{{.Value}}"/>
     {{end}}

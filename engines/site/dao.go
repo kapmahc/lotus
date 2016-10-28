@@ -19,7 +19,7 @@ func Set(k string, v interface{}, f bool) {
 	}
 	val := buf.Bytes()
 	if f {
-		val, err = Encrypt(buf.Bytes())
+		val, err = Encrypt(val)
 		if err != nil {
 			beego.Error(err)
 			return

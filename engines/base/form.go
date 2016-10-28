@@ -30,6 +30,21 @@ type Field interface {
 	Type() string
 }
 
+//Select select
+type Select struct {
+	ID       string
+	Label    string
+	Value    interface{}
+	Readonly bool
+	Options  map[interface{}]interface{}
+	Helper   string
+}
+
+//Type type
+func (p *Select) Type() string {
+	return "select"
+}
+
 //TextField text
 type TextField struct {
 	ID       string

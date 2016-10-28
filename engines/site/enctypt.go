@@ -4,6 +4,8 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"
+
+	"github.com/astaxie/beego"
 )
 
 var aesCip cipher.Block
@@ -32,4 +34,12 @@ func Decrypt(buf []byte) ([]byte, error) {
 	val := make([]byte, cln)
 	cfb.XORKeyStream(val, ct)
 	return val, nil
+}
+
+func init() {
+	var err error
+	aesCip, err = aes.NewCipher([]byte(beego.AppConfig.String("aeskey")))
+	if err != nil {
+		beego.Error(err)
+	}
 }
