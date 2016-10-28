@@ -68,7 +68,7 @@ func (p *Controller) GetSitemap() {
 }
 
 //GetRss rss.atom
-// @router /rss-:lang([-\w]+).atom [get]
+// @router /rss/:lang([-\w]+).atom [get]
 func (p *Controller) GetRss() {
 	lang := p.Ctx.Input.Param(":lang")
 	if !i18n.IsExist(lang) {
