@@ -12,13 +12,21 @@
     {{if eq .Type "text"}}
       <div class="form-group">
         <label for="{{.ID}}">{{.Label}}</label>
-        <input type="text" class="form-control" name="{{.ID}}" aria-describedby="{{.ID}}Help"/>
+        {{if .Readonly}}
+          <input type="text" value="{{.Value}}" readonly class="form-control" name="{{.ID}}" aria-describedby="{{.ID}}Help"/>
+        {{else}}
+          <input type="text" value="{{.Value}}" class="form-control" name="{{.ID}}" aria-describedby="{{.ID}}Help"/>
+        {{end}}
         {{template "form-field-helper" .}}
       </div>
     {{else if eq .Type "email"}}
       <div class="form-group">
         <label for="{{.ID}}">{{.Label}}</label>
-        <input type="email" class="form-control" name="{{.ID}}" aria-describedby="{{.ID}}Help"/>
+        {{if .Readonly}}
+          <input readonly value="{{.Value}}" type="email" class="form-control" name="{{.ID}}" aria-describedby="{{.ID}}Help"/>
+        {{else}}
+          <input value="{{.Value}}" type="email" class="form-control" name="{{.ID}}" aria-describedby="{{.ID}}Help"/>
+        {{end}}
         {{template "form-field-helper" .}}
       </div>
     {{else if eq .Type "password"}}

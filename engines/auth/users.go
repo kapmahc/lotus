@@ -11,17 +11,17 @@ import (
 func (p *Controller) GetSignIn() {
 	p.Data["form"] = p.NewForm(
 		"fm-sign-in",
-		base.T(p.Locale, "auth-pages.sign-in"),
+		p.T("auth-pages.sign-in"),
 		base.MethodPost,
 		p.URLFor("auth.Controller.PostSignIn"),
 		[]base.Field{
 			&base.EmailField{
 				ID:    "email",
-				Label: base.T(p.Locale, "attributes.email"),
+				Label: p.T("attributes.email"),
 			},
 			&base.PasswordField{
 				ID:    "password",
-				Label: base.T(p.Locale, "attributes.password"),
+				Label: p.T("attributes.password"),
 			},
 		},
 	)
@@ -60,25 +60,27 @@ func (p *Controller) GetSignUp() {
 
 	p.Data["form"] = p.NewForm(
 		"fm-sign-up",
-		base.T(p.Locale, "auth-pages.sign-up"),
+		p.T("auth-pages.sign-up"),
 		base.MethodPost,
 		p.URLFor("auth.Controller.PostSignUp"),
 		[]base.Field{
 			&base.TextField{
 				ID:    "name",
-				Label: base.T(p.Locale, "auth-attributes.user-name"),
+				Label: p.T("auth-attributes.user-name"),
 			},
 			&base.EmailField{
 				ID:    "email",
-				Label: base.T(p.Locale, "attributes.email"),
+				Label: p.T("attributes.email"),
 			},
 			&base.PasswordField{
-				ID:    "password",
-				Label: base.T(p.Locale, "attributes.password"),
+				ID:     "password",
+				Label:  p.T("attributes.password"),
+				Helper: p.T("auth-pages.password-must-in-size"),
 			},
 			&base.PasswordField{
-				ID:    "passwordConfirmation",
-				Label: base.T(p.Locale, "attributes.passwordConfirmation"),
+				ID:     "passwordConfirmation",
+				Label:  p.T("attributes.passwordConfirmation"),
+				Helper: p.T("auth-pages.passwords-must-match"),
 			},
 		},
 	)
@@ -146,13 +148,13 @@ func (p *Controller) GetConfirm() {
 
 	p.Data["form"] = p.NewForm(
 		"fm-confirm",
-		base.T(p.Locale, "auth-pages.confirm"),
+		p.T("auth-pages.confirm"),
 		base.MethodPost,
 		p.URLFor("auth.Controller.PostConfirm"),
 		[]base.Field{
 			&base.EmailField{
 				ID:    "email",
-				Label: base.T(p.Locale, "attributes.email"),
+				Label: p.T("attributes.email"),
 			},
 		},
 	)
@@ -190,13 +192,13 @@ func (p *Controller) PostConfirm() {
 func (p *Controller) GetForgotPassword() {
 	p.Data["form"] = p.NewForm(
 		"fm-forgot-password",
-		base.T(p.Locale, "auth-pages.forgot-password"),
+		p.T("auth-pages.forgot-password"),
 		base.MethodPost,
 		p.URLFor("auth.Controller.PostForgotPassword"),
 		[]base.Field{
 			&base.EmailField{
 				ID:    "email",
-				Label: base.T(p.Locale, "attributes.email"),
+				Label: p.T("attributes.email"),
 			},
 		},
 	)
@@ -229,7 +231,7 @@ func (p *Controller) PostForgotPassword() {
 func (p *Controller) GetResetPassword() {
 	p.Data["form"] = p.NewForm(
 		"fm-reset-password",
-		base.T(p.Locale, "auth-pages.reset-password"),
+		p.T("auth-pages.reset-password"),
 		base.MethodPost,
 		p.URLFor("auth.Controller.PostResetPassword"),
 		[]base.Field{
@@ -238,12 +240,14 @@ func (p *Controller) GetResetPassword() {
 				Value: p.GetString("token"),
 			},
 			&base.PasswordField{
-				ID:    "password",
-				Label: base.T(p.Locale, "attributes.password"),
+				ID:     "password",
+				Label:  p.T("attributes.password"),
+				Helper: p.T("auth-pages.password-must-in-size"),
 			},
 			&base.PasswordField{
-				ID:    "passwordConfirmation",
-				Label: base.T(p.Locale, "attributes.passwordConfirmation"),
+				ID:     "passwordConfirmation",
+				Label:  p.T("attributes.passwordConfirmation"),
+				Helper: p.T("auth-pages.passwords-must-match"),
 			},
 		},
 	)

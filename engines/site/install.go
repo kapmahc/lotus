@@ -14,25 +14,25 @@ func (p *Controller) GetInstall() {
 	p.mustEmptyDb()
 	p.Data["form"] = p.NewForm(
 		"fm-install",
-		base.T(p.Locale, "site-forms.administrator"),
+		p.T("site-forms.administrator"),
 		base.MethodPost,
 		p.URLFor("site.Controller.PostInstall"),
 		[]base.Field{
 			&base.TextField{
 				ID:    "name",
-				Label: base.T(p.Locale, "auth.attributes.user-name"),
+				Label: p.T("auth.attributes.user-name"),
 			},
 			&base.EmailField{
 				ID:    "email",
-				Label: base.T(p.Locale, "attributes.email"),
+				Label: p.T("attributes.email"),
 			},
 			&base.PasswordField{
 				ID:    "password",
-				Label: base.T(p.Locale, "attributes.password"),
+				Label: p.T("attributes.password"),
 			},
 			&base.PasswordField{
 				ID:    "passwordConfirmation",
-				Label: base.T(p.Locale, "attributes.passwordConfirmation"),
+				Label: p.T("attributes.passwordConfirmation"),
 			},
 		},
 	)
