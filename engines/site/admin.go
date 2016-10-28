@@ -1,6 +1,13 @@
 package site
 
-import "github.com/kapmahc/lotus/engines/base"
+import (
+	"fmt"
+	"runtime"
+
+	"github.com/astaxie/beego/orm"
+	"github.com/kapmahc/lotus/engines/auth"
+	"github.com/kapmahc/lotus/engines/base"
+)
 
 //GetAdminBase base
 // @router /admin/base [get]
@@ -172,13 +179,42 @@ func (p *Controller) PostAdminSeo() {
 //GetAdminStatus status
 // @router /admin/status [get]
 func (p *Controller) GetAdminStatus() {
+	p.Dashboard()
+	p.MustAdmin()
+	var mem runtime.MemStats
+	runtime.ReadMemStats(&mem)
 
+	status := map[string]string{
+		"OS":      fmt.Sprintf("%s %s", runtime.GOOS, runtime.GOARCH),
+		"go-lang": fmt.Sprintf("%s %s", runtime.Version(), runtime.GOROOT()),
+		"host": fmt.Sprintf(
+			"cpus(%d) memory(%.1fG)",
+			runtime.NumCPU(),
+			float64(mem.HeapSys)/1024.0/1024.0,
+		),
+	}
+
+	p.Data["status"] = status
+	p.Data["title"] = p.T("site-pages.admin-status")
+	p.TplName = "site/admin/status.html"
 }
 
 //GetAdminUsers users
 // @router /admin/users [get]
 func (p *Controller) GetAdminUsers() {
+	p.Dashboard()
+	p.MustAdmin()
 
+	var users []auth.User
+	_, err := orm.NewOrm().
+		QueryTable(new(auth.User)).
+		OrderBy("-last_sign_in_at").
+		All(&users, "id", "name", "email", "last_sign_in_at")
+	p.Check(err)
+
+	p.Data["users"] = users
+	p.Data["title"] = p.T("site-pages.admin-users")
+	p.TplName = "site/admin/users.html"
 }
 
 //GetAdminNavBar nav-bar

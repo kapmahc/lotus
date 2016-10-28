@@ -1,0 +1,20 @@
+<h3>{{.title}}</h3>
+<hr/>
+<table class="table table-bordered table-hove">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>{{T .locale "auth-models.user"}}</th>
+      <th>{{T .locale "auth-attributes.user-lastSignInAt"}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{range .users}}
+      <tr>
+        <th scope="row">{{.ID}}</th>
+        <td>{{.Name}}<{{.Email}}></td>
+        <td>{{.LastSignInAt}}</td>
+      </tr>
+    {{end}}
+  </tbody>
+</table>

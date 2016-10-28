@@ -1,6 +1,8 @@
 package auth
 
 import (
+	"time"
+
 	"github.com/SermoDigital/jose/jwt"
 	"github.com/astaxie/beego/orm"
 	"github.com/kapmahc/lotus/engines/base"
@@ -36,13 +38,21 @@ func (p *Controller) PostSignIn() {
 
 	if er == nil {
 		var user User
-		err := orm.NewOrm().
+		o := orm.NewOrm()
+		err := o.
 			QueryTable(&user).
 			Filter("provider_type", ProvideByEmail).
 			Filter("provider_id", fm.Email).One(&user)
 
 		if err == nil && user.IsPassword(fm.Password) {
+			user.SignInCount++
+			now := time.Now()
+			user.LastSignInAt = &now
+			_, err = o.Update(&user, "updated_at", "last_sign_in_at", "sign_in_count")
+			p.Check(err)
+
 			user.Log(p.T("auth-logs.sign-in"))
+
 			p.SetSession("uid", user.UID)
 			p.SetSession("name", user.Name)
 			p.Redirect(fl, "auth.Controller.GetLogs")
