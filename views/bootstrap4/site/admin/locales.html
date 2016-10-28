@@ -1,0 +1,9 @@
+{{template "../../form.html" .form}}
+<br/>
+<div class="list-group">
+  {{range .locales}}
+    <a class="list-group-item list-group-item-action">
+      {{.Code}} = {{.Message}}
+    </a>
+  {{end}}
+</div>

@@ -11,6 +11,11 @@ type fmContent struct {
 	Content string `form:"content" valid:"Required"`
 }
 
+type fmLocale struct {
+	Code    string `form:"code" valid:"Required; MaxSize(255)"`
+	Message string `form:"message" valid:"Required"`
+}
+
 type fmBase struct {
 	Title       string `form:"title" valid:"Required"`
 	SubTitle    string `form:"subTitle" valid:"Required; MaxSize(32)"`
