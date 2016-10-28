@@ -65,8 +65,7 @@ func (p *Controller) PostAdminBase() {
 	} else {
 		fl.Error(er.Error())
 	}
-	p.Redirect(fl, "auth.Controller.GetInfo")
-
+	p.Redirect(fl, "site.Controller.GetAdminBase")
 }
 
 //GetAdminAuthor author

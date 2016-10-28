@@ -26,12 +26,12 @@ func (p *Controller) Redirect(flash *beego.FlashData, action string, args ...int
 
 //T translate
 func (p *Controller) T(code string, args ...interface{}) string {
-	return T(p.Locale, code, args)
+	return T(p.Locale, code, args...)
 }
 
 //Error create error
 func (p *Controller) Error(code string, args ...interface{}) error {
-	return errors.New(T(p.Locale, code, args))
+	return errors.New(T(p.Locale, code, args...))
 }
 
 //Check check error

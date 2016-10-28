@@ -10,11 +10,9 @@ import (
 //NavLinks nav-links
 func NavLinks(locale, code string) []base.Link {
 	var links []base.Link
-	if err := Get(
+	Get(
 		fmt.Sprintf("%s://nav-links/%s", locale, code),
-		&links); err != nil {
-		beego.Error(err)
-	}
+		&links)
 	return links
 }
 
