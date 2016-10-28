@@ -19,3 +19,8 @@ type fmAuthor struct {
 	Name  string `form:"name" valid:"Required; MaxSize(32)"`
 	Email string `form:"email" valid:"Email; MaxSize(255)"`
 }
+
+type fmSeo struct {
+	Google string `form:"google"`
+	Baidu  string `form:"baidu"`
+}

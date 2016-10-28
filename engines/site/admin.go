@@ -120,7 +120,53 @@ func (p *Controller) PostAdminAuthor() {
 //GetAdminSeo seo
 // @router /admin/seo [get]
 func (p *Controller) GetAdminSeo() {
+	p.Dashboard()
+	p.MustAdmin()
+	title := p.T("site-pages.admin-seo")
+	p.Data["title"] = title
+	var google string
+	var baidu string
+	Get("google.verify.code", &google)
+	Get("baidu.verify.code", &baidu)
+	p.Data["form"] = p.NewForm(
+		"fm-admin-seo",
+		title,
+		base.MethodPost,
+		p.URLFor("site.Controller.PostAdminSeo"),
+		[]base.Field{
+			&base.TextField{
+				ID:    "google",
+				Label: p.T("site-attributes.google-verify-code"),
+				Value: google,
+			},
+			&base.TextField{
+				ID:    "baidu",
+				Label: p.T("site-attributes.baidu-verify-code"),
+				Value: baidu,
+			},
+		},
+	)
+	p.TplName = "auth/form.html"
+}
 
+//PostAdminSeo seo
+// @router /admin/seo [post]
+func (p *Controller) PostAdminSeo() {
+	p.MustAdmin()
+	var fm fmSeo
+	fl, er := p.ParseForm(&fm)
+	if er == nil {
+		Set("google.verify.code", fm.Google, false)
+		Set("baidu.verify.code", fm.Baidu, false)
+
+		user := p.CurrentUser()
+		user.Log(p.T("site-logs.update-seo"))
+
+		fl.Notice(p.T("site-pages.success"))
+	} else {
+		fl.Error(er.Error())
+	}
+	p.Redirect(fl, "site.Controller.GetAdminSeo")
 }
 
 //GetAdminStatus status

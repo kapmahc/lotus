@@ -28,7 +28,7 @@ func Set(k string, v interface{}, f bool) {
 
 	var m Setting
 	o := orm.NewOrm()
-	err = o.QueryTable(&m).Filter("key", k).One(&m, "flag", "val")
+	err = o.QueryTable(&m).Filter("key", k).One(&m)
 	if err == nil {
 		m.Flag = f
 		m.Val = string(val)
