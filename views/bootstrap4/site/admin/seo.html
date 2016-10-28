@@ -19,7 +19,9 @@
   <li>
     <a target="_blank" href="{{urlfor "site.Controller.GetSitemap"}}">{{urlfor "site.Controller.GetSitemap"}}</a>
   </li>
-  <li>
-    <a target="_blank" href="{{urlfor "site.Controller.GetRss"}}">{{urlfor "site.Controller.GetRss"}}</a>
-  </li>
+  {{range .languages}}
+    <li>
+      <a target="_blank" href="{{urlfor "site.Controller.GetRss" ":lang" .}}">{{urlfor "site.Controller.GetRss" ":lang" .}}</a>
+    </li>
+  {{end}}
 </ul>

@@ -101,9 +101,9 @@ func (p *Controller) SetLocale() {
 		write = true
 	}
 
-	// 4. Default language is English.
+	// 4. Set default language.
 	if !i18n.IsExist(lang) {
-		lang = "en-US"
+		lang = beego.AppConfig.String("defaultlocale")
 		write = true
 	}
 

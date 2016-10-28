@@ -1,9 +1,12 @@
 package site
 
 import (
+	"encoding/xml"
 	"text/template"
 
 	"github.com/astaxie/beego"
+	"github.com/beego/i18n"
+	"github.com/kapmahc/lotus/engines/base"
 )
 
 //GetBaidu baidu verify file
@@ -48,20 +51,31 @@ SITEMAP: {{.Home}}/sitemap.xml.gz
 			Home: beego.AppConfig.String("homeurl"),
 		})
 	}
-	if err != nil {
-		beego.Error(err)
-		p.Abort("500")
-	}
+	p.Check(err)
 }
 
-//GetSitemap sitemap.xml.gz
-// @router /sitemap.xml.gz [get]
+//GetSitemap sitemap.xml
+// @router /sitemap.xml [get]
 func (p *Controller) GetSitemap() {
-	// TODO
+	sm := base.SitemapXML(&p.Controller.Controller)
+
+	wrt := p.Ctx.ResponseWriter
+	wrt.Write([]byte(xml.Header))
+	en := xml.NewEncoder(wrt)
+	//en.Indent("", "  ")
+	err := en.Encode(sm)
+	p.Check(err)
 }
 
 //GetRss rss.atom
-// @router /rss.atom [get]
+// @router /rss-:lang([-\w]+).atom [get]
 func (p *Controller) GetRss() {
-	// TODO
+	lang := p.Ctx.Input.Param(":lang")
+	if !i18n.IsExist(lang) {
+		p.Abort("404")
+	}
+	err := base.
+		Atom(lang, &p.Controller.Controller).
+		WriteAtom(p.Ctx.ResponseWriter)
+	p.Check(err)
 }
