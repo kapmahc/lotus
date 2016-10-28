@@ -71,8 +71,50 @@ func (p *Controller) PostAdminBase() {
 //GetAdminAuthor author
 // @router /admin/author [get]
 func (p *Controller) GetAdminAuthor() {
+	p.Dashboard()
 	p.MustAdmin()
+	title := p.T("site-pages.admin-author")
+	p.Data["title"] = title
+	p.Data["form"] = p.NewForm(
+		"fm-admin-author",
+		title,
+		base.MethodPost,
+		p.URLFor("site.Controller.PostAdminAuthor"),
+		[]base.Field{
+			&base.TextField{
+				ID:    "name",
+				Label: p.T("site-attributes.author-name"),
+				Value: p.T("site.author-name"),
+			},
+			&base.EmailField{
+				ID:    "email",
+				Label: p.T("site-attributes.author-email"),
+				Value: p.T("site.author-email"),
+			},
+		},
+	)
+	p.TplName = "auth/form.html"
 
+}
+
+//PostAdminAuthor author
+// @router /admin/author [post]
+func (p *Controller) PostAdminAuthor() {
+	p.MustAdmin()
+	var fm fmAuthor
+	fl, er := p.ParseForm(&fm)
+	if er == nil {
+		base.SetLocale(p.Locale, "site.author-name", fm.Name)
+		base.SetLocale(p.Locale, "site.author-email", fm.Email)
+
+		user := p.CurrentUser()
+		user.Log(p.T("site-logs.update-author"))
+
+		fl.Notice(p.T("site-pages.success"))
+	} else {
+		fl.Error(er.Error())
+	}
+	p.Redirect(fl, "site.Controller.GetAdminAuthor")
 }
 
 //GetAdminSeo seo

@@ -14,7 +14,7 @@ func (p *Controller) GetInstall() {
 	p.mustEmptyDb()
 	p.Data["form"] = p.NewForm(
 		"fm-install",
-		p.T("site-forms.administrator"),
+		p.T("site-pages.administrator"),
 		base.MethodPost,
 		p.URLFor("site.Controller.PostInstall"),
 		[]base.Field{

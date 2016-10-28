@@ -14,3 +14,8 @@ type fmBase struct {
 	Description string `form:"description" valid:"Required"`
 	Copyright   string `form:"copyright" valid:"Required"`
 }
+
+type fmAuthor struct {
+	Name  string `form:"name" valid:"Required; MaxSize(32)"`
+	Email string `form:"email" valid:"Email; MaxSize(255)"`
+}
