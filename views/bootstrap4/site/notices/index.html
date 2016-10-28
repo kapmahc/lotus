@@ -1,9 +1,12 @@
+{{$locale := .locale}}
+{{$can := .is_admin}}
 <h3>
   {{.title}}
+  {{if $can}}
   <a href="{{urlfor "site.Controller.NewNotice"}}" class="btn btn-sm btn-primary">{{T .locale "buttons.new"}}</a>
+  {{end}}
 </h3>
 <hr/>
-{{$locale := .locale}}
 {{range .notices}}
   <blockquote class="blockquote">
     <p class="mb-0 markdown">
@@ -11,14 +14,16 @@
     </p>
     <footer class="blockquote-footer">
       {{.UpdatedAt}}
-      <cite>
-        <a href="{{urlfor "site.Controller.EditNotice" ":id" .ID}}" class="btn btn-sm btn-warning">
-          {{T $locale "buttons.edit"}}
-        </a>
-        <button id="btn-remove-{{urlfor "site.Controller.DestroyNotice" ":id" .ID}}" class="btn btn-sm btn-danger">
-          {{T $locale "buttons.remove"}}
-        </button>
-      </cite>
+      {{if $can}}
+        <cite>
+          <a href="{{urlfor "site.Controller.EditNotice" ":id" .ID}}" class="btn btn-sm btn-warning">
+            {{T $locale "buttons.edit"}}
+          </a>
+          <button id="btn-remove-{{urlfor "site.Controller.DestroyNotice" ":id" .ID}}" class="btn btn-sm btn-danger">
+            {{T $locale "buttons.remove"}}
+          </button>
+        </cite>
+      {{end}}
     </footer>
   </blockquote>
 {{end}}

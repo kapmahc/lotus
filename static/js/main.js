@@ -33,8 +33,8 @@ $(function() {
             url: id.substring("btn-remove".length+1)
           }).done(function(data) {
             window.location.href = data.to;
-          }).fail(function(jqXHR, textStatus){
-            alert(jqXHR);
+          }).fail(function(jqXHR, textStatus){            
+            alert(jqXHR.statusText);
           });
         }
     });

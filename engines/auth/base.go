@@ -40,7 +40,7 @@ func (p *BaseController) Dashboard() {
 //MustSignIn must sign in
 func (p *BaseController) MustSignIn() {
 	if p.Data[CurrentUser] == nil {
-		p.Abort("402")
+		p.Abort("403")
 	}
 }
 
@@ -48,7 +48,7 @@ func (p *BaseController) MustSignIn() {
 func (p *BaseController) MustAdmin() {
 	user := p.Data[CurrentUser]
 	if user == nil || !user.(*User).Has(AdminRole) {
-		p.Abort("402")
+		p.Abort("403")
 	}
 }
 
@@ -65,7 +65,9 @@ func (p *BaseController) SetCurrentUser() {
 		return
 	}
 	user, err := GetUserByUID(uid.(string))
-	if err != nil {
+	if err == nil {
+		p.Data["is_admin"] = user.Has(AdminRole)
+	} else {
 		beego.Error(err)
 		p.DestroySession()
 		return
