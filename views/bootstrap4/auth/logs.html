@@ -1,1 +1,7 @@
-logs
+<h3>{{.title}}</h3>
+<hr/>
+<ul class="list-group">
+  {{range .logs}}
+    <li class="list-group-item">{{.CreatedAt}}: {{.Message}}</li>
+  {{end}}  
+</ul>
