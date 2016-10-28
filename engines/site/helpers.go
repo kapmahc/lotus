@@ -10,7 +10,7 @@ import (
 //NavLinks nav-links
 func NavLinks(locale, code string) []base.Link {
 	var links []base.Link
-	Get(
+	base.Get(
 		fmt.Sprintf("%s://nav-links/%s", locale, code),
 		&links)
 	return links

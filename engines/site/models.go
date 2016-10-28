@@ -32,20 +32,6 @@ func (p *Notice) TableName() string {
 	return "notices"
 }
 
-//Setting setting
-type Setting struct {
-	base.Model
-
-	Key  string
-	Val  string
-	Flag bool
-}
-
-//TableName table name
-func (p *Setting) TableName() string {
-	return "settings"
-}
-
 //Attachment attachment
 type Attachment struct {
 	base.Model
@@ -82,7 +68,6 @@ func (p *Page) TableName() string {
 
 func init() {
 	orm.RegisterModel(
-		new(Setting),
 		new(LeaveWord),
 		new(Notice),
 		new(Attachment),

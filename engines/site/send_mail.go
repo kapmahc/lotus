@@ -23,7 +23,7 @@ func sendMailWorker(queue string, args ...interface{}) error {
 
 	if beego.AppConfig.String("runmode") == "prod" {
 		var cfg SMTP
-		if err := Get("smtp", &cfg); err != nil {
+		if err := base.Get("smtp", &cfg); err != nil {
 			return err
 		}
 		msg := gomail.NewMessage()

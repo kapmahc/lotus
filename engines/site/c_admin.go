@@ -134,8 +134,8 @@ func (p *Controller) GetAdminSeo() {
 	p.Data["title"] = title
 	var google string
 	var baidu string
-	Get("google.verify.code", &google)
-	Get("baidu.verify.code", &baidu)
+	base.Get("google.verify.code", &google)
+	base.Get("baidu.verify.code", &baidu)
 
 	p.Data["google"] = google
 	p.Data["baidu"] = baidu
@@ -167,8 +167,8 @@ func (p *Controller) PostAdminSeo() {
 	var fm fmSeo
 	fl, er := p.ParseForm(&fm)
 	if er == nil {
-		Set("google.verify.code", fm.Google, false)
-		Set("baidu.verify.code", fm.Baidu, false)
+		base.Set("google.verify.code", fm.Google, false)
+		base.Set("baidu.verify.code", fm.Baidu, false)
 
 		user := p.CurrentUser()
 		user.Log(p.T("site-logs.update-seo"))
@@ -279,7 +279,7 @@ func (p *Controller) PostAdminNavBar() {
 			}
 			links = append(links, base.Link{Href: ss[0], Label: ss[1]})
 		}
-		Set(fmt.Sprintf("%s://nav-links/%s", p.Locale, code), links, false)
+		base.Set(fmt.Sprintf("%s://nav-links/%s", p.Locale, code), links, false)
 		return nil
 	}
 	if er == nil {

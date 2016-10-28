@@ -62,7 +62,7 @@ func (p *Controller) PostInstall() {
 			for _, role := range []string{auth.AdminRole, auth.RootRole} {
 				user.Allow(role, auth.DefaultResourceType, auth.DefaultResourceID, 120, 0, 0)
 			}
-			Set("site.install", time.Now(), false)
+			base.Set("site.install", time.Now(), false)
 		}
 		p.Check(err)
 		p.Redirect(nil, "auth.Controller.GetSignIn")

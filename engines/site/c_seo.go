@@ -13,7 +13,7 @@ import (
 // @router /baidu_verify_:id([\w]+).html [get]
 func (p *Controller) GetBaidu() {
 	var code string
-	Get("baidu.verify.code", &code)
+	base.Get("baidu.verify.code", &code)
 	if code != p.Ctx.Input.Param(":id") {
 		p.Abort("404")
 	}
@@ -26,7 +26,7 @@ func (p *Controller) GetBaidu() {
 // @router /google:id([\w]+).html [get]
 func (p *Controller) GetGoogle() {
 	var code string
-	Get("google.verify.code", &code)
+	base.Get("google.verify.code", &code)
 	if code != p.Ctx.Input.Param(":id") {
 		p.Abort("404")
 	}

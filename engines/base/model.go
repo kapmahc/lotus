@@ -27,6 +27,23 @@ func (p *Locale) TableName() string {
 	return "locales"
 }
 
+//Setting setting
+type Setting struct {
+	Model
+
+	Key  string
+	Val  string
+	Flag bool
+}
+
+//TableName table name
+func (p *Setting) TableName() string {
+	return "settings"
+}
+
 func init() {
-	orm.RegisterModel(new(Locale))
+	orm.RegisterModel(
+		new(Locale),
+		new(Setting),
+	)
 }

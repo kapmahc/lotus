@@ -8,7 +8,7 @@ func (p *Controller) GetAdminSMTP() {
 	p.Dashboard()
 	p.MustAdmin()
 	var smtp SMTP
-	Get("smtp", &smtp)
+	base.Get("smtp", &smtp)
 	title := p.T("site-pages.admin-smtp")
 	p.Data["title"] = title
 	p.Data["form"] = p.NewForm(
@@ -63,7 +63,7 @@ func (p *Controller) PostAdminSMTP() {
 		}
 	}
 	if er == nil {
-		Set(
+		base.Set(
 			"smtp",
 			&SMTP{
 				Host:     fm.Host,
