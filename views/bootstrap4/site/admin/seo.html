@@ -1,0 +1,25 @@
+{{template "../../form.html" .form}}
+<br/>
+<h3>{{T .locale "site-pages.admin-seo-demo"}}</h3>
+<hr/>
+<ul>
+  <li>
+    <a target="_blank" href="{{urlfor "site.Controller.GetGoogle" ":id" .google}}">
+      {{urlfor "site.Controller.GetGoogle" ":id" .google}}
+    </a>
+  </li>
+  <li>
+    <a target="_blank" href="{{urlfor "site.Controller.GetBaidu" ":id" .baidu}}">
+      {{urlfor "site.Controller.GetBaidu" ":id" .baidu}}
+    </a>
+  </li>
+  <li>
+    <a target="_blank" href="{{urlfor "site.Controller.GetRobots"}}">{{urlfor "site.Controller.GetRobots"}}</a>
+  </li>
+  <li>
+    <a target="_blank" href="{{urlfor "site.Controller.GetSitemap"}}">{{urlfor "site.Controller.GetSitemap"}}</a>
+  </li>
+  <li>
+    <a target="_blank" href="{{urlfor "site.Controller.GetRss"}}">{{urlfor "site.Controller.GetRss"}}</a>
+  </li>
+</ul>

@@ -136,6 +136,9 @@ func (p *Controller) GetAdminSeo() {
 	var baidu string
 	Get("google.verify.code", &google)
 	Get("baidu.verify.code", &baidu)
+
+	p.Data["google"] = google
+	p.Data["baidu"] = baidu
 	p.Data["form"] = p.NewForm(
 		"fm-admin-seo",
 		title,
@@ -154,7 +157,7 @@ func (p *Controller) GetAdminSeo() {
 			},
 		},
 	)
-	p.TplName = "auth/form.html"
+	p.TplName = "site/admin/seo.html"
 }
 
 //PostAdminSeo seo
