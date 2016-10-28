@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="{{.locale}}">
   <head>
-  {{template "../meta.html" .}}
+  {{template "meta.html" .}}
   <title>{{.title}}-{{T .locale "site.subTitle"}}-{{T .locale "site.title"}}</title>
   </head>
   <body>
-    {{template "../header.html" .}}
+    {{template "header.html" .}}
     <div class="container">
-      {{template "../flash.html" .}}
+      {{template "flash.html" .}}
       {{.LayoutContent}}
-      {{template "../footer.html" .}}
+      {{template "footer.html" .}}
     </div>
   </body>
 </html>

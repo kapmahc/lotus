@@ -41,7 +41,6 @@ func (p *Controller) GetBooks() {
 		books,
 	)
 	p.Data["title"] = p.T("reading-pages.books")
-	p.Layout = "reading/layout.html"
 	p.TplName = "reading/books.html"
 }
 
@@ -100,7 +99,6 @@ func (p *Controller) GetBookIndex() {
 			bk.Ncx.Points,
 		),
 	)
-	p.Layout = "reading/layout.html"
 	p.TplName = "reading/book.html"
 }
 
@@ -130,7 +128,6 @@ func (p *Controller) GetBook() {
 	defer fd.Close()
 	if path.Ext(name) == ".xhtml" {
 		p.Data["title"], p.Data["body"] = p.parseHTML(fd)
-		p.Layout = "reading/layout.html"
 		p.TplName = "reading/page.html"
 		return
 	}
