@@ -54,11 +54,11 @@ func (p *Controller) PostInstall() {
 	if er == nil {
 		user, err := auth.AddEmailUser(fm.Email, fm.Name, fm.Password)
 		if err == nil {
-			auth.AddLog(user.ID, p.T("auth-logs.sign-up"))
+			user.Log(p.T("auth-logs.sign-up"))
 			auth.ConfirmUser(user)
-			auth.AddLog(user.ID, p.T("auth-logs.confirm"))
+			user.Log(p.T("auth-logs.confirm"))
 			for _, role := range []string{auth.AdminRole, auth.RootRole} {
-				auth.Allow(user.ID, role, auth.DefaultResourceType, auth.DefaultResourceID, 120, 0, 0)
+				user.Allow(role, auth.DefaultResourceType, auth.DefaultResourceID, 120, 0, 0)
 			}
 			Set("site.install", time.Now(), false)
 		}

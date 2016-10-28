@@ -58,6 +58,7 @@ func (p *Controller) PostInfo() {
 		user.Name = fm.Name
 		_, err := orm.NewOrm().Update(user, "updated_at", "name", "home", "logo")
 		p.Check(err)
+		user.Log(p.T("auth-logs.update-profile"))
 		fl.Notice(p.T("site-pages.success"))
 	} else {
 		fl.Error(er.Error())
@@ -119,6 +120,7 @@ func (p *Controller) PostChangePassword() {
 		user.SetPassword(fm.NewPassword)
 		_, err := orm.NewOrm().Update(user, "updated_at", "password")
 		p.Check(err)
+		user.Log(p.T("auth-logs.change-password"))
 		fl.Notice(p.T("site-pages.success"))
 	} else {
 		fl.Error(er.Error())

@@ -63,6 +63,14 @@ func (p *User) sumHmac(plain string) []byte {
 	return mac.Sum([]byte(plain))
 }
 
+//Log add log
+func (p *User) Log(msg string) {
+	if _, err := orm.NewOrm().
+		Insert(&Log{UserID: p.ID, Message: msg}); err != nil {
+		beego.Error(err)
+	}
+}
+
 //IsConfirmed confirmed?
 func (p *User) IsConfirmed() bool {
 	return p.ConfirmedAt != nil
@@ -81,7 +89,10 @@ func (p *User) IsAvailable() bool {
 //SetGravatarLogo set logo by gravatar
 func (p *User) SetGravatarLogo() {
 	buf := md5.Sum([]byte(strings.ToLower(p.Email)))
-	p.Logo = fmt.Sprintf("https://gravatar.com/avatar/%s.png", hex.EncodeToString(buf[:]))
+	p.Logo = fmt.Sprintf(
+		"https://gravatar.com/avatar/%s.png",
+		hex.EncodeToString(buf[:]),
+	)
 }
 
 //SetUID generate uid
@@ -91,6 +102,123 @@ func (p *User) SetUID() {
 
 func (p User) String() string {
 	return fmt.Sprintf("%s<%s>", p.Name, p.Email)
+}
+
+//Has has role ?
+func (p *User) Has(name string) bool {
+	return p.Can(name, DefaultResourceType, DefaultResourceID)
+}
+
+//Can can?
+func (p *User) Can(name string, rty string, rid uint) bool {
+	role, err := p.getRole(name, rty, rid)
+	if err != nil {
+		beego.Error(err)
+		return false
+	}
+	o := orm.NewOrm()
+	var pm Permission
+	if err := o.QueryTable(&pm).
+		Filter("user_id", p.ID).
+		Filter("role_id", role.ID).
+		One(&pm); err != nil {
+		return false
+	}
+
+	return pm.Enable()
+}
+
+//GetRoleNames get user's role names
+func (p *User) GetRoleNames(rty string, rid uint) []string {
+	var items []Role
+	o := orm.NewOrm()
+	if _, err := o.QueryTable(new(Role)).
+		Filter("resource_type", rty).
+		Filter("resource_id", rid).
+		All(&items, "name", "id"); err != nil {
+		beego.Error(err)
+	}
+	var roles []string
+	for _, r := range items {
+		var pm Permission
+		if err := o.QueryTable(&pm).
+			Filter("role_id", r.ID).
+			Filter("user_id", p.ID).
+			One(&pm); err != nil {
+			beego.Error(err)
+			continue
+		}
+		if pm.Enable() {
+			roles = append(roles, r.Name)
+		}
+	}
+
+	return roles
+}
+
+//Deny deny permission
+func (p *User) Deny(name, rty string, rid uint) {
+	role, err := p.getRole(name, rty, rid)
+	if err == nil {
+		_, err = orm.NewOrm().
+			QueryTable(new(Permission)).
+			Filter("role_id", role.ID).
+			Filter("user_id", p.ID).
+			Delete()
+	}
+	if err != nil {
+		beego.Error(err)
+	}
+}
+
+//Allow allow permission
+func (p *User) Allow(name, rty string, rid uint, years, months, days int) {
+	role, err := p.getRole(name, rty, rid)
+	if err == nil {
+
+		begin := time.Now()
+		end := begin.AddDate(years, months, days)
+		var pm Permission
+		o := orm.NewOrm()
+		err = o.QueryTable(&pm).
+			Filter("role_id", role.ID).
+			Filter("user_id", p.ID).
+			One(&pm)
+		if err == nil {
+			pm.StartUp = begin
+			pm.ShutDown = end
+			_, err = o.Update(&pm, "start_up", "shut_down", "updated_at")
+
+		} else if err == orm.ErrNoRows {
+			pm.UserID = p.ID
+			pm.RoleID = role.ID
+			pm.StartUp = begin
+			pm.ShutDown = end
+			_, err = o.Insert(&pm)
+		}
+	}
+
+	if err != nil {
+		beego.Error(err)
+	}
+}
+
+func (p *User) getRole(name string, rty string, rid uint) (*Role, error) {
+	r := Role{}
+	o := orm.NewOrm()
+	err := o.QueryTable(&r).
+		Filter("name", name).
+		Filter("resource_type", rty).Filter("resource_id", rid).One(&r)
+	if err == nil {
+		return &r, nil
+	}
+	if err == orm.ErrNoRows {
+		r.Name = name
+		r.ResourceID = rid
+		r.ResourceType = rty
+		_, err = o.Insert(&r)
+	}
+	return &r, err
 }
 
 //------------------------------------------------------------------------------

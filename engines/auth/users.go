@@ -42,7 +42,7 @@ func (p *Controller) PostSignIn() {
 			Filter("provider_id", fm.Email).One(&user)
 
 		if err == nil && user.IsPassword(fm.Password) {
-			AddLog(user.ID, p.T("auth-logs.sign-in"))
+			user.Log(p.T("auth-logs.sign-in"))
 			p.SetSession("uid", user.UID)
 			p.SetSession("name", user.Name)
 			p.Redirect(fl, "auth.Controller.GetLogs")
@@ -113,7 +113,7 @@ func (p *Controller) PostSignUp() {
 	if er == nil {
 		user, err := AddEmailUser(fm.Email, fm.Name, fm.Password)
 		if err == nil {
-			AddLog(user.ID, p.T("auth-logs.sign-up"))
+			user.Log(p.T("auth-logs.sign-up"))
 		}
 		p.Check(err)
 		p.sendMail(actConfirm, user.Email, user.UID)
@@ -147,7 +147,7 @@ func (p *Controller) GetConfirm() {
 		}
 		if er == nil {
 			ConfirmUser(user)
-			AddLog(user.ID, p.T("auth-logs.confirm"))
+			user.Log(p.T("auth-logs.confirm"))
 			p.Redirect(nil, "auth.Controller.GetSignIn")
 			return
 		}
@@ -286,7 +286,7 @@ func (p *Controller) PostResetPassword() {
 		user.SetPassword(fm.Password)
 		_, err := orm.NewOrm().Update(user, "password", "updated_at")
 		if err == nil {
-			AddLog(user.ID, p.T("auth-logs.reset-password"))
+			user.Log(p.T("auth-logs.reset-password"))
 		}
 		p.Check(err)
 		fl.Notice(p.T("auth-pages.reset-password-success"))
