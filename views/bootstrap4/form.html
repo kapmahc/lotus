@@ -35,6 +35,16 @@
         <input type="password" class="form-control" name="{{.ID}}" aria-describedby="{{.ID}}Help"/>
         {{template "form-field-helper" .}}
       </div>
+    {{else if eq .Type "textarea"}}
+      <div class="form-group">
+        <label for="{{.ID}}">{{.Label}}</label>
+        {{if .Readonly}}
+          <textarea readonly class="form-control" name="{{.ID}}" rows="6">{{.Value}}</textarea>
+        {{else}}
+          <textarea class="form-control" name="{{.ID}}" rows="6">{{.Value}}</textarea>
+        {{end}}
+        {{template "form-field-helper" .}}
+      </div>
     {{else}}
       <input type="hidden" name="{{.ID}}" value="{{.Value}}"/>
     {{end}}

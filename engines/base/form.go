@@ -42,6 +42,20 @@ func (p *TextField) Type() string {
 	return "text"
 }
 
+//Textarea textarea
+type Textarea struct {
+	ID       string
+	Label    string
+	Value    string
+	Readonly bool
+	Helper   string
+}
+
+//Type type
+func (p *Textarea) Type() string {
+	return "textarea"
+}
+
 //EmailField text
 type EmailField struct {
 	ID       string

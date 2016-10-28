@@ -42,6 +42,14 @@ func (p *BaseController) MustSignIn() {
 	}
 }
 
+//MustAdmin must admin
+func (p *BaseController) MustAdmin() {
+	user := p.Data[CurrentUser]
+	if user == nil || !user.(*User).Has(AdminRole) {
+		p.Abort("402")
+	}
+}
+
 //CurrentUser get current user
 func (p *BaseController) CurrentUser() *User {
 	user := p.Data[CurrentUser]

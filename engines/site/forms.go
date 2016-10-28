@@ -6,3 +6,11 @@ type fmInstall struct {
 	Password             string `form:"password" valid:"Required; MaxSize(128)"`
 	PasswordConfirmation string `form:"passwordConfirmation"`
 }
+
+type fmBase struct {
+	Title       string `form:"title" valid:"Required"`
+	SubTitle    string `form:"subTitle" valid:"Required; MaxSize(32)"`
+	Keywords    string `form:"keywords" valid:"Required"`
+	Description string `form:"description" valid:"Required"`
+	Copyright   string `form:"copyright" valid:"Required"`
+}
