@@ -19,6 +19,7 @@ func (p *BaseController) Prepare() {
 	p.SetLocale()
 	p.SetCurrentUser()
 	p.Data["xsrf_token"] = p.XSRFToken()
+	p.Layout = "layout.html"
 }
 
 //Dashboard prepare dashboard

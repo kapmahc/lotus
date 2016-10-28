@@ -18,6 +18,7 @@ func (p *Controller) GetBaidu() {
 		p.Abort("404")
 	}
 	p.Data["code"] = code
+	p.Layout = ""
 	p.TplName = "site/baidu.html"
 }
 
@@ -30,6 +31,7 @@ func (p *Controller) GetGoogle() {
 		p.Abort("404")
 	}
 	p.Data["code"] = code
+	p.Layout = ""
 	p.TplName = "site/google.html"
 }
 

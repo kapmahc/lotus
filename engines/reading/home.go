@@ -6,9 +6,3 @@ import "github.com/kapmahc/lotus/engines/auth"
 type Controller struct {
 	auth.BaseController
 }
-
-//Prepare prepare
-func (p *Controller) Prepare() {
-	p.BaseController.Prepare()
-	p.Layout = "layout.html"
-}

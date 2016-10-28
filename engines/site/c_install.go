@@ -12,9 +12,11 @@ import (
 // @router /install [get]
 func (p *Controller) GetInstall() {
 	p.mustEmptyDb()
+	title := p.T("site-pages.administrator")
+	p.Data["title"] = title
 	p.Data["form"] = p.NewForm(
 		"fm-install",
-		p.T("site-pages.administrator"),
+		title,
 		base.MethodPost,
 		p.URLFor("site.Controller.PostInstall"),
 		[]base.Field{
@@ -36,7 +38,7 @@ func (p *Controller) GetInstall() {
 			},
 		},
 	)
-	p.TplName = "site/install.html"
+	p.TplName = "auth/form.html"
 }
 
 //PostInstall install
