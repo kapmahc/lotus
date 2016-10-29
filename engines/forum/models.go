@@ -31,7 +31,7 @@ func (p *Article) TableName() string {
 //Tag tag
 type Tag struct {
 	base.Model
-	Title    string     `json:"name"`
+	Name     string     `json:"name"`
 	Vote     int        `json:"vote"`
 	Articles []*Article `json:"articles" orm:"reverse(many)"`
 }

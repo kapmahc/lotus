@@ -6,9 +6,3 @@ import "github.com/kapmahc/lotus/engines/auth"
 type Controller struct {
 	auth.BaseController
 }
-
-//GetHome homepage
-// @router / [get]
-func (p *Controller) GetHome() {
-	p.TplName = "forum/index.html"
-}
