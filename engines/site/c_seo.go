@@ -43,14 +43,16 @@ func (p *Controller) GetRobots() {
 User-agent: *
 Disallow:
 
-SITEMAP: {{.Home}}/sitemap.xml.gz
+SITEMAP: {{.Home}}{{.Href}}
 `
 	tpl, err := template.New("").Parse(txt)
 	if err == nil {
 		err = tpl.Execute(p.Ctx.ResponseWriter, struct {
 			Home string
+			Href string
 		}{
 			Home: beego.AppConfig.String("homeurl"),
+			Href: p.URLFor("site.Controller.GetSitemap"),
 		})
 	}
 	p.Check(err)
