@@ -11,9 +11,9 @@ import (
 )
 
 const (
-	actResetPassword = "reset-password"
-	actConfirm       = "confirm"
-	actUnlock        = "unlock"
+	actResetPassword = "ResetPassword"
+	actConfirm       = "Confirm"
+	actUnlock        = "Unlock"
 )
 
 func (p *Controller) sendMail(act, email, uid string) {
@@ -29,11 +29,14 @@ func (p *Controller) sendMail(act, email, uid string) {
 	p.Check(err)
 
 	model := struct {
-		Home  string
-		Token string
+		Href string
 	}{
-		Home:  beego.AppConfig.String("homeurl"),
-		Token: string(tkn),
+		Href: fmt.Sprintf(
+			"%s%s?token=%s",
+			beego.AppConfig.String("homeurl"),
+			p.URLFor("auth.Controller.Get"+act),
+			string(tkn),
+		),
 	}
 
 	var subject bytes.Buffer
