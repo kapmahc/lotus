@@ -2,26 +2,28 @@
 <h3>
   {{.title}}
   {{if .can}}
-    <a href="{{urlfor "forum.Controller.EditArticle" ":id" .ID}}" class="btn btn-sm btn-primary">
+    <a href="{{urlfor "forum.Controller.EditArticle" ":id" .article.ID}}" class="btn btn-sm btn-primary">
       {{T $locale "buttons.edit"}}
     </a>
-    <button url="{{urlfor "forum.Controller.DestroyArticle" ":id" .ID}}" class="btn btn-sm btn-danger">
-      {{T $locale "buttons.edit"}}
+    <button id="btn-remove-{{urlfor "forum.Controller.DestroyArticle" ":id" .article.ID}}" class="btn btn-sm btn-danger">
+      {{T $locale "buttons.remove"}}
     </button>
   {{end}}
 </h3>
 <hr/>
-<div class="row">
-  {{range .tags}}
-    <div class="col-md-2">
-      <a href="{{urlfor "forum.Controller.ShowTag" ":id" .ID}}">{{.Name}}</a>
-    </div>
-  {{end}}
-</div>
 
-<p class="markdown">{{.Body}}</p>
+{{.article.Summary}}
+<br/>
+{{T .locale "forum-attributes.article-tags"}}:
+{{range .tags}}
+  <a href="{{urlfor "forum.Controller.ShowTag" ":id" .ID}}">{{.Name}}</a>
+{{end}}
 
-<h3>{{T $locale "forum-pages.new-comment"}}</h3>
+<p class="markdown">{{.article.Body}}</p>
+
+<h3>
+  {{T $locale "forum-pages.comments"}}
+</h3>
 <hr/>
 <div class="row">
   {{range .comments}}
@@ -35,3 +37,6 @@
     </blockquote>
   {{end}}
 </div>
+{{if .currentUser}}
+  {{template "../../form.html" .form}}
+{{end}}

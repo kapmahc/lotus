@@ -5,7 +5,7 @@ type fmTag struct {
 }
 
 type fmArticle struct {
-	Title   string   `form:"name" valid:"Required; MaxSize(255)"`
+	Title   string   `form:"title" valid:"Required; MaxSize(255)"`
 	Summary string   `form:"summary" valid:"Required; MaxSize(800)"`
 	Body    string   `form:"body" valid:"Required"`
 	Tags    []string `form:"tags"`

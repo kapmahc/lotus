@@ -21,4 +21,6 @@
     </div>
   {{end}}
 </div>
-{{template "../../paginator.html" .pager}}
+{{if .pager}}
+  {{template "../../paginator.html" .pager}}
+{{end}}

@@ -33,6 +33,7 @@ create unique index idx_forum_article_tag on forum_articles_tags(article_id, tag
 
 create table forum_comments(
   id serial primary key,
+  article_id int not null,
   user_id int not null,
   body text not null,
   type varchar(8) not null default 'markdown',

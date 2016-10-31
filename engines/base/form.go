@@ -56,9 +56,8 @@ func (p *Select) Type() string {
 type CheckBox struct {
 	ID       string
 	Label    string
-	Value    []interface{}
 	Readonly bool
-	Options  map[interface{}]interface{}
+	Options  []Option
 	Helper   string
 }
 

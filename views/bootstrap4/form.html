@@ -63,6 +63,21 @@
         </select>
         {{template "form-field-helper" .}}
       </div>
+    {{else if eq .Type "checkbox"}}
+    <div class="form-check">
+      <label>{{.Label}}</label>
+      {{$id := .ID}}
+      {{range .Options}}
+        <label class="form-check-label">
+          {{if .Selected}}
+            <input name={{$id}} value={{.Value}} type="checkbox" class="form-check-input" checked>
+          {{else}}
+            <input name={{$id}} value={{.Value}} type="checkbox" class="form-check-input">
+          {{end}}
+          {{.Name}}
+        </label>
+      {{end}}
+    </div>
     {{else}}
       <input type="hidden" name="{{.ID}}" value="{{.Value}}"/>
     {{end}}

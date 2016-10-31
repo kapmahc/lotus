@@ -1,6 +1,8 @@
 package forum
 
 import (
+	"strconv"
+
 	"github.com/astaxie/beego/orm"
 	"github.com/kapmahc/lotus/engines/auth"
 	"github.com/kapmahc/lotus/engines/base"
@@ -31,28 +33,10 @@ func (p *Controller) IndexArticle() {
 		size,
 		articles,
 	)
-
+	p.Data["articles"] = articles
 	p.Data["title"] = p.T("forum-pages.articles")
 	p.Data["can"] = p.CurrentUser().Has(auth.AdminRole)
 	p.TplName = "forum/articles/index.html"
-}
-
-func (p *Controller) tagsCheckBox() *base.CheckBox {
-	var tags []Tag
-	_, err := orm.NewOrm().QueryTable(new(Tag)).All(&tags, "id", "name")
-	p.Check(err)
-
-	options := make(map[interface{}]interface{})
-	for _, t := range tags {
-		options[t.ID] = t.Name
-	}
-
-	return &base.CheckBox{
-		ID:      "tags",
-		Label:   p.T("forum-attributes.tags"),
-		Options: options,
-		Value:   make([]interface{}, 0),
-	}
 }
 
 //NewArticle new article
@@ -60,6 +44,18 @@ func (p *Controller) tagsCheckBox() *base.CheckBox {
 func (p *Controller) NewArticle() {
 	p.MustSignIn()
 	title := p.T("forum-pages.new-article")
+
+	var tags []Tag
+	_, err := orm.NewOrm().QueryTable(new(Tag)).All(&tags, "id", "name")
+	p.Check(err)
+
+	var options []base.Option
+	for _, t := range tags {
+		options = append(options, base.Option{
+			Value: t.ID,
+			Name:  t.Name,
+		})
+	}
 
 	p.Data["title"] = title
 	p.Data["form"] = p.NewForm(
@@ -76,10 +72,15 @@ func (p *Controller) NewArticle() {
 				ID:    "summary",
 				Label: p.T("attributes.summary"),
 			},
-			p.tagsCheckBox(),
+			&base.CheckBox{
+				ID:      "tags",
+				Label:   p.T("forum-attributes.article-tags"),
+				Options: options,
+			},
 			&base.Textarea{
-				ID:    "body",
-				Label: p.T("attributes.body"),
+				ID:     "body",
+				Label:  p.T("attributes.body"),
+				Helper: p.T("site-pages.can-markdown"),
 			},
 		},
 	)
@@ -101,18 +102,20 @@ func (p *Controller) CreateArticle() {
 			Summary: fm.Summary,
 			Body:    fm.Body,
 			UserID:  user.ID,
-			Tags:    make([]*Tag, 0),
 		}
 		o := orm.NewOrm()
-		for _, t := range fm.Tags {
-			var tag Tag
-			err := o.QueryTable(&t).Filter("id", t).One(&tag, "id")
-			p.Check(err)
-			article.Tags = append(article.Tags, &tag)
-		}
-
 		_, err := o.Insert(&article)
 		p.Check(err)
+		for _, t := range fm.Tags {
+			id, err := strconv.Atoi(t)
+			p.Check(err)
+			_, err = o.Insert(&ArticleTag{
+				ArticleID: article.ID,
+				TagID:     uint(id),
+			})
+			p.Check(err)
+		}
+
 		fl.Notice(p.T("site-pages.success"))
 		p.Redirect(fl, "forum.Controller.ShowArticle", ":id", article.ID)
 	} else {
@@ -130,7 +133,7 @@ func (p *Controller) canArticle() (Article, bool) {
 		One(&article)
 	p.Check(err)
 	user := p.CurrentUser()
-	return article, (article.UserID != user.ID && !user.Has(auth.AdminRole))
+	return article, (article.UserID == user.ID || user.Has(auth.AdminRole))
 
 }
 
@@ -141,14 +144,24 @@ func (p *Controller) EditArticle() {
 	if !can {
 		p.Abort("403")
 	}
-	title := p.T("forum-pages.edit-article", article.ID)
-	_, err := orm.NewOrm().LoadRelated(&article, "Tags")
+
+	o := orm.NewOrm()
+	var tags []Tag
+	_, err := o.QueryTable(new(Tag)).All(&tags, "id", "name")
 	p.Check(err)
-	tags := p.tagsCheckBox()
-	for _, t := range article.Tags {
-		tags.Value = append(tags.Value, t.ID)
+	var options []base.Option
+	for _, t := range tags {
+		count, err := o.QueryTable(new(ArticleTag)).
+			Filter("article_id", article.ID).Filter("tag_id", t.ID).Count()
+		p.Check(err)
+		options = append(options, base.Option{
+			Value:    t.ID,
+			Name:     t.Name,
+			Selected: count > 0,
+		})
 	}
 
+	title := p.T("forum-pages.edit-article", article.ID)
 	p.Data["title"] = title
 	p.Data["form"] = p.NewForm(
 		"fm-edit-article",
@@ -166,11 +179,16 @@ func (p *Controller) EditArticle() {
 				Label: p.T("attributes.summary"),
 				Value: article.Summary,
 			},
-			tags,
+			&base.CheckBox{
+				ID:      "tags",
+				Label:   p.T("forum-attributes.article-tags"),
+				Options: options,
+			},
 			&base.Textarea{
-				ID:    "body",
-				Label: p.T("attributes.body"),
-				Value: article.Body,
+				ID:     "body",
+				Label:  p.T("attributes.body"),
+				Value:  article.Body,
+				Helper: p.T("site-pages.can-markdown"),
 			},
 		},
 	)
@@ -194,17 +212,22 @@ func (p *Controller) UpdateArticle() {
 		article.Body = fm.Body
 
 		o := orm.NewOrm()
-		for _, t := range fm.Tags {
-			var tag Tag
-			err := o.QueryTable(new(Tag)).Filter("id", t).One(&tag, "id")
-			p.Check(err)
-			article.Tags = append(article.Tags, &tag)
-		}
-		_, err := o.
-			Update(&article, "updated_at", "title", "summary", "body", "tags")
+		_, err := o.Update(&article, "updated_at", "title", "summary", "body")
 		p.Check(err)
+		_, err = o.QueryTable(new(ArticleTag)).Filter("article_id", article.ID).Delete()
+		p.Check(err)
+		for _, t := range fm.Tags {
+			id, err := strconv.Atoi(t)
+			p.Check(err)
+			_, err = o.Insert(&ArticleTag{
+				ArticleID: article.ID,
+				TagID:     uint(id),
+			})
+			p.Check(err)
+		}
+
 		fl.Notice(p.T("site-pages.success"))
-		p.Redirect(fl, "forum.Controller.ShowArticle", "id", article.ID)
+		p.Redirect(fl, "forum.Controller.ShowArticle", ":id", article.ID)
 	} else {
 		fl.Error(er.Error())
 		p.Redirect(fl, "forum.Controller.EditArticle", ":id", article.ID)
@@ -218,13 +241,22 @@ func (p *Controller) ShowArticle() {
 
 	var comments []Comment
 	var tags []Tag
+	var ats []ArticleTag
 	o := orm.NewOrm()
-	_, err := o.LoadRelated(&article, "Tags", "id", "name")
+	_, err := o.QueryTable(new(ArticleTag)).
+		Filter("article_id", article.ID).
+		All(&ats, "tag_id")
 	p.Check(err)
-	_, err = o.QueryTable(new(Article)).
-		Filter("id", article.ID).
+	for _, at := range ats {
+		var tag Tag
+		err = o.QueryTable(&tag).Filter("id", at.TagID).One(&tag)
+		p.Check(err)
+		tags = append(tags, tag)
+	}
+	_, err = o.QueryTable(new(Comment)).
+		Filter("article_id", article.ID).
 		OrderBy("-updated_at").
-		All(&tags, "id", "name")
+		All(&comments)
 	p.Check(err)
 
 	p.Data["article"] = article
@@ -232,6 +264,24 @@ func (p *Controller) ShowArticle() {
 	p.Data["comments"] = comments
 	p.Data["title"] = article.Title
 	p.Data["can"] = can
+
+	p.Data["form"] = p.NewForm(
+		"fm-new-comment",
+		p.T("forum-pages.new-comment"),
+		base.MethodPost,
+		p.URLFor("forum.Controller.CreateComment", ":id", article.ID),
+		[]base.Field{
+			&base.HiddenField{
+				ID:    "article_id",
+				Value: article.ID,
+			},
+			&base.Textarea{
+				ID:     "body",
+				Label:  p.T("attributes.body"),
+				Helper: p.T("site-pages.can-markdown"),
+			},
+		},
+	)
 	p.TplName = "forum/articles/show.html"
 }
 
@@ -242,7 +292,12 @@ func (p *Controller) DestroyArticle() {
 	if !can {
 		p.Abort("403")
 	}
-	_, err := orm.NewOrm().Delete(&article)
+	o := orm.NewOrm()
+	_, err := o.QueryTable(new(Comment)).Filter("article_id", article.ID).Delete()
+	p.Check(err)
+	_, err = o.QueryTable(new(ArticleTag)).Filter("article_id", article.ID).Delete()
+	p.Check(err)
+	_, err = o.Delete(&article)
 	p.Check(err)
 
 	p.Data["json"] = map[string]string{

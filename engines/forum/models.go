@@ -21,7 +21,6 @@ type Article struct {
 	Body    string `json:"body"`
 	Type    string `json:"type"`
 	Vote    int    `json:"vote"`
-	Tags    []*Tag `json:"tags" orm:"rel(m2m);rel_table(forum_articles_tags)"`
 }
 
 //TableName table name
@@ -32,9 +31,8 @@ func (p *Article) TableName() string {
 //Tag tag
 type Tag struct {
 	base.Model
-	Name     string     `json:"name"`
-	Vote     int        `json:"vote"`
-	Articles []*Article `json:"articles" orm:"reverse(many)"`
+	Name string `json:"name"`
+	Vote int    `json:"vote"`
 }
 
 //TableName table name
@@ -42,13 +40,26 @@ func (p *Tag) TableName() string {
 	return "forum_tags"
 }
 
+//ArticleTag article-tag-rel
+type ArticleTag struct {
+	ID        uint `json:"id" orm:"column(id)"`
+	ArticleID uint `json:"article_id" orm:"column(article_id)"`
+	TagID     uint `json:"tag_id" orm:"column(tag_id)"`
+}
+
+//TableName table name
+func (p *ArticleTag) TableName() string {
+	return "forum_articles_tags"
+}
+
 //Comment comment
 type Comment struct {
 	base.Model
-	UserID uint   `json:"user_id" orm:"column(user_id)"`
-	Body   string `json:"body"`
-	Type   string `json:"type"`
-	Vote   int    `json:"vote"`
+	UserID    uint   `json:"user_id" orm:"column(user_id)"`
+	ArticleID uint   `json:"user_id" orm:"column(article_id)"`
+	Body      string `json:"body"`
+	Type      string `json:"type"`
+	Vote      int    `json:"vote"`
 }
 
 //TableName table name
@@ -60,6 +71,7 @@ func init() {
 	orm.RegisterModel(
 		new(Article),
 		new(Tag),
+		new(ArticleTag),
 		new(Comment),
 	)
 

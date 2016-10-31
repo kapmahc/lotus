@@ -150,9 +150,16 @@ func (p *Controller) ShowTag() {
 // @router /tags/:id [delete]
 func (p *Controller) DestroyTag() {
 	p.MustAdmin()
-	_, err := orm.NewOrm().
+	id := p.Ctx.Input.Param(":id")
+	o := orm.NewOrm()
+	_, err := o.
+		QueryTable(new(ArticleTag)).
+		Filter("tag_id", id).
+		Delete()
+	p.Check(err)
+	_, err = o.
 		QueryTable(new(Tag)).
-		Filter("id", p.Ctx.Input.Param(":id")).
+		Filter("id", id).
 		Delete()
 	p.Check(err)
 
