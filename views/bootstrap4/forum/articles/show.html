@@ -1,0 +1,36 @@
+<h3>
+  {{.title}}
+  {{if .can}}
+    <a href="{{urlfor "forum.Controller.EditArticle" ":id" .ID}}" class="btn btn-sm btn-primary">
+      {{T $locale "buttons.edit"}}
+    </a>
+    <button url="{{urlfor "forum.Controller.DestroyArticle" ":id" .ID}}" class="btn btn-sm btn-danger">
+      {{T $locale "buttons.edit"}}
+    </button>
+  {{end}}
+</h3>
+<hr/>
+<div class="row">
+  {{range .tags}}
+    <div class="col-md-2">
+      <a href="{{urlfor "forum.Controller.ShowTag" ":id" .ID}}">{{.Name}}</a>
+    </div>
+  {{end}}
+</div>
+
+<p class="markdown">{{.Body}}</p>
+
+<h3>{{T $locale "forum-pages.new-comment"}}</h3>
+<hr/>
+<div class="row">
+  {{range .comments}}
+    <blockquote class="blockquote">
+      <p class="mb-0 markdown">
+        {{.Body}}
+      </p>
+      <footer class="blockquote-footer">
+        {{.UpdatedAt}}
+      </footer>
+    </blockquote>
+  {{end}}
+</div>

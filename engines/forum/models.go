@@ -15,12 +15,13 @@ const (
 //Article article
 type Article struct {
 	base.Model
-	UserID uint   `json:"user_id" orm:"column(user_id)"`
-	Title  string `json:"title"`
-	Body   string `json:"body"`
-	Type   string `json:"type"`
-	Vote   int    `json:"vote"`
-	Tags   []*Tag `json:"tags" orm:"rel(m2m);rel_table(forum_articles_tags)"`
+	UserID  uint   `json:"user_id" orm:"column(user_id)"`
+	Title   string `json:"title"`
+	Summary string `json:"summary"`
+	Body    string `json:"body"`
+	Type    string `json:"type"`
+	Vote    int    `json:"vote"`
+	Tags    []*Tag `json:"tags" orm:"rel(m2m);rel_table(forum_articles_tags)"`
 }
 
 //TableName table name

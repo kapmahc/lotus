@@ -45,6 +45,21 @@ func (p *Select) Type() string {
 	return "select"
 }
 
+//CheckBox checkbox
+type CheckBox struct {
+	ID       string
+	Label    string
+	Value    []interface{}
+	Readonly bool
+	Options  map[interface{}]interface{}
+	Helper   string
+}
+
+//Type type
+func (p *CheckBox) Type() string {
+	return "checkbox"
+}
+
 //TextField text
 type TextField struct {
 	ID       string

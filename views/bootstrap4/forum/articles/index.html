@@ -1,0 +1,24 @@
+{{$locale := .locale}}
+<h3>
+  {{.title}}
+  {{if .currentUser}}
+    <a href="{{urlfor "forum.Controller.NewArticle"}}" class="btn btn-sm btn-primary">
+      {{T $locale "buttons.new"}}
+    </a>
+  {{end}}
+</h3>
+<hr/>
+<div class="row">
+  {{range .articles}}
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-block">
+          <h4 class="card-title">{{.Title}}</h4>
+          <p class="card-text">{{.Summary}}</p>
+          <a href="{{urlfor "forum.Controller.ShowArticle" ":id" .ID}}" class="btn btn-primary">{{T $locale "buttons.view"}}</a>
+        </div>
+      </div>
+    </div>
+  {{end}}
+</div>
+{{template "../../paginator.html" .pager}}

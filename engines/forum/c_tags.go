@@ -28,7 +28,7 @@ func (p *Controller) NewTag() {
 		"fm-new-tag",
 		title,
 		base.MethodPost,
-		p.URLFor("site.Controller.CreateTag"),
+		p.URLFor("forum.Controller.CreateTag"),
 		[]base.Field{
 			&base.Textarea{
 				ID:    "name",
@@ -57,11 +57,11 @@ func (p *Controller) CreateTag() {
 	if er == nil {
 		_, err := o.Insert(&Tag{Name: fm.Name})
 		p.Check(err)
-		fl.Notice(p.T("forum-pages.success"))
-		p.Redirect(fl, "site.Controller.IndexTag")
+		fl.Notice(p.T("site-pages.success"))
+		p.Redirect(fl, "forum.Controller.IndexTag")
 	} else {
 		fl.Error(er.Error())
-		p.Redirect(fl, "site.Controller.NewTag")
+		p.Redirect(fl, "forum.Controller.NewTag")
 	}
 }
 
@@ -82,7 +82,7 @@ func (p *Controller) EditTag() {
 		"fm-edit-tag",
 		title,
 		base.MethodPost,
-		p.URLFor("site.Controller.UpdateTag", ":id", tag.ID),
+		p.URLFor("forum.Controller.UpdateTag", ":id", tag.ID),
 		[]base.Field{
 			&base.TextField{
 				ID:    "name",
@@ -119,11 +119,11 @@ func (p *Controller) UpdateTag() {
 		tag.Name = fm.Name
 		_, err = o.Update(&tag, "updated_at", "name")
 		p.Check(err)
-		fl.Notice(p.T("forum-pages.success"))
-		p.Redirect(fl, "site.Controller.IndexTag")
+		fl.Notice(p.T("site-pages.success"))
+		p.Redirect(fl, "forum.Controller.IndexTag")
 	} else {
 		fl.Error(er.Error())
-		p.Redirect(fl, "site.Controller.EditTag", ":id", tag.ID)
+		p.Redirect(fl, "forum.Controller.EditTag", ":id", tag.ID)
 	}
 }
 
@@ -138,7 +138,7 @@ func (p *Controller) ShowTag() {
 	p.Check(err)
 
 	var articles []Article
-	_, err = orm.NewOrm().QueryTable(new(Article)).All(&articles, "id", "title", "type")
+	_, err = orm.NewOrm().QueryTable(new(Article)).All(&articles, "id", "title", "summary", "type")
 	p.Check(err)
 	p.Data["tag"] = tag
 	p.Data["title"] = p.T("forum-pages.show-tag")
@@ -157,7 +157,7 @@ func (p *Controller) DestroyTag() {
 	p.Check(err)
 
 	p.Data["json"] = map[string]string{
-		"to": p.URLFor("site.Controller.IndexTag"),
+		"to": p.URLFor("forum.Controller.IndexTag"),
 	}
 	p.ServeJSON()
 }

@@ -5,6 +5,7 @@ create table forum_articles(
   id serial primary key,
   user_id int not null,
   title varchar(255) not null,
+  summary varchar(800) not null,
   body text not null,
   type varchar(8) not null default 'markdown',
   vote int not null default 0,
