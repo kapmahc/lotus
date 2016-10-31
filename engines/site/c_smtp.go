@@ -10,6 +10,16 @@ func (p *Controller) GetAdminSMTP() {
 	var smtp SMTP
 	base.Get("smtp", &smtp)
 	title := p.T("site-pages.admin-smtp")
+
+	var options []base.Option
+	for _, port := range []int{25, 465, 587} {
+		options = append(options, base.Option{
+			Value:    port,
+			Name:     port,
+			Selected: smtp.Port == port,
+		})
+	}
+
 	p.Data["title"] = title
 	p.Data["form"] = p.NewForm(
 		"fm-admin-smtp",
@@ -23,14 +33,9 @@ func (p *Controller) GetAdminSMTP() {
 				Value: smtp.Host,
 			},
 			&base.Select{
-				ID:    "port",
-				Label: p.T("attributes.port"),
-				Value: smtp.Port,
-				Options: map[interface{}]interface{}{
-					25:  25,
-					465: 465,
-					587: 587,
-				},
+				ID:      "port",
+				Label:   p.T("attributes.port"),
+				Options: options,
 			},
 			&base.TextField{
 				ID:    "username",

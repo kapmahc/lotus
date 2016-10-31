@@ -30,9 +30,9 @@ func (p *Controller) NewTag() {
 		base.MethodPost,
 		p.URLFor("forum.Controller.CreateTag"),
 		[]base.Field{
-			&base.Textarea{
+			&base.TextField{
 				ID:    "name",
-				Label: p.T("attributes. name"),
+				Label: p.T("attributes.name"),
 			},
 		},
 	)

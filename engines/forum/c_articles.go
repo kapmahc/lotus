@@ -68,7 +68,7 @@ func (p *Controller) NewArticle() {
 		base.MethodPost,
 		p.URLFor("forum.Controller.CreateArticle"),
 		[]base.Field{
-			&base.Textarea{
+			&base.TextField{
 				ID:    "title",
 				Label: p.T("attributes.title"),
 			},
@@ -79,7 +79,7 @@ func (p *Controller) NewArticle() {
 			p.tagsCheckBox(),
 			&base.Textarea{
 				ID:    "body",
-				Label: p.T("attributes. body"),
+				Label: p.T("attributes.body"),
 			},
 		},
 	)

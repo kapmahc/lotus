@@ -30,13 +30,20 @@ type Field interface {
 	Type() string
 }
 
+//Option option
+type Option struct {
+	Value    interface{}
+	Name     interface{}
+	Selected bool
+}
+
 //Select select
 type Select struct {
 	ID       string
 	Label    string
-	Value    interface{}
+	Multi    bool
 	Readonly bool
-	Options  map[interface{}]interface{}
+	Options  []Option
 	Helper   string
 }
 

@@ -48,9 +48,17 @@
     {{else if eq .Type "select"}}
       <div class="form-group">
         <label for="{{.ID}}">{{.Label}}</label>
-        <select value="{{.Value}}" class="form-control" name="{{.ID}}">
-          {{range $k, $v := .Options}}
-            <option value="{{$k}}">{{$v}}</option>
+        {{if .Multi}}
+          <select multiple class="form-control" name="{{.ID}}">
+        {{else}}
+          <select class="form-control" name="{{.ID}}">
+        {{end}}
+          {{range .Options}}
+            {{if .Selected}}
+              <option value="{{.Value}}" selected>{{.Name}}</option>
+            {{else}}
+              <option value="{{.Value}}">{{.Name}}</option>
+            {{end}}
           {{end}}
         </select>
         {{template "form-field-helper" .}}
