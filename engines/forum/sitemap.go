@@ -13,9 +13,9 @@ func init() {
 	base.RegisterSitemap(func(home string, crl *beego.Controller) []sitemap.Item {
 		now := time.Now()
 		items := []sitemap.Item{
-			{Link: home + crl.URLFor("forum.Controller.IndexTags"), Updated: now},
-			{Link: home + crl.URLFor("forum.Controller.IndexArticles"), Updated: now},
-			{Link: home + crl.URLFor("forum.Controller.IndexComments"), Updated: now},
+			{Link: home + crl.URLFor("forum.Controller.IndexTag"), Updated: now},
+			{Link: home + crl.URLFor("forum.Controller.IndexArticle"), Updated: now},
+			{Link: home + crl.URLFor("forum.Controller.IndexComment"), Updated: now},
 		}
 
 		var tags []Tag

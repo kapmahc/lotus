@@ -6,9 +6,9 @@ import (
 	"github.com/kapmahc/lotus/engines/base"
 )
 
-//IndexTags index tags
+//IndexTag index tags
 // @router /tags [get]
-func (p *Controller) IndexTags() {
+func (p *Controller) IndexTag() {
 	var tags []Tag
 	_, err := orm.NewOrm().QueryTable(new(Tag)).All(&tags, "id", "name")
 	p.Check(err)
@@ -125,6 +125,25 @@ func (p *Controller) UpdateTag() {
 		fl.Error(er.Error())
 		p.Redirect(fl, "site.Controller.EditTag", ":id", tag.ID)
 	}
+}
+
+//ShowTag show tag
+// @router /tags/:id [get]
+func (p *Controller) ShowTag() {
+	var tag Tag
+	err := orm.NewOrm().
+		QueryTable(new(Tag)).
+		Filter("id", p.Ctx.Input.Param(":id")).
+		One(&tag, "id", "name")
+	p.Check(err)
+
+	var articles []Article
+	_, err = orm.NewOrm().QueryTable(new(Article)).All(&articles, "id", "title", "type")
+	p.Check(err)
+	p.Data["tag"] = tag
+	p.Data["title"] = p.T("forum-pages.show-tag")
+	p.Data["articles"] = articles
+	p.TplName = "forum/articles/index.html"
 }
 
 //DestroyTag destroy tag

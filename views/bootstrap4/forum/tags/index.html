@@ -1,5 +1,5 @@
-{{$locale = .locale}}
-{{$can = .can}}
+{{$locale := .locale}}
+{{$can := .can}}
 <h3>
   {{.title}}
   {{if $can}}
@@ -14,7 +14,11 @@
     <div class="col-md-2">
       <div class="card">
         <div class="card-block">
-          <h4 class="card-title">{{.Name}}</h4>
+          <h4 class="card-title">
+            <a href="{{urlfor "forum.Controller.ShowTag" ":id" .ID}}">
+              {{.Name}}
+            </a>
+          </h4>
           {{if $can}}
             <a href="{{urlfor "forum.Controller.EditTag" ":id" .ID}}" class="btn btn-sm btn-warning">
               {{T $locale "buttons.edit"}}
