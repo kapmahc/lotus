@@ -5,9 +5,9 @@ import (
 	"github.com/kapmahc/lotus/engines/base"
 )
 
-//IndexLeavewords list leavewords
+//IndexLeaveWord list leavewords
 // @router /leavewords [get]
-func (p *Controller) IndexLeavewords() {
+func (p *Controller) IndexLeaveWord() {
 	p.Dashboard()
 	p.MustAdmin()
 	var items []LeaveWord
@@ -22,9 +22,9 @@ func (p *Controller) IndexLeavewords() {
 	p.TplName = "site/leavewords/index.html"
 }
 
-//DestroyLeaveword remove leaveword
+//DestroyLeaveWord remove leaveword
 // @router /leavewords/:id [delete]
-func (p *Controller) DestroyLeaveword() {
+func (p *Controller) DestroyLeaveWord() {
 	p.MustAdmin()
 	_, err := orm.NewOrm().
 		QueryTable(new(LeaveWord)).
@@ -33,14 +33,14 @@ func (p *Controller) DestroyLeaveword() {
 	p.Check(err)
 
 	p.Data["json"] = map[string]string{
-		"to": p.URLFor("site.Controller.IndexLeavewords"),
+		"to": p.URLFor("site.Controller.IndexLeaveWord"),
 	}
 	p.ServeJSON()
 }
 
-//CreateLeaveword create leaveword
+//CreateLeaveWord create leaveword
 // @router /leavewords [post]
-func (p *Controller) CreateLeaveword() {
+func (p *Controller) CreateLeaveWord() {
 	var fm fmContent
 	fl, er := p.ParseForm(&fm)
 	if er == nil {
@@ -51,17 +51,17 @@ func (p *Controller) CreateLeaveword() {
 	} else {
 		fl.Error(er.Error())
 	}
-	p.Redirect(fl, "site.Controller.NewLeaveword")
+	p.Redirect(fl, "site.Controller.NewLeaveWord")
 }
 
-//NewLeaveword new leaveword
+//NewLeaveWord new leaveword
 // @router /leavewords/new [get]
-func (p *Controller) NewLeaveword() {
+func (p *Controller) NewLeaveWord() {
 	p.Data["form"] = p.NewForm(
 		"fm-new-leaveword",
 		p.T("site-pages.new-leaveword"),
 		base.MethodPost,
-		p.URLFor("site.Controller.CreateLeaveword"),
+		p.URLFor("site.Controller.CreateLeaveWord"),
 		[]base.Field{
 			&base.Textarea{
 				ID:     "content",

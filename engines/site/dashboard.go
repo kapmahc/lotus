@@ -46,7 +46,7 @@ func init() {
 						Label: "site-pages.admin-nav-bar",
 					},
 					{
-						Href:  "site.Controller.IndexLeavewords",
+						Href:  "site.Controller.IndexLeaveWord",
 						Label: "site-pages.leavewords",
 					},
 					{

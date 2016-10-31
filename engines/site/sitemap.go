@@ -15,7 +15,7 @@ func init() {
 		return []sitemap.Item{
 			{Link: home, Updated: time.Now()},
 			{Link: home + crl.URLFor("site.Controller.IndexNotice"), Updated: time.Now()},
-			{Link: home + crl.URLFor("site.Controller.NewLeaveword"), Updated: installed},
+			{Link: home + crl.URLFor("site.Controller.NewLeaveWord"), Updated: installed},
 		}
 	})
 }
