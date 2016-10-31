@@ -14,7 +14,7 @@ func init() {
 		base.Get("site.install", &installed)
 		return []sitemap.Item{
 			{Link: home, Updated: time.Now()},
-			{Link: home + crl.URLFor("site.Controller.IndexNotices"), Updated: time.Now()},
+			{Link: home + crl.URLFor("site.Controller.IndexNotice"), Updated: time.Now()},
 			{Link: home + crl.URLFor("site.Controller.NewLeaveword"), Updated: installed},
 		}
 	})

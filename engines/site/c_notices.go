@@ -5,9 +5,9 @@ import (
 	"github.com/kapmahc/lotus/engines/base"
 )
 
-//IndexNotices notices
+//IndexNotice notices
 // @router /notices [get]
-func (p *Controller) IndexNotices() {
+func (p *Controller) IndexNotice() {
 	var items []Notice
 	_, err := orm.NewOrm().
 		QueryTable(new(Notice)).
@@ -54,7 +54,7 @@ func (p *Controller) CreateNotice() {
 		_, err := orm.NewOrm().Insert(&Notice{Content: fm.Content})
 		p.Check(err)
 		fl.Notice(p.T("site-pages.success"))
-		p.Redirect(fl, "site.Controller.IndexNotices")
+		p.Redirect(fl, "site.Controller.IndexNotice")
 	} else {
 		fl.Error(er.Error())
 		p.Redirect(fl, "site.Controller.NewNotice")
@@ -110,7 +110,7 @@ func (p *Controller) UpdateNotice() {
 		_, err = o.Update(&notice, "updated_at", "content")
 		p.Check(err)
 		fl.Notice(p.T("site-pages.success"))
-		p.Redirect(fl, "site.Controller.IndexNotices")
+		p.Redirect(fl, "site.Controller.IndexNotice")
 	} else {
 		fl.Error(er.Error())
 		p.Redirect(fl, "site.Controller.EditNotice", ":id", notice.ID)
@@ -128,7 +128,7 @@ func (p *Controller) DestroyNotice() {
 	p.Check(err)
 
 	p.Data["json"] = map[string]string{
-		"to": p.URLFor("site.Controller.IndexNotices"),
+		"to": p.URLFor("site.Controller.IndexNotice"),
 	}
 	p.ServeJSON()
 }

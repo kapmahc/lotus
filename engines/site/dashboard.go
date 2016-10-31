@@ -50,7 +50,7 @@ func init() {
 						Label: "site-pages.leavewords",
 					},
 					{
-						Href:  "site.Controller.IndexNotices",
+						Href:  "site.Controller.IndexNotice",
 						Label: "site-pages.notices",
 					},
 				},

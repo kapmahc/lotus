@@ -21,15 +21,6 @@ func init() {
 				},
 			},
 		}
-		if user.Has(auth.AdminRole) {
-			nb.Links = append(
-				nb.Links,
-				base.Link{
-					Href:  "forum.Controller.GetAdminTags",
-					Label: "forum-pages.tags",
-				},
-			)
-		}
 		return &nb
 	})
 }
