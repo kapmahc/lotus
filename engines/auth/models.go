@@ -41,6 +41,8 @@ type User struct {
 	SignInCount     uint       `json:"sign_in_count"`
 	ConfirmedAt     *time.Time `json:"confirmed_at"`
 	LockedAt        *time.Time `json:"locked_at"`
+
+	Logs []*Log `orm:"reverse(many)"`
 }
 
 //TableName table name
@@ -66,7 +68,7 @@ func (p *User) sumHmac(plain string) []byte {
 //Log add log
 func (p *User) Log(msg string) {
 	if _, err := orm.NewOrm().
-		Insert(&Log{UserID: p.ID, Message: msg}); err != nil {
+		Insert(&Log{User: p, Message: msg}); err != nil {
 		beego.Error(err)
 	}
 }
@@ -226,7 +228,7 @@ func (p *User) getRole(name string, rty string, rid uint) (*Role, error) {
 //Log model
 type Log struct {
 	ID        uint      `json:"id" orm:"column(id)"`
-	UserID    uint      `json:"-" orm:"column(user_id)"`
+	User      *User     `orm:"rel(fk)"`
 	Message   string    `json:"message"`
 	CreatedAt time.Time `json:"created_at" orm:"auto_now_add"`
 }

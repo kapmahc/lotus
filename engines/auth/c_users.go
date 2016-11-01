@@ -67,6 +67,8 @@ func (p *Controller) PostSignIn() {
 //GetSignOut sign out
 // @router /sign-out [get]
 func (p *Controller) GetSignOut() {
+	p.MustSignIn()
+	p.CurrentUser().Log(p.T("auth-logs.sign-out"))
 	p.DestroySession()
 	p.Redirect(nil, "auth.Controller.GetSignIn")
 }
