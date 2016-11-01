@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/astaxie/beego/orm"
+	"github.com/kapmahc/lotus/engines/auth"
 	"github.com/kapmahc/lotus/engines/base"
 )
 
@@ -41,7 +42,7 @@ type Attachment struct {
 	MediaType string
 	Summary   string
 
-	UserID uint
+	User *auth.User `orm:"rel(fk)"`
 }
 
 //TableName table name

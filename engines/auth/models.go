@@ -42,7 +42,8 @@ type User struct {
 	ConfirmedAt     *time.Time `json:"confirmed_at"`
 	LockedAt        *time.Time `json:"locked_at"`
 
-	Logs []*Log `orm:"reverse(many)"`
+	Logs        []*Log        `orm:"reverse(many)"`
+	Permissions []*Permission `orm:"reverse(many)"`
 }
 
 //TableName table name
@@ -192,8 +193,8 @@ func (p *User) Allow(name, rty string, rid uint, years, months, days int) {
 			_, err = o.Update(&pm, "start_up", "shut_down", "updated_at")
 
 		} else if err == orm.ErrNoRows {
-			pm.UserID = p.ID
-			pm.RoleID = role.ID
+			pm.User = p
+			pm.Role = role
 			pm.StartUp = begin
 			pm.ShutDown = end
 			_, err = o.Insert(&pm)
@@ -259,6 +260,8 @@ type Role struct {
 	Name         string
 	ResourceType string
 	ResourceID   uint `orm:"column(resource_id)"`
+
+	Permissions []*Permission `orm:"reverse(many)"`
 }
 
 //TableName table name
@@ -276,10 +279,11 @@ func (p Role) String() string {
 type Permission struct {
 	base.Model
 
-	UserID   uint `orm:"column(user_id)"`
-	RoleID   uint `orm:"column(role_id)"`
 	StartUp  time.Time
 	ShutDown time.Time
+
+	User *User `orm:"rel(fk)"`
+	Role *Role `orm:"rel(fk)"`
 }
 
 //TableName table name

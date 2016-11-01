@@ -2,6 +2,7 @@ package reading
 
 import (
 	"github.com/astaxie/beego/orm"
+	"github.com/kapmahc/lotus/engines/auth"
 	"github.com/kapmahc/lotus/engines/base"
 )
 
@@ -28,11 +29,12 @@ func (p *Book) TableName() string {
 //Note note
 type Note struct {
 	base.Model
-	UserID uint `orm:"column(user_id)"`
-	BookID uint `orm:"column(book_id)"`
-	Body   string
-	Type   string
-	Vote   int
+	Body string
+	Type string
+	Vote int
+
+	User *auth.User `orm:"rel(fk)"`
+	Book *Book      `orm:"rel(fk)"`
 }
 
 //TableName table name

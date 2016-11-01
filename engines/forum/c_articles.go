@@ -101,21 +101,24 @@ func (p *Controller) CreateArticle() {
 			Title:   fm.Title,
 			Summary: fm.Summary,
 			Body:    fm.Body,
-			UserID:  user.ID,
+			User:    user,
 		}
 		o := orm.NewOrm()
 		_, err := o.Insert(&article)
 		p.Check(err)
+
+		var tags []interface{}
 		for _, t := range fm.Tags {
 			id, err := strconv.Atoi(t)
 			p.Check(err)
-			_, err = o.Insert(&ArticleTag{
-				ArticleID: article.ID,
-				TagID:     uint(id),
-			})
+			var tag Tag
+			tag.ID = uint(id)
+			tags = append(tags, &tag)
+		}
+		if len(tags) > 0 {
+			_, err := o.QueryM2M(&article, "Tags").Add(tags...)
 			p.Check(err)
 		}
-
 		fl.Notice(p.T("site-pages.success"))
 		p.Redirect(fl, "forum.Controller.ShowArticle", ":id", article.ID)
 	} else {
@@ -133,7 +136,7 @@ func (p *Controller) canArticle() (Article, bool) {
 		One(&article)
 	p.Check(err)
 	user := p.CurrentUser()
-	return article, (article.UserID == user.ID || user.Has(auth.AdminRole))
+	return article, (article.User.ID == user.ID || user.Has(auth.AdminRole))
 
 }
 
@@ -151,13 +154,10 @@ func (p *Controller) EditArticle() {
 	p.Check(err)
 	var options []base.Option
 	for _, t := range tags {
-		count, err := o.QueryTable(new(ArticleTag)).
-			Filter("article_id", article.ID).Filter("tag_id", t.ID).Count()
-		p.Check(err)
 		options = append(options, base.Option{
 			Value:    t.ID,
 			Name:     t.Name,
-			Selected: count > 0,
+			Selected: o.QueryM2M(&article, "Tags").Exist(&t),
 		})
 	}
 
@@ -214,16 +214,19 @@ func (p *Controller) UpdateArticle() {
 		o := orm.NewOrm()
 		_, err := o.Update(&article, "updated_at", "title", "summary", "body")
 		p.Check(err)
-		_, err = o.QueryTable(new(ArticleTag)).Filter("article_id", article.ID).Delete()
+		m2m := o.QueryM2M(&article, "Tags")
+		_, err = m2m.Clear()
 		p.Check(err)
+		var tags []interface{}
 		for _, t := range fm.Tags {
 			id, err := strconv.Atoi(t)
 			p.Check(err)
-			_, err = o.Insert(&ArticleTag{
-				ArticleID: article.ID,
-				TagID:     uint(id),
-			})
-			p.Check(err)
+			var tag Tag
+			tag.ID = uint(id)
+			tags = append(tags, &tag)
+		}
+		if len(tags) > 0 {
+			m2m.Add(tags...)
 		}
 
 		fl.Notice(p.T("site-pages.success"))
@@ -239,29 +242,17 @@ func (p *Controller) UpdateArticle() {
 func (p *Controller) ShowArticle() {
 	article, can := p.canArticle()
 
-	var comments []Comment
-	var tags []Tag
-	var ats []ArticleTag
 	o := orm.NewOrm()
-	_, err := o.QueryTable(new(ArticleTag)).
-		Filter("article_id", article.ID).
-		All(&ats, "tag_id")
+	_, err := o.LoadRelated(&article, "Tags", "id", "name")
 	p.Check(err)
-	for _, at := range ats {
-		var tag Tag
-		err = o.QueryTable(&tag).Filter("id", at.TagID).One(&tag)
-		p.Check(err)
-		tags = append(tags, tag)
-	}
-	_, err = o.QueryTable(new(Comment)).
-		Filter("article_id", article.ID).
-		OrderBy("-updated_at").
-		All(&comments)
+	_, err = o.LoadRelated(&article, "Comments")
+	// _, err := o.QueryTable(new(Comment)).
+	// 	Filter("Article", article.ID).
+	// 	OrderBy("-updated_at").
+	// 	All(&article.Comments)
 	p.Check(err)
 
 	p.Data["article"] = article
-	p.Data["tags"] = tags
-	p.Data["comments"] = comments
 	p.Data["title"] = article.Title
 	p.Data["can"] = can
 
@@ -292,12 +283,7 @@ func (p *Controller) DestroyArticle() {
 	if !can {
 		p.Abort("403")
 	}
-	o := orm.NewOrm()
-	_, err := o.QueryTable(new(Comment)).Filter("article_id", article.ID).Delete()
-	p.Check(err)
-	_, err = o.QueryTable(new(ArticleTag)).Filter("article_id", article.ID).Delete()
-	p.Check(err)
-	_, err = o.Delete(&article)
+	_, err := orm.NewOrm().Delete(&article)
 	p.Check(err)
 
 	p.Data["json"] = map[string]string{
