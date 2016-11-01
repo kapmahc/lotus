@@ -254,23 +254,23 @@ func (p *Controller) ShowArticle() {
 	p.Data["title"] = article.Title
 	p.Data["can"] = can
 
-	p.Data["form"] = p.NewForm(
-		"fm-new-comment",
-		p.T("forum-pages.new-comment"),
-		base.MethodPost,
-		p.URLFor("forum.Controller.CreateComment", ":id", article.ID),
-		[]base.Field{
-			&base.HiddenField{
-				ID:    "article_id",
-				Value: article.ID,
-			},
-			&base.Textarea{
-				ID:     "body",
-				Label:  p.T("attributes.body"),
-				Helper: p.T("site-pages.can-markdown"),
-			},
-		},
-	)
+	// p.Data["form"] = p.NewForm(
+	// 	"fm-new-comment",
+	// 	p.T("forum-pages.new-comment"),
+	// 	base.MethodPost,
+	// 	p.URLFor("forum.Controller.CreateComment", ":id", article.ID),
+	// 	[]base.Field{
+	// 		&base.HiddenField{
+	// 			ID:    "article_id",
+	// 			Value: article.ID,
+	// 		},
+	// 		&base.Textarea{
+	// 			ID:     "body",
+	// 			Label:  p.T("attributes.body"),
+	// 			Helper: p.T("site-pages.can-markdown"),
+	// 		},
+	// 	},
+	// )
 	p.TplName = "forum/articles/show.html"
 }
 

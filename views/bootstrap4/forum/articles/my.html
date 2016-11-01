@@ -1,0 +1,9 @@
+<h3>{{.title}}</h3>
+<hr/>
+<div class="list-group">
+  {{range .articles}}
+    <a href="{{urlfor "forum.Controller.EditArticle" ":id" .ID}}" class="list-group-item list-group-item-action">
+      {{.Title}}
+    </a>
+  {{end}}
+</div>

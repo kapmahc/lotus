@@ -23,6 +23,12 @@
 
 <h3>
   {{T $locale "forum-pages.comments"}}
+  {{if .currentUser}}
+
+    <a href="{{urlfor "forum.Controller.NewComment" "article_id" .article.ID}}" class="btn btn-sm btn-info">
+      {{T $locale "forum-pages.new-comment"}}
+    </a>
+  {{end}}
 </h3>
 <hr/>
 <div class="row">
@@ -37,6 +43,3 @@
     </blockquote>
   {{end}}
 </div>
-{{if .currentUser}}
-  {{template "../../form.html" .form}}
-{{end}}
