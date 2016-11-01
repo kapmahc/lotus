@@ -128,16 +128,14 @@ func (p *Controller) CreateArticle() {
 }
 
 func (p *Controller) canArticle() (Article, bool) {
-	p.MustSignIn()
 	var article Article
 	err := orm.NewOrm().
 		QueryTable(&article).
 		Filter("id", p.Ctx.Input.Param(":id")).
 		One(&article)
 	p.Check(err)
-	user := p.CurrentUser()
-	return article, (article.User.ID == user.ID || user.Has(auth.AdminRole))
 
+	return article, (p.IsSignIn() && (article.User.ID == p.CurrentUser().ID || p.CurrentUser().Has(auth.AdminRole)))
 }
 
 //EditArticle edit article

@@ -37,17 +37,21 @@ func (p *BaseController) Dashboard() {
 	p.Layout = "auth/dashboard.html"
 }
 
+//IsSignIn is sign in ?
+func (p *BaseController) IsSignIn() bool {
+	return p.Data[CurrentUser] != nil
+}
+
 //MustSignIn must sign in
 func (p *BaseController) MustSignIn() {
-	if p.Data[CurrentUser] == nil {
+	if !p.IsSignIn() {
 		p.Abort("403")
 	}
 }
 
 //IsAdmin is admin ?
 func (p *BaseController) IsAdmin() bool {
-	user := p.Data[CurrentUser]
-	return user != nil && user.(*User).Has(AdminRole)
+	return p.IsSignIn() && p.CurrentUser().Has(AdminRole)
 }
 
 //MustAdmin must admin
