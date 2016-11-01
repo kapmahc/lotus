@@ -35,7 +35,7 @@ func (p *Controller) IndexArticle() {
 	)
 	p.Data["articles"] = articles
 	p.Data["title"] = p.T("forum-pages.articles")
-	p.Data["can"] = p.CurrentUser().Has(auth.AdminRole)
+	p.Data["can"] = p.IsAdmin()
 	p.TplName = "forum/articles/index.html"
 }
 

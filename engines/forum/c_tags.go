@@ -2,7 +2,6 @@ package forum
 
 import (
 	"github.com/astaxie/beego/orm"
-	"github.com/kapmahc/lotus/engines/auth"
 	"github.com/kapmahc/lotus/engines/base"
 )
 
@@ -14,7 +13,7 @@ func (p *Controller) IndexTag() {
 	p.Check(err)
 	p.Data["tags"] = tags
 	p.Data["title"] = p.T("forum-pages.tags")
-	p.Data["can"] = p.CurrentUser().Has(auth.AdminRole)
+	p.Data["can"] = p.IsAdmin()
 	p.TplName = "forum/tags/index.html"
 }
 

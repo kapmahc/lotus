@@ -44,10 +44,15 @@ func (p *BaseController) MustSignIn() {
 	}
 }
 
+//IsAdmin is admin ?
+func (p *BaseController) IsAdmin() bool {
+	user := p.Data[CurrentUser]
+	return user != nil && user.(*User).Has(AdminRole)
+}
+
 //MustAdmin must admin
 func (p *BaseController) MustAdmin() {
-	user := p.Data[CurrentUser]
-	if user == nil || !user.(*User).Has(AdminRole) {
+	if !p.IsAdmin() {
 		p.Abort("403")
 	}
 }
