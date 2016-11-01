@@ -1,0 +1,7 @@
+<h3>{{.title}}</h3>
+<hr/>
+<div class="list-group">
+  {{range .links}}
+    <a href="{{.Href}}" target="_blank" class="list-group-item list-group-item-action">{{.Label}}</a>
+  {{end}}
+</div>

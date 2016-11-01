@@ -2,6 +2,7 @@ package site
 
 import (
 	"encoding/xml"
+	"path"
 	"text/template"
 
 	"github.com/astaxie/beego"
@@ -39,13 +40,7 @@ func (p *Controller) GetGoogle() {
 //See http://www.robotstxt.org/robotstxt.html for documentation on how to use the robots.txt file
 // @router /robots.txt [get]
 func (p *Controller) GetRobots() {
-	txt := `
-User-agent: *
-Disallow:
-
-SITEMAP: {{.Home}}{{.Href}}
-`
-	tpl, err := template.New("").Parse(txt)
+	tpl, err := template.ParseFiles(path.Join("views", "robots.txt"))
 	if err == nil {
 		err = tpl.Execute(p.Ctx.ResponseWriter, struct {
 			Home string

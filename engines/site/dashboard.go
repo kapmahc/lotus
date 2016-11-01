@@ -46,6 +46,10 @@ func init() {
 						Label: "site-pages.admin-nav-bar",
 					},
 					{
+						Href:  "site.Controller.GetAdminCfgFiles",
+						Label: "site-pages.admin-cfg-files",
+					},
+					{
 						Href:  "site.Controller.IndexLeaveWord",
 						Label: "site-pages.leavewords",
 					},
