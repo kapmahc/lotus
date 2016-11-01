@@ -140,7 +140,7 @@ func (p *Controller) ShowTag() {
 	_, err = orm.NewOrm().QueryTable(new(Article)).All(&articles, "id", "title", "summary", "type")
 	p.Check(err)
 	p.Data["tag"] = tag
-	p.Data["title"] = p.T("forum-pages.show-tag")
+	p.Data["title"] = p.T("forum-pages.show-tag", tag.Name)
 	p.Data["articles"] = articles
 	p.TplName = "forum/articles/index.html"
 }
@@ -150,10 +150,16 @@ func (p *Controller) ShowTag() {
 func (p *Controller) DestroyTag() {
 	p.MustAdmin()
 	id := p.Ctx.Input.Param(":id")
-	_, err := orm.NewOrm().
-		QueryTable(new(Tag)).
+
+	var tag Tag
+	o := orm.NewOrm()
+	err := o.QueryTable(&tag).
 		Filter("id", id).
-		Delete()
+		One(&tag)
+	p.Check(err)
+	_, err = o.QueryM2M(&tag, "Articles").Clear()
+	p.Check(err)
+	_, err = o.Delete(&tag)
 	p.Check(err)
 
 	p.Data["json"] = map[string]string{

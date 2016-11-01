@@ -26,10 +26,10 @@ create unique index idx_forum_tags on forum_tags(name);
 
 create table forum_articles_tags(
   id serial primary key,
-  article_id int not null,
-  tag_id int not null
+  forum_articles_id int not null,
+  forum_tags_id int not null
 );
-create unique index idx_forum_article_tag on forum_articles_tags(article_id, tag_id);
+create unique index idx_forum_article_tag on forum_articles_tags(forum_articles_id, forum_tags_id);
 
 create table forum_comments(
   id serial primary key,

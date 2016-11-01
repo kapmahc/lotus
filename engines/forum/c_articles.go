@@ -243,7 +243,7 @@ func (p *Controller) ShowArticle() {
 	article, can := p.canArticle()
 
 	o := orm.NewOrm()
-	_, err := o.LoadRelated(&article, "Tags", "id", "name")
+	_, err := o.LoadRelated(&article, "Tags")
 	p.Check(err)
 	_, err = o.LoadRelated(&article, "Comments")
 	// _, err := o.QueryTable(new(Comment)).
@@ -283,7 +283,10 @@ func (p *Controller) DestroyArticle() {
 	if !can {
 		p.Abort("403")
 	}
-	_, err := orm.NewOrm().Delete(&article)
+	o := orm.NewOrm()
+	_, err := o.QueryM2M(&article, "Tags").Clear()
+	p.Check(err)
+	_, err = o.Delete(&article)
 	p.Check(err)
 
 	p.Data["json"] = map[string]string{

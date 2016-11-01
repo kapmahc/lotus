@@ -2,8 +2,8 @@
 <h3>
   {{.title}}
   {{if .currentUser}}
-    <a href="{{urlfor "forum.Controller.NewArticle"}}" class="btn btn-sm btn-primary">
-      {{T $locale "buttons.new"}}
+    <a href="{{urlfor "forum.Controller.NewArticle"}}" class="btn btn-sm btn-info">
+      {{T $locale "forum-pages.new-article"}}
     </a>
   {{end}}
 </h3>

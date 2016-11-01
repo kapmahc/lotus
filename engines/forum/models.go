@@ -24,7 +24,7 @@ type Article struct {
 	Vote    int    `json:"vote"`
 
 	User     *auth.User `orm:"rel(fk)"`
-	Tags     []*Tag     `orm:"rel(m2m)"`
+	Tags     []*Tag     `orm:"rel(m2m);rel_table(forum_articles_tags)"`
 	Comments []*Comment `orm:"reverse(many)"`
 }
 
@@ -39,7 +39,7 @@ type Tag struct {
 	Name string `json:"name"`
 	Vote int    `json:"vote"`
 
-	Article []*Article `orm:"reverse(many)"`
+	Articles []*Article `orm:"reverse(many)"`
 }
 
 //TableName table name

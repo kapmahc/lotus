@@ -2,7 +2,7 @@
 <h3>
   {{.title}}
   {{if .can}}
-    <a href="{{urlfor "forum.Controller.EditArticle" ":id" .article.ID}}" class="btn btn-sm btn-primary">
+    <a href="{{urlfor "forum.Controller.EditArticle" ":id" .article.ID}}" class="btn btn-sm btn-warning">
       {{T $locale "buttons.edit"}}
     </a>
     <button id="btn-remove-{{urlfor "forum.Controller.DestroyArticle" ":id" .article.ID}}" class="btn btn-sm btn-danger">
@@ -15,7 +15,7 @@
 {{.article.Summary}}
 <br/>
 {{T .locale "forum-attributes.article-tags"}}:
-{{range .tags}}
+{{range .article.Tags}}
   <a href="{{urlfor "forum.Controller.ShowTag" ":id" .ID}}">{{.Name}}</a>
 {{end}}
 
@@ -26,7 +26,7 @@
 </h3>
 <hr/>
 <div class="row">
-  {{range .comments}}
+  {{range .article.Comments}}
     <blockquote class="blockquote">
       <p class="mb-0 markdown">
         {{.Body}}
