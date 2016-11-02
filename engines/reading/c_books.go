@@ -42,28 +42,27 @@ func (p *Controller) IndexBook() {
 	p.TplName = "reading/books/index.html"
 }
 
-func (p *Controller) getBook() *Book {
+func (p *Controller) getBook() Book {
 	var book Book
 	err := orm.NewOrm().
 		QueryTable(&book).
 		Filter("id", p.Ctx.Input.Param(":id")).
 		One(&book)
 	p.Check(err)
-	return &book
+	return book
 }
 
 func (p *Controller) points2html(id uint, points []epub.NavPoint) string {
 	str := "<ol>"
 	for _, pt := range points {
 		str += fmt.Sprintf(
-			`<li><a href="%s" target="_blank">%s</a></li>`,
+			`<li><a href="%s/%s" target="_blank">%s</a></li>`,
 			p.URLFor(
-				"reading.Controller.ShowPagePage",
+				"reading.Controller.ShowBook",
 				":id",
 				id,
-				":splat",
-				pt.Content.Src,
 			),
+			pt.Content.Src,
 			pt.Text,
 		)
 		str += p.points2html(id, pt.Points)
@@ -83,7 +82,7 @@ func (p *Controller) ShowBook() {
 
 	p.Data["book"] = book
 	p.Data["ncx"] = template.HTML(p.points2html(book.ID, bk.Ncx.Points))
-	p.TplName = "reading/home.html"
+	p.TplName = "reading/books/home.html"
 }
 
 //ShowBookPage show book page

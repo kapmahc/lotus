@@ -21,29 +21,34 @@ func sendMailWorker(queue string, args ...interface{}) error {
 	subject := args[1].(string)
 	body := args[2].(string)
 
+	var err error
 	if beego.AppConfig.String("runmode") == "prod" {
 		var cfg SMTP
-		if err := base.Get("smtp", &cfg); err != nil {
-			return err
+		err = base.Get("smtp", &cfg)
+		if err == nil {
+			msg := gomail.NewMessage()
+			msg.SetHeader("From", cfg.From)
+			msg.SetHeader("To", to)
+			// msg.SetHeader("Cc", cc...)
+			// msg.SetHeader("Bcc", bcc...)
+
+			msg.SetHeader("Subject", subject)
+			msg.SetBody("text/html", body)
+			// for _, f := range files {
+			// 	msg.Attach(f)
+			// }
+
+			dia := gomail.NewDialer(cfg.Host, cfg.Port, cfg.Username, cfg.Password)
+			err = dia.DialAndSend(msg)
 		}
-		msg := gomail.NewMessage()
-		msg.SetHeader("From", cfg.From)
-		msg.SetHeader("To", to)
-		// msg.SetHeader("Cc", cc...)
-		// msg.SetHeader("Bcc", bcc...)
-
-		msg.SetHeader("Subject", subject)
-		msg.SetBody("text/html", body)
-		// for _, f := range files {
-		// 	msg.Attach(f)
-		// }
-
-		dia := gomail.NewDialer(cfg.Host, cfg.Port, cfg.Username, cfg.Password)
-		return dia.DialAndSend(msg)
+	} else {
+		beego.Debug("send mail to", to, ":", subject, "\n", body)
 	}
 
-	beego.Debug("send mail to", to, ":", subject, "\n", body)
-	return nil
+	if err != nil {
+		beego.Error(err)
+	}
+	return err
 }
 
 func init() {

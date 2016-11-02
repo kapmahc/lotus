@@ -5,7 +5,6 @@ create table reading_books(
   id serial primary key,
   author varchar(255) not null,
   publisher varchar(255) not null,
-  uid varchar(36) not null,
   title varchar(255) not null,
   type varchar(36) not null default 'epub3',
   lang varchar(32) not null default 'en-US',
@@ -18,7 +17,6 @@ create table reading_books(
   updated_at timestamp without time zone not null
 );
 create unique index idx_reading_books_file on reading_books(file);
-create unique index idx_reading_books_uid on reading_books(uid);
 create index idx_reading_books_author on reading_books(author);
 create index idx_reading_books_publisher on reading_books(publisher);
 create index idx_reading_books_type on reading_books(type);

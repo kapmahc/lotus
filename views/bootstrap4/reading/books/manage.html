@@ -14,8 +14,8 @@
     {{range .books}}
       <tr>
         <th scope="row">{{.ID}}</th>
-        <td>{{.File}}></td>
-        <td>{{.Title}}></td>
+        <td>{{.File}}</td>
+        <td>{{.Title}}</td>
         <td>
           <a target="_blank" href="{{urlfor "reading.Controller.ShowBook" ":id" .ID}}" class="btn btn-sm btn-primary">
             {{T $locale "buttons.view"}}

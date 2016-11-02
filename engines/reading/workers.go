@@ -66,6 +66,9 @@ func scanBooksWorker(queue string, args ...interface{}) error {
 		}
 		return nil
 	})
+	if err != nil {
+		beego.Error(err)
+	}
 	return err
 }
 
