@@ -3,7 +3,7 @@
 -- SQL in section 'Up' is executed when this migration is applied
 create table vpn_users (
     id serial primary key,
-    name varchar(32) not null,
+    email varchar(255) not null,
     password varchar(255) not null,
     details text,
     online bool not null default false,
@@ -13,7 +13,7 @@ create table vpn_users (
     created_at timestamp without time zone not null default now(),
     updated_at timestamp without time zone not null
 );
-create unique index idx_vpn_users_name on vpn_users(name);
+create unique index idx_vpn_users_email on vpn_users(email);
 
 create table vpn_logs (
     id serial primary key,
@@ -22,8 +22,8 @@ create table vpn_logs (
     trusted_port smallint,
     remote_ip inet,
     remote_port smallint,
-    start_time timestamp without time zone not null default CURRENT_TIMESTAMP,
-    end_time timestamp without time zone,
+    start_up timestamp without time zone not null default CURRENT_TIMESTAMP,
+    shut_down timestamp without time zone,
     received float not null default '0',
     send float not null default '0'
 );

@@ -1,0 +1,49 @@
+{{$locale := .locale}}
+<h3>
+  {{.title}}
+  <a href="{{urlfor "vpn.Controller.NewUser"}}" class="btn btn-sm btn-primary">{{T .locale "buttons.new"}}</a>
+</h3>
+<hr/>
+<table class="table table-bordered table-hove">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>{{T .locale "attributes.email"}}</th>
+      <th>{{T .locale "attributes.enable"}}</th>
+      <th>{{T .locale "attributes.startUp"}}</th>
+      <th>{{T .locale "attributes.shutDown"}}</th>
+      <th>{{T .locale "buttons.manage"}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{range .users}}
+      <tr>
+        <th scope="row">{{.ID}}</th>
+        <td>{{.Email}}</td>
+        <td>
+          {{if .Enable}}
+            {{T $locale "attributes.yes"}}
+          {{else}}
+            {{T $locale "attributes.no"}}
+          {{end}}
+        </td>
+        <td>{{dateformat .StartUp "2006-01-02"}}</td>
+        <td>{{dateformat .ShutDown "2006-01-02"}}</td>
+        <td>
+          <a href="{{urlfor "vpn.Controller.ShowUser" ":id" .ID}}" class="btn btn-sm btn-primary">
+            {{T $locale "buttons.view"}}
+          </a>
+          <a href="{{urlfor "vpn.Controller.EditUserProfile" ":id" .ID}}" class="btn btn-sm btn-info">
+            {{T $locale "ops-vpn-pages.edit-user-profile"}}
+          </a>
+          <a href="{{urlfor "vpn.Controller.EditUserPassword" ":id" .ID}}" class="btn btn-sm btn-warning">
+            {{T $locale "ops-vpn-pages.reset-user-password"}}
+          </a>
+          <button id="btn-remove-{{urlfor "vpn.Controller.DestroyUser" ":id" .ID}}" class="btn btn-sm btn-danger">
+            {{T $locale "buttons.remove"}}
+          </button>
+        </td>
+      </tr>
+    {{end}}
+  </tbody>
+</table>

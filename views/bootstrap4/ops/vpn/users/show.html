@@ -1,0 +1,10 @@
+<h3>{{.title}}</h3>
+<hr/>
+<div class="row">
+  {{.user.Email}}
+  <p class="markdown">{{.user.Details}}</p>
+</div>
+<br/>
+<h3>{{T .locale "ops-vpn-pages.logs"}}</h3>
+<hr/>
+{{template "ops/vpn/logs/list.html" .}}

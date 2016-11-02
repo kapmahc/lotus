@@ -11,6 +11,7 @@ import (
 
 func main() {
 	// orm
+	// orm.DefaultTimeLoc = time.UTC
 	orm.Debug = beego.AppConfig.String("runmode") != "prod"
 	orm.RegisterDriver("postgres", orm.DRPostgres)
 	orm.RegisterDataBase(

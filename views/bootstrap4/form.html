@@ -78,6 +78,25 @@
         </label>
       {{end}}
     </div>
+    {{else if eq .Type "date"}}
+      <div class="form-group">
+        <label for="{{.ID}}">{{.Label}}</label>
+        <input class="form-control" type="date" value="{{dateformat .Value "2006-01-02"}}" name="{{.ID}}">
+      </div>
+    {{else if eq .Type "radio"}}
+      <div class="form-group">        
+        {{$id := .ID}}
+        {{range .Options}}
+          <label class="form-check-inline">
+            {{if .Selected}}
+              <input type="radio" class="form-check-input" name="{{$id}}" value="{{.Value}}" checked>
+            {{else}}
+              <input type="radio" class="form-check-input" name="{{$id}}" value="{{.Value}}">
+            {{end}}
+            {{.Name}}
+          </label>
+        {{end}}
+      </div>
     {{else}}
       <input type="hidden" name="{{.ID}}" value="{{.Value}}"/>
     {{end}}

@@ -1,6 +1,9 @@
 package base
 
-import "html/template"
+import (
+	"html/template"
+	"time"
+)
 
 const (
 	//MethodPost post method
@@ -52,6 +55,21 @@ func (p *Select) Type() string {
 	return "select"
 }
 
+//Radio radio
+type Radio struct {
+	ID       string
+	Label    string
+	Multi    bool
+	Readonly bool
+	Options  []Option
+	Helper   string
+}
+
+//Type type
+func (p *Radio) Type() string {
+	return "radio"
+}
+
 //CheckBox checkbox
 type CheckBox struct {
 	ID       string
@@ -64,6 +82,20 @@ type CheckBox struct {
 //Type type
 func (p *CheckBox) Type() string {
 	return "checkbox"
+}
+
+//DateField date
+type DateField struct {
+	ID       string
+	Label    string
+	Value    time.Time
+	Readonly bool
+	Helper   string
+}
+
+//Type type
+func (p *DateField) Type() string {
+	return "date"
 }
 
 //TextField text

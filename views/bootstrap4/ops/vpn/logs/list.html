@@ -1,0 +1,27 @@
+<table class="table table-bordered table-hove">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>{{T .locale "ops-vpn-attributes.log-user"}}</th>
+      <th>{{T .locale "ops-vpn-attributes.log-trusted"}}</th>
+      <th>{{T .locale "ops-vpn-attributes.log-remote"}}</th>
+      <th>{{T .locale "ops-vpn-attributes.log-received"}}</th>
+      <th>{{T .locale "ops-vpn-attributes.log-send"}}</th>
+      <th>{{T .locale "ops-vpn-attributes.log-start-up"}}</th>
+      <th>{{T .locale "ops-vpn-attributes.log-shut-down"}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{range .logs}}
+      <tr>
+        <th scope="row">{{.ID}}</th>
+        <td>{{.TrustedIP}}:{{.TruestedPort}}</td>
+        <td>{{.RemoteIP}}:{{.RemotePort}}</td>
+        <td>{{.Received}}</td>
+        <td>{{.Send}}</td>
+        <td>{{.StartUp}}</td>
+        <td>{{.ShutDown}}</td>
+      </tr>
+    {{end}}
+  </tbody>
+</table>
