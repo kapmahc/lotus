@@ -22,7 +22,7 @@ create table forum_tags(
   created_at timestamp without time zone not null default now(),
   updated_at timestamp without time zone not null
 );
-create unique index idx_forum_tags on forum_tags(name);
+create unique index idx_forum_tags_name on forum_tags(name);
 
 create table forum_articles_tags(
   id serial primary key,
@@ -41,7 +41,7 @@ create table forum_comments(
   created_at timestamp without time zone not null default now(),
   updated_at timestamp without time zone not null
 );
-create index idx_forum_comments on forum_comments(type);
+create index idx_forum_comments_type on forum_comments(type);
 
 
 -- +goose Down

@@ -1,14 +1,15 @@
 package vpn
 
-import "github.com/astaxie/beego"
+import "github.com/kapmahc/lotus/engines/auth"
 
 //Controller ops controller
 type Controller struct {
-	beego.Controller
+	auth.BaseController
 }
 
-//GetHome homepage
-// @router / [get]
-func (p *Controller) GetHome() {
-	p.TplName = "ops/vpn/index.html"
+//Prepare prepare
+func (p *Controller) Prepare() {
+	p.BaseController.Prepare()
+	p.Dashboard()
+	p.MustAdmin()
 }
