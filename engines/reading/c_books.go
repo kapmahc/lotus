@@ -5,19 +5,17 @@ import (
 	"html/template"
 	"io/ioutil"
 	"path"
-	"path/filepath"
 	"strings"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
-	"github.com/benmanns/goworker"
 	"github.com/kapmahc/epub"
 	"github.com/kapmahc/lotus/engines/base"
 )
 
-//GetBooks list books
+//IndexBook index book
 // @router /books [get]
-func (p *Controller) GetBooks() {
+func (p *Controller) IndexBook() {
 	o := orm.NewOrm()
 
 	const size = 60
@@ -41,22 +39,7 @@ func (p *Controller) GetBooks() {
 		books,
 	)
 	p.Data["title"] = p.T("reading-pages.books")
-	p.TplName = "reading/books.html"
-}
-
-//GetScan scan books
-// @router /scan [get]
-func (p *Controller) GetScan() {
-	p.MustAdmin()
-	goworker.Enqueue(&goworker.Job{
-		Queue: base.QueueLow,
-		Payload: goworker.Payload{
-			Class: scanBookJob,
-			Args:  []interface{}{filepath.Join("tmp", "books")},
-		},
-	})
-	p.Data["json"] = map[string]interface{}{"ok": true}
-	p.ServeJSON()
+	p.TplName = "reading/books/index.html"
 }
 
 func (p *Controller) getBook() *Book {
@@ -69,42 +52,43 @@ func (p *Controller) getBook() *Book {
 	return &book
 }
 
-func (p *Controller) points2html(href string, points []epub.NavPoint) string {
+func (p *Controller) points2html(id uint, points []epub.NavPoint) string {
 	str := "<ol>"
 	for _, pt := range points {
 		str += fmt.Sprintf(
-			`<li><a href="%s/%s" target="_blank">%s</a></li>`,
-			href,
-			pt.Content.Src,
+			`<li><a href="%s" target="_blank">%s</a></li>`,
+			p.URLFor(
+				"reading.Controller.ShowPagePage",
+				":id",
+				id,
+				":splat",
+				pt.Content.Src,
+			),
 			pt.Text,
 		)
-		str += p.points2html(href, pt.Points)
+		str += p.points2html(id, pt.Points)
 	}
 	str += "</ol>"
 	return str
 }
 
-//GetBookIndex show book index
+//ShowBook show book home page
 // @router /books/:id [get]
-func (p *Controller) GetBookIndex() {
+func (p *Controller) ShowBook() {
 	book := p.getBook()
 	p.Data["title"] = book.Title
 	bk, err := epub.Open(book.File)
 	p.Check(err)
 	defer bk.Close()
 
-	p.Data["ncx"] = template.HTML(
-		p.points2html(
-			p.URLFor("reading.Controller.GetBookIndex", ":id", book.ID),
-			bk.Ncx.Points,
-		),
-	)
-	p.TplName = "reading/book.html"
+	p.Data["book"] = book
+	p.Data["ncx"] = template.HTML(p.points2html(book.ID, bk.Ncx.Points))
+	p.TplName = "reading/home.html"
 }
 
-//GetBook show book page
+//ShowBookPage show book page
 // @router /books/:id/* [get]
-func (p *Controller) GetBook() {
+func (p *Controller) ShowBookPage() {
 	book := p.getBook()
 	bk, err := epub.Open(book.File)
 	p.Check(err)
@@ -128,7 +112,7 @@ func (p *Controller) GetBook() {
 	defer fd.Close()
 	if path.Ext(name) == ".xhtml" {
 		p.Data["title"], p.Data["body"] = p.parseHTML(fd)
-		p.TplName = "reading/page.html"
+		p.TplName = "reading/books/page.html"
 		return
 	}
 	for _, ext := range []string{".css", ".jpg"} {

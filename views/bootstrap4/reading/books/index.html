@@ -13,7 +13,7 @@
             {{.Author}} <br/>
             {{.Description}} <br/>
           </p>
-          <a href="{{urlfor "reading.Controller.GetBookIndex" ":id" .ID}}" class="btn btn-secondary">
+          <a href="{{urlfor "reading.Controller.ShowBook" ":id" .ID}}" class="btn btn-secondary">
             {{$view}}
           </a>
         </div>
@@ -21,4 +21,4 @@
     </div>
   {{end}}
 </div>
-{{template "../paginator.html" .pager}}
+{{template "../../paginator.html" .pager}}

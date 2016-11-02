@@ -1,0 +1,30 @@
+{{$locale := .locale}}
+<h3>{{.title}}</h3>
+<hr/>
+<table class="table table-bordered table-hove">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>{{T .locale "reading-attributes.book-file"}}</th>
+      <th>{{T .locale "reading-attributes.book-title"}}</th>
+      <th>{{T .locale "buttons.manage"}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{range .books}}
+      <tr>
+        <th scope="row">{{.ID}}</th>
+        <td>{{.File}}></td>
+        <td>{{.Title}}></td>
+        <td>
+          <a target="_blank" href="{{urlfor "reading.Controller.ShowBook" ":id" .ID}}" class="btn btn-sm btn-primary">
+            {{T $locale "buttons.view"}}
+          </a>
+          <button id="btn-remove-{{urlfor "reading.Controller.DestroyBook" ":id" .ID}}" class="btn btn-sm btn-danger">
+            {{T $locale "buttons.remove"}}
+          </button>
+        </td>
+      </tr>
+    {{end}}
+  </tbody>
+</table>
