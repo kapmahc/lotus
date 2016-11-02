@@ -1,0 +1,28 @@
+{{$locale := .locale}}
+<h3>{{.title}}</h3>
+<hr/>
+<table class="table table-bordered table-hove">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>{{T .locale "attributes.body"}}</th>
+      <th>{{T .locale "buttons.manage"}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{range .notes}}
+      <tr>
+        <th scope="row">{{.ID}}</th>
+        <td>{{.Body}}</td>
+        <td>
+          <a target="_blank" href="{{urlfor "reading.Controller.EditNote" ":id" .ID}}" class="btn btn-sm btn-primary">
+            {{T $locale "buttons.edit"}}
+          </a>
+          <button id="btn-remove-{{urlfor "reading.Controller.DestroyNote" ":id" .ID}}" class="btn btn-sm btn-danger">
+            {{T $locale "buttons.remove"}}
+          </button>
+        </td>
+      </tr>
+    {{end}}
+  </tbody>
+</table>

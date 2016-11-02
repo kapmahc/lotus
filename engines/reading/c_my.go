@@ -14,6 +14,6 @@ func (p *Controller) GetMyNotes() {
 	_, err := o.OrderBy("-updated_at").All(&notes, "id", "body", "updated_at")
 	p.Check(err)
 	p.Data["title"] = p.T("reading-pages.my-notes")
-	p.Data["articles"] = notes
+	p.Data["notes"] = notes
 	p.TplName = "reading/notes/my.html"
 }

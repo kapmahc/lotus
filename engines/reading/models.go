@@ -19,6 +19,8 @@ type Book struct {
 	Description string
 	Vote        int
 	PublishedAt string
+
+	Notes []*Note `orm:"reverse(many)"`
 }
 
 //TableName table name

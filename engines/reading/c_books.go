@@ -79,9 +79,13 @@ func (p *Controller) ShowBook() {
 	bk, err := epub.Open(book.File)
 	p.Check(err)
 	defer bk.Close()
+	_, err = orm.NewOrm().LoadRelated(&book, "Notes")
+	p.Check(err)
 
 	p.Data["book"] = book
 	p.Data["ncx"] = template.HTML(p.points2html(book.ID, bk.Ncx.Points))
+
+	p.Layout = "reading/books/layout.html"
 	p.TplName = "reading/books/home.html"
 }
 
@@ -94,23 +98,16 @@ func (p *Controller) ShowBookPage() {
 	defer bk.Close()
 	name := p.Ctx.Input.Param(":splat")
 
-	// switch path.Ext(name) {
-	// case ".css":
-	// 	p.Ctx.Output.Header("Content-Type", "text/css; charset=utf-8")
-	// 	p.Ctx.Output.Body(buf)
-	// case ".xhtml":
-	// 	p.Ctx.Output.Header("Content-Type", "application/xhtml+xml; charset=utf-8")
-	// 	p.Ctx.Output.Body(buf)
-	// default:
-	// 	beego.Error("bad file", name)
-	// 	p.Abort("404")
-	// }
-
 	fd, err := bk.Open(name)
 	p.Check(err)
 	defer fd.Close()
 	if path.Ext(name) == ".xhtml" {
+		_, err = orm.NewOrm().LoadRelated(&book, "Notes")
+		p.Check(err)
 		p.Data["title"], p.Data["body"] = p.parseHTML(fd)
+		p.Data["book"] = book
+
+		p.Layout = "reading/books/layout.html"
 		p.TplName = "reading/books/page.html"
 		return
 	}
