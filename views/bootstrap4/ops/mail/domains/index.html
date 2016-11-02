@@ -1,0 +1,31 @@
+{{$locale := .locale}}
+<h3>
+  {{.title}}
+  <a href="{{urlfor "mail.Controller.NewDomain"}}" class="btn btn-sm btn-primary">{{T .locale "buttons.new"}}</a>
+</h3>
+<hr/>
+<table class="table table-bordered table-hove">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>{{T .locale "attributes.name"}}</th>
+      <th>{{T .locale "buttons.manage"}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{range .domains}}
+      <tr>
+        <th scope="row">{{.ID}}</th>
+        <td>{{.Name}}</td>
+        <td>
+          <a href="{{urlfor "mail.Controller.EditDomain" ":id" .ID}}" class="btn btn-sm btn-info">
+            {{T $locale "buttons.edit"}}
+          </a>
+          <button id="btn-remove-{{urlfor "mail.Controller.DestroyDomain" ":id" .ID}}" class="btn btn-sm btn-danger">
+            {{T $locale "buttons.remove"}}
+          </button>
+        </td>
+      </tr>
+    {{end}}
+  </tbody>
+</table>

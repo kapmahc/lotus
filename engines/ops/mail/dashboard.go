@@ -13,16 +13,16 @@ func init() {
 				Label: "ops-mail-pages.profile",
 				Links: []base.Link{
 					{
-						Href:  "mail.Controller.IndexTransport",
-						Label: "ops-mail-pages.transport",
+						Href:  "mail.Controller.IndexDomain",
+						Label: "ops-mail-pages.domains",
 					},
 					{
 						Href:  "mail.Controller.IndexUser",
 						Label: "ops-mail-pages.users",
 					},
 					{
-						Href:  "mail.Controller.IndexVirtual",
-						Label: "ops-mail-pages.virtual",
+						Href:  "mail.Controller.IndexAlias",
+						Label: "ops-mail-pages.aliases",
 					},
 				},
 			}
