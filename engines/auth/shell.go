@@ -2,11 +2,13 @@ package auth
 
 import (
 	"crypto/x509/pkix"
+	"database/sql"
 	"fmt"
 	"html/template"
 	"log"
 	"os"
 	"path"
+	"path/filepath"
 	"time"
 
 	"bitbucket.org/liamstask/goose/lib/goose"
@@ -317,7 +319,8 @@ server {
 							cli.ShowCommandHelp(c, "generate")
 							return nil
 						}
-						file, err := goose.CreateMigration(name, "sql", migrationRoot(), time.Now())
+						conf := migrationConf()
+						file, err := goose.CreateMigration(name, "sql", conf.MigrationsDir, time.Now())
 						if err == nil {
 							log.Printf("generate file %s", file)
 						}
@@ -329,8 +332,12 @@ server {
 					Usage:   "migrate the database",
 					Aliases: []string{"m"},
 					Action: web.CfgAction(func(*cli.Context) error {
-						//TODO
-						return nil
+						conf := migrationConf()
+						ver, err := goose.GetMostRecentDBVersion(conf.MigrationsDir)
+						if err != nil {
+							return err
+						}
+						return goose.RunMigrations(conf, conf.MigrationsDir, ver)
 					}),
 				},
 				{
@@ -338,7 +345,60 @@ server {
 					Usage:   "rollback the database",
 					Aliases: []string{"r"},
 					Action: web.CfgAction(func(*cli.Context) error {
-						//TODO
+						conf := migrationConf()
+						cur, err := goose.GetDBVersion(conf)
+						if err != nil {
+							return err
+						}
+						ver, err := goose.GetPreviousDBVersion(conf.MigrationsDir, cur)
+						if err != nil {
+							return err
+						}
+						return goose.RunMigrations(conf, conf.MigrationsDir, ver)
+					}),
+				},
+				{
+					Name:    "status",
+					Usage:   "dump the migration status for the current DB",
+					Aliases: []string{"st"},
+					Action: web.CfgAction(func(*cli.Context) error {
+						conf := migrationConf()
+						min := int64(0)
+						max := int64((1 << 63) - 1)
+						migrations, err := goose.CollectMigrations(conf.MigrationsDir, min, max)
+						if err != nil {
+							return err
+						}
+						db, err := goose.OpenDBFromDBConf(conf)
+						if err != nil {
+							return err
+						}
+						defer db.Close()
+
+						// must ensure that the version table exists if we're running on a pristine DB
+						if _, err := goose.EnsureDBVersion(conf, db); err != nil {
+							return err
+						}
+
+						fmt.Printf("goose: status for environment '%v'\n", conf.Env)
+						fmt.Println("    Applied At                  Migration")
+						for _, m := range migrations {
+							var row goose.MigrationRecord
+							q := fmt.Sprintf("SELECT tstamp, is_applied FROM goose_db_version WHERE version_id=%d ORDER BY tstamp DESC LIMIT 1", m.Version)
+							e := db.QueryRow(q).Scan(&row.TStamp, &row.IsApplied)
+
+							if e != nil && e != sql.ErrNoRows {
+								return e
+							}
+
+							var appliedAt string
+							if row.IsApplied {
+								appliedAt = row.TStamp.Format(time.ANSIC)
+							} else {
+								appliedAt = "Pending"
+							}
+							fmt.Printf("    %-24s -- %v\n", appliedAt, filepath.Base(m.Source))
+						}
 						return nil
 					}),
 				},

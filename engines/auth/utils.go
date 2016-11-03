@@ -6,15 +6,34 @@ import (
 	"path/filepath"
 	"time"
 
+	"bitbucket.org/liamstask/goose/lib/goose"
+
 	"github.com/garyburd/redigo/redis"
 	"github.com/jinzhu/gorm"
 	"github.com/spf13/viper"
 )
 
-func migrationRoot() string {
+func migrationConf() *goose.DBConf {
 	root := filepath.Join("db", viper.GetString("database.driver"), "migrations")
 	os.MkdirAll(root, 0700)
-	return root
+	var drv goose.DBDriver
+	drv.Name, drv.OpenStr = databaseURL()
+	switch drv.Name {
+	case "postgres":
+		drv.Import = "github.com/lib/pq"
+		drv.Dialect = &goose.PostgresDialect{}
+	case "mysql":
+		drv.Import = "github.com/go-sql-driver/mysql"
+		drv.Dialect = &goose.MySqlDialect{}
+	case "sqlite3":
+		drv.Import = "github.com/mattn/go-sqlite3"
+		drv.Dialect = &goose.Sqlite3Dialect{}
+	}
+	return &goose.DBConf{
+		MigrationsDir: root,
+		Env:           viper.GetString("env"),
+		Driver:        drv,
+	}
 }
 
 //IsProduction is production mode?
@@ -22,14 +41,19 @@ func IsProduction() bool {
 	return viper.GetString("env") == "production"
 }
 
-//OpenDatabase open database
-func OpenDatabase() (*gorm.DB, error) {
+func databaseURL() (string, string) {
 	//postgresql: "user=%s password=%s host=%s port=%d dbname=%s sslmode=%s"
 	args := ""
 	for k, v := range viper.GetStringMapString("database.args") {
 		args += fmt.Sprintf(" %s=%s ", k, v)
 	}
-	db, err := gorm.Open(viper.GetString("database.driver"), args)
+	return viper.GetString("database.driver"), args
+}
+
+//OpenDatabase open database
+func OpenDatabase() (*gorm.DB, error) {
+	drv, url := databaseURL()
+	db, err := gorm.Open(drv, url)
 	if err != nil {
 		return nil, err
 	}
