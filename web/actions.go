@@ -1,15 +1,25 @@
 package web
 
 import (
+	"log"
+
 	"github.com/facebookgo/inject"
 	"github.com/spf13/viper"
 	"github.com/urfave/cli"
 )
 
+type injectLogger struct {
+}
+
+func (p *injectLogger) Debugf(format string, v ...interface{}) {
+	log.Printf(format, v...)
+}
+
 //IocAction ioc action
 func IocAction(fn func(*cli.Context, *inject.Graph) error) func(c *cli.Context) error {
 	return CfgAction(func(ctx *cli.Context) error {
 		var inj inject.Graph
+		inj.Logger = &injectLogger{}
 		for _, en := range engines {
 			if err := en.Init(&inj); err != nil {
 				return err

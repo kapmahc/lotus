@@ -267,19 +267,6 @@ server {
 			}),
 		},
 		{
-			Name:    "redis",
-			Aliases: []string{"re"},
-			Usage:   "open redis connection",
-			Action: web.CfgAction(func(*cli.Context) error {
-				return web.Shell(
-					"redis-cli",
-					"-h", viper.GetString("redis.host"),
-					"-p", viper.GetString("redis.port"),
-					"-n", viper.GetString("redis.db"),
-				)
-			}),
-		},
-		{
 			Name:    "database",
 			Aliases: []string{"db"},
 			Usage:   "database operations",

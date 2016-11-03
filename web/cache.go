@@ -10,7 +10,7 @@ import (
 
 //Cache cache
 type Cache struct {
-	Redis *redis.Pool `inject:""`
+	Redis *redis.Pool `inject:"cache.redis"`
 }
 
 //Flush clear cache items
