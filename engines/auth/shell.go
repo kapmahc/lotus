@@ -4,10 +4,12 @@ import (
 	"crypto/x509/pkix"
 	"fmt"
 	"html/template"
+	"log"
 	"os"
 	"path"
+	"time"
 
-	"golang.org/x/text/language"
+	"bitbucket.org/liamstask/goose/lib/goose"
 
 	"github.com/BurntSushi/toml"
 	"github.com/facebookgo/inject"
@@ -16,6 +18,7 @@ import (
 	"github.com/kapmahc/lotus/web"
 	"github.com/spf13/viper"
 	"github.com/urfave/cli"
+	"golang.org/x/text/language"
 )
 
 //Shell command line
@@ -299,9 +302,41 @@ server {
 					}),
 				},
 				{
+					Name:    "generate",
+					Usage:   "generate database migration",
+					Aliases: []string{"g"},
+					Flags: []cli.Flag{
+						cli.StringFlag{
+							Name:  "name, n",
+							Usage: "name",
+						},
+					},
+					Action: web.CfgAction(func(c *cli.Context) error {
+						name := c.String("name")
+						if name == "" {
+							cli.ShowCommandHelp(c, "generate")
+							return nil
+						}
+						file, err := goose.CreateMigration(name, "sql", migrationRoot(), time.Now())
+						if err == nil {
+							log.Printf("generate file %s", file)
+						}
+						return err
+					}),
+				},
+				{
 					Name:    "migrate",
 					Usage:   "migrate the database",
 					Aliases: []string{"m"},
+					Action: web.CfgAction(func(*cli.Context) error {
+						//TODO
+						return nil
+					}),
+				},
+				{
+					Name:    "rollback",
+					Usage:   "rollback the database",
+					Aliases: []string{"r"},
 					Action: web.CfgAction(func(*cli.Context) error {
 						//TODO
 						return nil

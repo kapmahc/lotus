@@ -2,12 +2,20 @@ package auth
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/garyburd/redigo/redis"
 	"github.com/jinzhu/gorm"
 	"github.com/spf13/viper"
 )
+
+func migrationRoot() string {
+	root := filepath.Join("db", viper.GetString("database.driver"), "migrations")
+	os.MkdirAll(root, 0700)
+	return root
+}
 
 //IsProduction is production mode?
 func IsProduction() bool {
