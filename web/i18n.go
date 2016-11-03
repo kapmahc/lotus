@@ -3,12 +3,15 @@ package web
 import (
 	"bufio"
 	"fmt"
+	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"golang.org/x/text/language"
 
+	"github.com/gin-gonic/gin"
 	"github.com/golang/glog"
 	"github.com/jinzhu/gorm"
 )
@@ -25,6 +28,51 @@ type Locale struct {
 //I18n i18n
 type I18n struct {
 	Db *gorm.DB `inject:""`
+}
+
+//Handler locale handler
+func (p *I18n) Handler() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		write := false
+		const key = "locale"
+		// 1. Check URL arguments.
+		lng := c.Request.URL.Query().Get(key)
+
+		// 2. Get language information from cookies.
+		if len(lng) == 0 {
+			if ck, er := c.Request.Cookie(key); er == nil {
+				lng = ck.Value
+			}
+		}
+
+		// 3. Get language information from 'Accept-Language'.
+		if len(lng) == 0 {
+			write = true
+			al := c.Request.Header.Get("Accept-Language")
+			if len(al) > 4 {
+				lng = al[:5]
+			}
+		}
+
+		tag, err := language.Parse(lng)
+		if err != nil {
+			glog.Error(err)
+			tag = language.AmericanEnglish
+			write = true
+		}
+
+		// Write cookie
+		if write {
+			http.SetCookie(c.Writer, &http.Cookie{
+				Name:    key,
+				Value:   tag.String(),
+				Expires: time.Now().AddDate(10, 1, 1),
+				Path:    "/",
+			})
+		}
+
+		c.Set(key, tag.String())
+	}
 }
 
 //T translate
