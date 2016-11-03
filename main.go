@@ -9,7 +9,6 @@ import (
 	_ "github.com/kapmahc/lotus/engines/ops/vpn"
 	_ "github.com/kapmahc/lotus/engines/reading"
 	_ "github.com/kapmahc/lotus/engines/shop"
-	_ "github.com/kapmahc/lotus/engines/site"
 	"github.com/kapmahc/lotus/web"
 )
 
