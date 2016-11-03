@@ -8,6 +8,8 @@ import (
 
 //Engine web engine
 type Engine interface {
+	//Home home
+	Home() gin.HandlerFunc
 	//Init set default config
 	Init()
 	//Map ioc objects
