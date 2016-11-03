@@ -1,4 +1,6 @@
-/tmp
+# editor
+.*.swp
+.*.un~ 
 
 # build
 /dist
@@ -6,3 +8,5 @@
 # test
 /*.toml
 *.db
+/tmp
+/etc

@@ -3,6 +3,7 @@ package auth
 import (
 	"crypto/aes"
 	"crypto/sha512"
+	"log/syslog"
 
 	"github.com/SermoDigital/jose/crypto"
 	"github.com/facebookgo/inject"
@@ -24,6 +25,15 @@ func (p *Engine) Home() gin.HandlerFunc {
 
 //Init init ioc objects
 func (p *Engine) Init(inj *inject.Graph) error {
+	priority := syslog.LOG_DEBUG
+	if IsProduction() {
+		priority = syslog.LOG_INFO
+	}
+	logger, err := web.NewLogger(priority, viper.GetString("app.name"))
+	if err != nil {
+		return err
+	}
+
 	db, err := OpenDatabase()
 	if err != nil {
 		return err
@@ -37,6 +47,7 @@ func (p *Engine) Init(inj *inject.Graph) error {
 	}
 
 	return inj.Provide(
+		&inject.Object{Value: logger},
 		&inject.Object{Value: db},
 		&inject.Object{Value: rep},
 		&inject.Object{Value: cip, Name: "aes.cip"},
@@ -78,6 +89,10 @@ func init() {
 			"max_open": 180,
 			"max_idle": 6,
 		},
+	})
+
+	viper.SetDefault("app", map[string]interface{}{
+		"name": "lotus",
 	})
 
 	viper.SetDefault("server", map[string]interface{}{

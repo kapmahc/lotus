@@ -322,7 +322,7 @@ server {
 						conf := migrationConf()
 						file, err := goose.CreateMigration(name, "sql", conf.MigrationsDir, time.Now())
 						if err == nil {
-							log.Printf("generate file %s", file)
+							log.Println("generate file ", file)
 						}
 						return err
 					}),
@@ -526,7 +526,12 @@ server {
 						},
 					},
 					Action: web.IocAction(func(c *cli.Context, _ *inject.Graph) error {
-						keys, err := p.I18n.Codes(c.String("lang"))
+						lang := c.String("lang")
+						tag, err := language.Parse(lang)
+						if err != nil {
+							return err
+						}
+						keys, err := p.I18n.Codes(tag.String())
 						if err != nil {
 							return err
 						}

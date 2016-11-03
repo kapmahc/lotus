@@ -12,7 +12,6 @@ import (
 	"golang.org/x/text/language"
 
 	"github.com/gin-gonic/gin"
-	"github.com/golang/glog"
 	"github.com/jinzhu/gorm"
 )
 
@@ -27,7 +26,8 @@ type Locale struct {
 
 //I18n i18n
 type I18n struct {
-	Db *gorm.DB `inject:""`
+	Db     *gorm.DB `inject:""`
+	Logger *Logger  `inject:""`
 }
 
 //Handler locale handler
@@ -56,7 +56,7 @@ func (p *I18n) Handler(c *gin.Context) {
 
 	tag, err := language.Parse(lng)
 	if err != nil {
-		glog.Error(err)
+		p.Logger.Error("parse locale: %v", err)
 		tag = language.AmericanEnglish
 		write = true
 	}
@@ -81,7 +81,7 @@ func (p *I18n) T(lang string, code string, args ...interface{}) string {
 	if err == nil {
 		return fmt.Sprintf(msg, args...)
 	}
-	glog.Error(err)
+	p.Logger.Error("find locale: %s", err)
 	return code
 }
 
@@ -116,7 +116,7 @@ func (p *I18n) Del(lang string, code string) error {
 //Codes get codes
 func (p *I18n) Codes(lang string) ([]string, error) {
 	var keys []string
-	err := p.Db.Model(&Locale{}).Where("lang = ?", lang).Pluck("code", &keys).Error
+	err := p.Db.Model(&Locale{}).Where("lang = ?", lang).Order("code ASC").Pluck("code", &keys).Error
 	return keys, err
 }
 
@@ -137,7 +137,7 @@ func (p *I18n) Load(dir string) error {
 		const ext = ".txt"
 		name := info.Name()
 		if info.Mode().IsRegular() && filepath.Ext(name) == ext {
-			glog.Infof("Find locale file %s", path)
+			p.Logger.Info("Find locale file %s", path)
 			lang := name[0 : len(name)-len(ext)]
 			if _, err := language.Parse(lang); err != nil {
 				return err
