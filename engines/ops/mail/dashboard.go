@@ -24,6 +24,10 @@ func init() {
 						Href:  "mail.Controller.IndexAlias",
 						Label: "ops-mail-pages.aliases",
 					},
+					{
+						Href:  "mail.Controller.ReadMe",
+						Label: "ops-mail-pages.read-me",
+					},
 				},
 			}
 		}

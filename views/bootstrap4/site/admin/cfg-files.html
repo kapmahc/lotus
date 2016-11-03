@@ -5,3 +5,9 @@
     <a href="{{.Href}}" target="_blank" class="list-group-item list-group-item-action">{{.Label}}</a>
   {{end}}
 </div>
+<br/>
+<ul>
+  {{range .notes}}
+    <li>{{.}}</li>
+  {{end}}
+</ul>

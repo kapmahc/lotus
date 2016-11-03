@@ -1,0 +1,86 @@
+<h4>Database</h4>
+<hr/>
+<pre>
+  <code>
+    CREATE USER mailreader PASSWORD 'secret';
+    grant select on transport, users, virtual, postfix_mailboxes, postfix_virtual to mailreader;
+    create user mailwriter password 'secret';
+    grant select, insert, update, delete on transport, users, virtual, postfix_mailboxes, postfix_virtual to mailwriter;
+  </code>
+</pre>
+
+<h4>Certificates</h4>
+<hr/>
+<pre>
+  <code>
+    cp -R /usr/share/doc/openvpn/examples/easy-rsa /etc/openvpn/.
+    cd /etc/openvpn/easy-rsa/2.0/
+
+    cat > vars <<EOF
+    export KEY_COUNTRY="change-me"
+    export KEY_PROVINCE="change-me"
+    export KEY_CITY="change-me"
+    export KEY_ORG="change-me"
+    export KEY_EMAIL="ops@change-me.com"
+    EOF
+
+    source ./vars
+    ./clean-all
+
+    ./build-ca
+    ./build-key-server server
+    ./build-key client
+    ./build-dh
+    mv keys /etc/openvpn/
+
+  </code>
+</code>
+
+
+<h4>OpenVpn</h4>
+<hr/>
+<pre>
+  <code>
+  </code>
+</code>
+
+
+<h4>/etc/openvpn/script/config.sh</h4>
+<hr/>
+<pre>
+  <code>
+    #!/bin/bash
+    HOST='2.2.2.2'
+    PORT='5432'
+    USER='USERNAME'
+    PASS='PASSWORD'
+    DB='openvpn'
+  </code>
+</code>
+
+<h4>/etc/openvpn/script/test_connect_db.sh</h4>
+<hr/>
+<pre>
+  <code>
+    #!/bin/bash
+    . /etc/openvpn/script/config.sh
+    username=$1
+    password=$2
+    user_id=$(mysql -h$HOST -P$PORT -u$USER -p$PASS $DB -sN -e "select user_id from user where user_id = '$username' AND user_pass = '$password' AND user_enable=1 AND user_start_date != user_end_date AND TO_DAYS(now()) >= TO_DAYS(user_start_date) AND (TO_DAYS(now()) <= TO_DAYS(user_end_date) OR user_end_date='0000-00-00')")    
+    [ "$user_id" != '' ] && [ "$user_id" = "$username" ] && echo "user : $username" && echo 'authentication ok.' && exit 0 || echo 'authentication failed.'; exit 1
+  </code>
+</code>
+
+<h4>OpenVpn</h4>
+<hr/>
+<pre>
+  <code>
+  </code>
+</code>
+
+<h4>OpenVpn</h4>
+<hr/>
+<pre>
+  <code>
+  </code>
+</code>

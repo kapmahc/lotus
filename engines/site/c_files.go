@@ -16,6 +16,9 @@ func (p *Controller) GetAdminCfgFiles() {
 	p.Data["links"] = []base.Link{
 		{Href: p.URLFor("site.Controller.GetNginxConf"), Label: "nginx.conf"},
 	}
+	p.Data["notes"] = []string{
+		"nginx -t",
+	}
 	p.Data["title"] = p.T("site-pages.admin-cfg-files")
 	p.TplName = "site/admin/cfg-files.html"
 }

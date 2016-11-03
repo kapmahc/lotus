@@ -20,6 +20,10 @@ func init() {
 						Href:  "vpn.Controller.IndexLog",
 						Label: "ops-vpn-pages.logs",
 					},
+					{
+						Href:  "vpn.Controller.ReadMe",
+						Label: "ops-vpn-pages.read-me",
+					},
 				},
 			}
 		}
