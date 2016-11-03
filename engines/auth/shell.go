@@ -7,6 +7,7 @@ import (
 	"html/template"
 	"log"
 	"os"
+	"os/user"
 	"path"
 	"path/filepath"
 	"time"
@@ -86,8 +87,16 @@ func (p *Engine) Shell() []cli.Command {
 			Aliases: []string{"w"},
 			Usage:   "start the worker progress",
 			Action: web.IocAction(func(_ *cli.Context, inj *inject.Graph) error {
-				//TODO
-				return nil
+				hn, err := os.Hostname()
+				if err != nil {
+					return err
+				}
+				un, err := user.Current()
+				if err != nil {
+					return err
+				}
+				worker := p.Server.NewWorker(fmt.Sprintf("%s@%s", un.Name, hn))
+				return worker.Launch()
 			}),
 		},
 		{
@@ -386,15 +395,6 @@ server {
 							}
 							fmt.Printf("    %-24s -- %v\n", appliedAt, filepath.Base(m.Source))
 						}
-						return nil
-					}),
-				},
-				{
-					Name:    "seed",
-					Usage:   "load the seed data",
-					Aliases: []string{"s"},
-					Action: web.IocAction(func(*cli.Context, *inject.Graph) error {
-						//TODO
 						return nil
 					}),
 				},

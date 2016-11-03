@@ -2,12 +2,13 @@ package web
 
 import (
 	"fmt"
+	"log"
 	"log/syslog"
 )
 
-//Logger web logger
+//Logger logger
 type Logger struct {
-	Writer *syslog.Writer `inject:"logger.web"`
+	Writer *syslog.Writer
 }
 
 //Debug debug
@@ -42,9 +43,18 @@ func (p *Logger) Error(msg string, args ...interface{}) {
 
 // -----------------------------------------------------------------------------
 
+type injectLogger struct {
+}
+
+func (p *injectLogger) Debugf(format string, v ...interface{}) {
+	log.Printf(format, v...)
+}
+
+// -----------------------------------------------------------------------------
+
 //JobLogger job logger
 type JobLogger struct {
-	Writer *syslog.Writer `inject:"logger.jobs"`
+	Writer *syslog.Writer
 }
 
 //Print print

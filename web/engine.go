@@ -18,6 +18,8 @@ type Engine interface {
 	Dashboard() []Dropdown
 	//Shell command line
 	Shell() []cli.Command
+	//Worker register worker
+	Worker()
 }
 
 var engines []Engine

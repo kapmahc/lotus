@@ -36,6 +36,11 @@ func (p *Engine) Shell() []cli.Command {
 	return []cli.Command{}
 }
 
+//Worker register worker
+func (p *Engine) Worker() {
+
+}
+
 func init() {
 	web.Register(&Engine{})
 }
