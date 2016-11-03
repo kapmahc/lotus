@@ -26,3 +26,13 @@ var engines []Engine
 func Register(en ...Engine) {
 	engines = append(engines, en...)
 }
+
+//Loop loop engines
+func Loop(fn func(en Engine) error) error {
+	for _, en := range engines {
+		if err := fn(en); err != nil {
+			return err
+		}
+	}
+	return nil
+}
