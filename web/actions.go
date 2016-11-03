@@ -19,7 +19,9 @@ func (p *injectLogger) Debugf(format string, v ...interface{}) {
 func IocAction(fn func(*cli.Context, *inject.Graph) error) func(c *cli.Context) error {
 	return CfgAction(func(ctx *cli.Context) error {
 		var inj inject.Graph
-		inj.Logger = &injectLogger{}
+		if !IsProduction() {
+			inj.Logger = &injectLogger{}
+		}
 		for _, en := range engines {
 			if err := en.Init(&inj); err != nil {
 				return err
@@ -42,7 +44,6 @@ func CfgAction(f cli.ActionFunc) func(c *cli.Context) error {
 	return func(c *cli.Context) error {
 		viper.SetEnvPrefix("lotus")
 		viper.BindEnv("env")
-		viper.SetDefault("env", "development")
 
 		viper.SetConfigName("config")
 		viper.SetConfigType("toml")

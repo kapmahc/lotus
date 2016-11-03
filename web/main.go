@@ -3,6 +3,7 @@ package web
 import (
 	"os"
 
+	"github.com/spf13/viper"
 	"github.com/urfave/cli"
 )
 
@@ -22,4 +23,8 @@ func Main(version string) error {
 	}
 
 	return app.Run(os.Args)
+}
+
+func init() {
+	viper.SetDefault("env", "development")
 }

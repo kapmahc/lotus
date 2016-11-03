@@ -63,7 +63,7 @@ func (p *Engine) Shell() []cli.Command {
 			Aliases: []string{"s"},
 			Usage:   "start the app server",
 			Action: web.IocAction(func(*cli.Context, *inject.Graph) error {
-				if IsProduction() {
+				if web.IsProduction() {
 					gin.SetMode(gin.ReleaseMode)
 				}
 				rt := gin.Default()

@@ -8,6 +8,7 @@ import (
 	"bitbucket.org/liamstask/goose/lib/goose"
 
 	"github.com/jinzhu/gorm"
+	"github.com/kapmahc/lotus/web"
 	"github.com/spf13/viper"
 )
 
@@ -34,11 +35,6 @@ func migrationConf() *goose.DBConf {
 	}
 }
 
-//IsProduction is production mode?
-func IsProduction() bool {
-	return viper.GetString("env") == "production"
-}
-
 func databaseURL() (string, string) {
 	//postgresql: "user=%s password=%s host=%s port=%d dbname=%s sslmode=%s"
 	args := ""
@@ -55,7 +51,7 @@ func OpenDatabase() (*gorm.DB, error) {
 	if err != nil {
 		return nil, err
 	}
-	if !IsProduction() {
+	if !web.IsProduction() {
 		db.LogMode(true)
 	}
 
