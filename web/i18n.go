@@ -31,48 +31,48 @@ type I18n struct {
 }
 
 //Handler locale handler
-func (p *I18n) Handler() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		write := false
-		const key = "locale"
-		// 1. Check URL arguments.
-		lng := c.Request.URL.Query().Get(key)
+func (p *I18n) Handler(c *gin.Context) {
 
-		// 2. Get language information from cookies.
-		if len(lng) == 0 {
-			if ck, er := c.Request.Cookie(key); er == nil {
-				lng = ck.Value
-			}
+	write := false
+	const key = "locale"
+	// 1. Check URL arguments.
+	lng := c.Request.URL.Query().Get(key)
+
+	// 2. Get language information from cookies.
+	if len(lng) == 0 {
+		if ck, er := c.Request.Cookie(key); er == nil {
+			lng = ck.Value
 		}
-
-		// 3. Get language information from 'Accept-Language'.
-		if len(lng) == 0 {
-			write = true
-			al := c.Request.Header.Get("Accept-Language")
-			if len(al) > 4 {
-				lng = al[:5]
-			}
-		}
-
-		tag, err := language.Parse(lng)
-		if err != nil {
-			glog.Error(err)
-			tag = language.AmericanEnglish
-			write = true
-		}
-
-		// Write cookie
-		if write {
-			http.SetCookie(c.Writer, &http.Cookie{
-				Name:    key,
-				Value:   tag.String(),
-				Expires: time.Now().AddDate(10, 1, 1),
-				Path:    "/",
-			})
-		}
-
-		c.Set(key, tag.String())
 	}
+
+	// 3. Get language information from 'Accept-Language'.
+	if len(lng) == 0 {
+		write = true
+		al := c.Request.Header.Get("Accept-Language")
+		if len(al) > 4 {
+			lng = al[:5]
+		}
+	}
+
+	tag, err := language.Parse(lng)
+	if err != nil {
+		glog.Error(err)
+		tag = language.AmericanEnglish
+		write = true
+	}
+
+	// Write cookie
+	if write {
+		http.SetCookie(c.Writer, &http.Cookie{
+			Name:    key,
+			Value:   tag.String(),
+			Expires: time.Now().AddDate(10, 1, 1),
+			Path:    "/",
+		})
+	}
+
+	c.Set(key, tag.String())
+
 }
 
 //T translate

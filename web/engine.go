@@ -10,10 +10,8 @@ import (
 type Engine interface {
 	//Home home
 	Home() gin.HandlerFunc
-	//Init set default config
-	Init()
-	//Map ioc objects
-	Map(*inject.Graph) error
+	//Init init ioc objects
+	Init(*inject.Graph) error
 	//Mount web points
 	Mount(*gin.Engine)
 	//Dashboard dashboard's nav-bar
