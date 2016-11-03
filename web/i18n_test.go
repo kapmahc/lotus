@@ -28,7 +28,7 @@ func TestDatabase(t *testing.T) {
 	if val1, _ := p.Get(lang, key); val != val1 {
 		t.Errorf("want %s, get %s", val, val1)
 	}
-	ks, err := p.Keys(lang)
+	ks, err := p.Codes(lang)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -43,4 +43,6 @@ func TestDatabase(t *testing.T) {
 		t.Fatal(err)
 	}
 	t.Log(p.T("zh-Hans", "buttons.submit"))
+
+	t.Log(p.Languages())
 }

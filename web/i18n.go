@@ -65,10 +65,17 @@ func (p *I18n) Del(lang string, code string) error {
 	return p.Db.Where("lang = ? AND code = ?", lang, code).Delete(Locale{}).Error
 }
 
-//Keys locale keys
-func (p *I18n) Keys(lang string) ([]string, error) {
+//Codes get codes
+func (p *I18n) Codes(lang string) ([]string, error) {
 	var keys []string
 	err := p.Db.Model(&Locale{}).Where("lang = ?", lang).Pluck("code", &keys).Error
+	return keys, err
+}
+
+//Languages supported languages
+func (p *I18n) Languages() ([]string, error) {
+	var keys []string
+	err := p.Db.Model(&Locale{}).Pluck("DISTINCT lang", &keys).Error
 	return keys, err
 }
 
