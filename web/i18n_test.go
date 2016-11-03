@@ -38,4 +38,9 @@ func TestDatabase(t *testing.T) {
 		t.Log(ks)
 	}
 	p.Del(lang, key)
+
+	if err = p.Load("../locales"); err != nil {
+		t.Fatal(err)
+	}
+	t.Log(p.T("zh-Hans", "buttons.submit"))
 }

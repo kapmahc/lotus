@@ -1,8 +1,15 @@
 package web
 
 import (
+	"bufio"
 	"fmt"
+	"os"
+	"path/filepath"
+	"strings"
 
+	"golang.org/x/text/language"
+
+	"github.com/golang/glog"
 	"github.com/jinzhu/gorm"
 )
 
@@ -22,9 +29,11 @@ type I18n struct {
 
 //T translate
 func (p *I18n) T(lang string, code string, args ...interface{}) string {
-	if msg, err := p.Get(lang, code); err == nil {
+	msg, err := p.Get(lang, code)
+	if err == nil {
 		return fmt.Sprintf(msg, args...)
 	}
+	glog.Error(err)
 	return code
 }
 
@@ -61,4 +70,50 @@ func (p *I18n) Keys(lang string) ([]string, error) {
 	var keys []string
 	err := p.Db.Model(&Locale{}).Where("lang = ?", lang).Pluck("code", &keys).Error
 	return keys, err
+}
+
+//Load load locales from file
+func (p *I18n) Load(dir string) error {
+	return filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		const ext = ".txt"
+		name := info.Name()
+		if info.Mode().IsRegular() && filepath.Ext(name) == ext {
+			glog.Infof("Find locale file %s", path)
+			lang := name[0 : len(name)-len(ext)]
+			if _, err := language.Parse(lang); err != nil {
+				return err
+			}
+			fd, err := os.Open(path)
+			if err != nil {
+				return err
+			}
+			defer fd.Close()
+
+			scanner := bufio.NewScanner(fd)
+			for scanner.Scan() {
+				line := scanner.Text()
+				idx := strings.Index(line, " = ")
+				if idx > 0 {
+					code := strings.TrimSpace(line[0:idx])
+					msg := strings.TrimSpace(line[idx+3:])
+					var count int
+					err = p.Db.Model(&Locale{}).Where("lang = ? AND code = ?", lang, code).Count(&count).Error
+					if err == nil && count == 0 {
+						err = p.Db.Create(&Locale{Lang: lang, Code: code, Message: msg}).Error
+					}
+					if err != nil {
+						return err
+					}
+				}
+			}
+
+			return scanner.Err()
+		}
+		return nil
+	})
+
 }
