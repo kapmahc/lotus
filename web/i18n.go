@@ -43,6 +43,8 @@ func (p *I18n) Handler(c *gin.Context) {
 		if ck, er := c.Request.Cookie(key); er == nil {
 			lng = ck.Value
 		}
+	} else {
+		write = true
 	}
 
 	// 3. Get language information from 'Accept-Language'.
@@ -104,7 +106,7 @@ func (p *I18n) Set(lang string, code, message string) error {
 //Get get message
 func (p *I18n) Get(lang string, code string) (string, error) {
 	var l Locale
-	err := p.Db.Where("lang = ? AND code = ?", lang, code).First(&l).Error
+	err := p.Db.Select([]string{"message"}).Where("lang = ? AND code = ?", lang, code).First(&l).Error
 	return l.Message, err
 }
 

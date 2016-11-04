@@ -7,4 +7,7 @@ func (p *Engine) Mount(rt *gin.Engine) {
 	rt.GET("/locales/:lang", p.getLocales)
 	rt.GET("/layout", p.getLayout)
 	rt.GET("/dashboard", p.Handler.MustSignIn(), p.getDashboard)
+
+	ut := rt.Group("/users")
+	ut.GET("/sign-in", p.getUsersSignIn)
 }

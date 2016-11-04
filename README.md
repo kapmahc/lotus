@@ -27,6 +27,12 @@ go get -u golang.org/x/tools/cmd/goimports
 go get -u github.com/kapmahc/lotus
 ```
 
+* auto rerun
+```
+sudo pacman -S inotify-tools
+./run.sh
+```
+
 ## Build
 ```
 cd $GOPATH/src/github.com/kapmahc/lotus
@@ -48,5 +54,3 @@ GRANT ALL PRIVILEGES ON DATABASE db-name TO user-name;
 ```
 initdb  -D '/var/lib/postgres/data'
 ```
-
-
