@@ -49,6 +49,7 @@ languages.traditional-chinese = 正體中文
 
 helpers.can-markdown = Can use markdown
 helpers.one-link-per-line = One line per line, like "/about-us = About us"
+helpers.passwords-must-match = Passwords must match.
 
 lang-bar.switch = Switch lang
 lang-bar.other = This site in other languages
@@ -124,6 +125,7 @@ auth.logs.update-profile = Update profile
 auth.models.user = User
 
 auth.helpers.need-password-to-change = We need your password to change.
+auth.helpers.password-must-in-size = Must be between 6 and 128 characters in length.
 
 auth.messages.user-already-comfirmed = User was already confirmed.
 auth.messages.email-already-exists = Email already exists

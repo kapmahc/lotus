@@ -49,6 +49,7 @@ languages.traditional-chinese = 正體中文
 
 helpers.can-markdown = 可以使用markdown语法
 helpers.one-link-per-line = 每行一个链接, 例如 "/about-us = About us"
+helpers.passwords-must-match = 密码两次输入必须匹配
 
 lang-bar.switch = 切换语言
 lang-bar.other = 本站其他语言版本
@@ -124,6 +125,7 @@ auth.logs.update-profile = 更新个人信息
 auth.models.user = 用户
 
 auth.helpers.need-password-to-change = 需要你的密码才能继续修改
+auth.helpers.password-must-in-size = 密码长度在6位至128位之间
 
 auth.messages.user-already-comfirmed = 用户已经被激活
 auth.messages.email-already-exists = 邮箱已存在

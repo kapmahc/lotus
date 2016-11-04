@@ -38,12 +38,12 @@ const SignInW = React.createClass({
     const {t} = this.props
     return (
       <fieldset>
-        <legend>{t('auth.sign-in')}</legend>
+        <legend>{t('auth.pages.sign-in')}</legend>
         <form>
           <FormGroup
             controlId="email"
           >
-            <ControlLabel>{t('attributes.user.email')}</ControlLabel>
+            <ControlLabel>{t('attributes.email')}</ControlLabel>
             <FormControl
               type="email"
               value={this.state.email}
@@ -53,7 +53,7 @@ const SignInW = React.createClass({
           <FormGroup
             controlId="password"
           >
-            <ControlLabel>{t('attributes.user.password')}</ControlLabel>
+            <ControlLabel>{t('attributes.password')}</ControlLabel>
             <FormControl
               type="password"
               value={this.state.password}
@@ -123,12 +123,12 @@ const SignUpW = React.createClass({
     const {t} = this.props
     return (
       <fieldset>
-        <legend>{t('auth.sign-up')}</legend>
+        <legend>{t('auth.pages.sign-up')}</legend>
         <form>
           <FormGroup
             controlId="name"
           >
-            <ControlLabel>{t('attributes.user.name')}</ControlLabel>
+            <ControlLabel>{t('attributes.username')}</ControlLabel>
             <FormControl
               type="text"
               value={this.state.name}
@@ -138,7 +138,7 @@ const SignUpW = React.createClass({
           <FormGroup
             controlId="email"
           >
-            <ControlLabel>{t('attributes.user.email')}</ControlLabel>
+            <ControlLabel>{t('attributes.email')}</ControlLabel>
             <FormControl
               type="email"
               value={this.state.email}
@@ -148,26 +148,26 @@ const SignUpW = React.createClass({
           <FormGroup
             controlId="password"
           >
-            <ControlLabel>{t('attributes.user.password')}</ControlLabel>
+            <ControlLabel>{t('attributes.password')}</ControlLabel>
             <FormControl
               type="password"
               value={this.state.password}
               onChange={this.handleChange}
             />
-            <HelpBlock>{t('auth.password-must-in-size')}</HelpBlock>
+          <HelpBlock>{t('auth.helpers.password-must-in-size')}</HelpBlock>
           </FormGroup>
           <FormGroup
             controlId="passwordConfirmation"
           >
             <ControlLabel>
-              {t('attributes.user.passwordConfirmation')}
+              {t('attributes.passwordConfirmation')}
             </ControlLabel>
             <FormControl
               type="password"
               value={this.state.passwordConfirmation}
               onChange={this.handleChange}
             />
-            <HelpBlock>{t('auth.passwords-must-match')}</HelpBlock>
+          <HelpBlock>{t('helpers.passwords-must-match')}</HelpBlock>
           </FormGroup>
           <Button onClick={this.handleSubmit} type="submit">
             {t('buttons.submit')}
@@ -231,31 +231,31 @@ const ChangePasswordW = React.createClass({
     const {t} = this.props
     return (
       <fieldset>
-        <legend>{t('auth.change-password')}</legend>
+        <legend>{t('auth.pages.change-password')}</legend>
         <form>
           <FormGroup
             controlId="password"
           >
-            <ControlLabel>{t('attributes.user.password')}</ControlLabel>
+            <ControlLabel>{t('attributes.password')}</ControlLabel>
             <FormControl
               type="password"
               value={this.state.password}
               onChange={this.handleChange}
             />
-            <HelpBlock>{t('auth.password-must-in-size')}</HelpBlock>
+          <HelpBlock>{t('auth.helpers.password-must-in-size')}</HelpBlock>
           </FormGroup>
           <FormGroup
             controlId="passwordConfirmation"
           >
             <ControlLabel>
-              {t('attributes.user.passwordConfirmation')}
+              {t('attributes.passwordConfirmation')}
             </ControlLabel>
             <FormControl
               type="password"
               value={this.state.passwordConfirmation}
               onChange={this.handleChange}
             />
-            <HelpBlock>{t('auth.passwords-must-match')}</HelpBlock>
+          <HelpBlock>{t('helpers.passwords-must-match')}</HelpBlock>
           </FormGroup>
           <Button onClick={this.handleSubmit} type="submit">
             {t('buttons.submit')}
@@ -296,19 +296,19 @@ export const Unlock = () => (
 const SharedLinksW = ({t}) => (
   <ul>
     <li>
-      <Link to="/users/sign-in">{t('auth.sign-in')}</Link>
+      <Link to="/users/sign-in">{t('auth.pages.sign-in')}</Link>
     </li>
     <li>
-      <Link to="/users/sign-up">{t('auth.sign-up')}</Link>
+      <Link to="/users/sign-up">{t('auth.pages.sign-up')}</Link>
     </li>
     <li>
-      <Link to="/users/forgot-password">{t('auth.forgot-password')}</Link>
+      <Link to="/users/forgot-password">{t('auth.pages.forgot-password')}</Link>
     </li>
     <li>
-      <Link to="/users/confirm">{t('auth.confirm')}</Link>
+      <Link to="/users/confirm">{t('auth.pages.confirm')}</Link>
     </li>
     <li>
-      <Link to="/users/unlock">{t('auth.unlock')}</Link>
+      <Link to="/users/unlock">{t('auth.pages.unlock')}</Link>
     </li>
   </ul>
 )
@@ -335,7 +335,7 @@ const EmailFormW = React.createClass({
 
     post(`/users/${action}`, data, function (user) {
       this.setState({password: '', passwordConfirmation: ''})
-      showBox({show: true, title: t('success'), body: t(`auth.${action}-success`)})
+      showBox({show: true, title: t('success'), body: t(`auth.pages.${action}-success`)})
     }.bind(this))
   },
   handleChange (e) {
@@ -347,12 +347,12 @@ const EmailFormW = React.createClass({
     const {t, action} = this.props
     return (
       <fieldset>
-        <legend>{t(`auth.${action}`)}</legend>
+        <legend>{t(`auth.pages.${action}`)}</legend>
         <form>
           <FormGroup
             controlId="email"
           >
-            <ControlLabel>{t('attributes.user.email')}</ControlLabel>
+            <ControlLabel>{t('attributes.email')}</ControlLabel>
             <FormControl
               type="email"
               value={this.state.email}

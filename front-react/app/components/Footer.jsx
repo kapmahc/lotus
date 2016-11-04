@@ -12,6 +12,16 @@ const Widget = React.createClass({
   },
   render () {
     const {t, info} = this.props
+
+    var links = info.bottomLinks ? info.bottomLinks.map(function (l, i) {
+      return (
+        <span key={i}>
+          &middot;
+          <a href={l.href}> {l.label} </a>
+        </span>
+      )
+    }) : <span/>
+
     return (
       <div className="row">
         <hr/>
@@ -24,14 +34,7 @@ const Widget = React.createClass({
           </p>
           <p>
             &copy; {info.copyright}
-            {info.bottomLinks.map(function (l, i) {
-              return (
-                <span key={i}>
-                  &middot;
-                  <a href={l.href}> {l.label} </a>
-                </span>
-              )
-            })}
+            { links }
           </p>
         </footer>
       </div>
@@ -49,7 +52,7 @@ const Model = connect(
   state => ({info: state.siteInfo}),
   dispatch => ({
     onRefresh: function () {
-      get('/site-info', function (ifo) {
+      get('/layout', function (ifo) {
         dispatch(refresh(ifo))
         document.documentElement.lang = ifo.lang
         document.title = ifo.title

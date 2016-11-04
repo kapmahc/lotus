@@ -15,31 +15,31 @@ const Widget = React.createClass({
   render () {
     const {t, user, onSignOut} = this.props
     return isEmpty(user) ? (
-    <NavDropdown eventKey={4} title={t('auth.sign-in-or-up')} id="personal-bar">
+    <NavDropdown eventKey={4} title={t('auth.pages.sign-in-or-up')} id="personal-bar">
       <LinkContainer to={{pathname: '/users/sign-in'}}>
-        <MenuItem eventKey={4.1}>{t('auth.sign-in')}</MenuItem>
+        <MenuItem eventKey={4.1}>{t('auth.pages.sign-in')}</MenuItem>
       </LinkContainer>
       <LinkContainer to={{pathname: '/users/sign-up'}}>
-        <MenuItem eventKey={4.2}>{t('auth.sign-up')}</MenuItem>
+        <MenuItem eventKey={4.2}>{t('auth.pages.sign-up')}</MenuItem>
       </LinkContainer>
       <MenuItem divider />
       <LinkContainer to={{pathname: '/users/forgot-password'}}>
-        <MenuItem eventKey={4.2}>{t('auth.forgot-password')}</MenuItem>
+        <MenuItem eventKey={4.2}>{t('auth.pages.forgot-password')}</MenuItem>
       </LinkContainer>
       <LinkContainer to={{pathname: '/users/confirm'}}>
-        <MenuItem eventKey={4.2}>{t('auth.confirm')}</MenuItem>
+        <MenuItem eventKey={4.2}>{t('auth.pages.confirm')}</MenuItem>
       </LinkContainer>
       <LinkContainer to={{pathname: '/users/unlock'}}>
-        <MenuItem eventKey={4.2}>{t('auth.unlock')}</MenuItem>
+        <MenuItem eventKey={4.2}>{t('auth.pages.unlock')}</MenuItem>
       </LinkContainer>
     </NavDropdown>
     ) : (
-      <NavDropdown eventKey={4} title={t('auth.welcome', {name: user.name})} id="personal-bar">
+      <NavDropdown eventKey={4} title={t('auth.pages.welcome', {name: user.name})} id="personal-bar">
         <LinkContainer to={{pathname: '/dashboard'}}>
           <MenuItem eventKey={4.1}>{t('dashboard')}</MenuItem>
         </LinkContainer>
         <MenuItem divider />
-        <MenuItem onClick={onSignOut} eventKey={4.2}>{t('auth.sign-out')}</MenuItem>
+        <MenuItem onClick={onSignOut} eventKey={4.2}>{t('auth.pages.sign-out')}</MenuItem>
       </NavDropdown>
     )
   }
