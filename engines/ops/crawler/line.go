@@ -38,5 +38,5 @@ func (p *Engine) postLinePull(c *gin.Context) {
 }
 
 func pullLineMessage(userID, password, channelID string) ([]LineMessage, error) {
-
+	return nil, nil
 }
