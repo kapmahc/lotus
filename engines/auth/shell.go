@@ -68,6 +68,11 @@ func (p *Engine) Shell() []cli.Command {
 					gin.SetMode(gin.ReleaseMode)
 				}
 				rt := gin.Default()
+
+				theme := viper.GetString("server.theme")
+				rt.LoadHTMLGlob(path.Join("themes", theme, "/views", "*"))
+				rt.Static("/assets", path.Join("themes", theme, "assets"))
+
 				rt.Use(p.I18n.Handler, p.Handler.CurrentUser())
 
 				web.Loop(func(en web.Engine) error {
