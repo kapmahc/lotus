@@ -1,7 +1,6 @@
 package web_test
 
 import (
-	"log/syslog"
 	"testing"
 
 	"github.com/jinzhu/gorm"
@@ -17,7 +16,7 @@ func TestDatabase(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	lg, err := web.NewLogger(syslog.LOG_DEBUG, "test")
+	wrt, err := web.OpenLogger("test")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -25,7 +24,7 @@ func TestDatabase(t *testing.T) {
 	db.AutoMigrate(&web.Locale{})
 	db.Model(&web.Locale{}).AddUniqueIndex("idx_locales_lang_code", "lang", "code")
 
-	p := web.I18n{Db: db, Logger: lg}
+	p := web.I18n{Db: db, Logger: &web.Logger{Writer: wrt}}
 	key := "hello"
 	val := "你好"
 	p.Set(lang, key, val)

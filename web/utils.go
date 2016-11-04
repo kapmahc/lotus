@@ -1,6 +1,7 @@
 package web
 
 import (
+	"log/syslog"
 	"math/rand"
 	"os"
 	"os/exec"
@@ -8,6 +9,15 @@ import (
 
 	"github.com/spf13/viper"
 )
+
+//OpenLogger open syslog writer
+func OpenLogger(tag string) (*syslog.Writer, error) {
+	priority := syslog.LOG_DEBUG
+	if IsProduction() {
+		priority = syslog.LOG_INFO
+	}
+	return syslog.New(priority, tag)
+}
 
 //IsProduction is production mode?
 func IsProduction() bool {

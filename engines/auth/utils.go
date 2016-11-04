@@ -2,7 +2,6 @@ package auth
 
 import (
 	"fmt"
-	"log/syslog"
 	"os"
 	"path/filepath"
 	"time"
@@ -97,16 +96,8 @@ func openDatabase() (*gorm.DB, error) {
 	return db, nil
 }
 
-func openLogger(tag string) (*syslog.Writer, error) {
-	priority := syslog.LOG_DEBUG
-	if web.IsProduction() {
-		priority = syslog.LOG_INFO
-	}
-	return syslog.New(priority, fmt.Sprintf("%s-%s", viper.GetString("app.name"), tag))
-}
-
 func openJobServer() (*machinery.Server, error) {
-	lg, err := openLogger("jobs")
+	lg, err := web.OpenLogger(viper.GetString("app.name") + "-jobs")
 	if err != nil {
 		return nil, err
 	}

@@ -12,7 +12,7 @@ import (
 
 //Init init ioc objects
 func (p *Engine) Init(inj *inject.Graph) error {
-	logger, err := openLogger("web")
+	logger, err := web.OpenLogger(viper.GetString("app.name") + "-web")
 	if err != nil {
 		return err
 	}
