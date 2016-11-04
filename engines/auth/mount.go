@@ -5,7 +5,9 @@ import "github.com/gin-gonic/gin"
 //Mount web points
 func (p *Engine) Mount(rt *gin.Engine) {
 	rt.GET("/locales/:lang", p.getLocales)
+	rt.GET("/layout", p.getLayout)
+	rt.GET("/dashboard", p.getDashboard)
 
-	utp := rt.Group("/users", p.Handler.Layout, p.Handler.Form)
-	utp.GET("/sign-in", p.getUsersSignIn)
+	ug := rt.Group("/users")
+	ug.POST("/sign-in", p.postUsersSignIn)
 }
