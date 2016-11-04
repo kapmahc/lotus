@@ -6,6 +6,7 @@ import (
 
 	_ "github.com/kapmahc/lotus/engines/auth"
 	_ "github.com/kapmahc/lotus/engines/forum"
+	_ "github.com/kapmahc/lotus/engines/ops/crawler"
 	_ "github.com/kapmahc/lotus/engines/ops/mail"
 	_ "github.com/kapmahc/lotus/engines/ops/vpn"
 	_ "github.com/kapmahc/lotus/engines/reading"
