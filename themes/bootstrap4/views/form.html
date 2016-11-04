@@ -1,0 +1,115 @@
+{{define "form-page.html"}}
+  {{template "header.html" .}}
+  {{template "form.html" .form}}  
+  {{template "footer.html" .}}
+{{end}}
+
+{{define "form-field-helper"}}
+  {{if ne .Helper ""}}
+    <small id="{{.ID}}Help" class="form-text text-muted">{{.Helper}}</small>
+  {{end}}
+{{end}}
+
+{{define "form.html"}}
+<h3>{{.Title}}</h3>
+<hr/>
+<form id="fm-{{.ID}}" method="{{.Method}}" action="{{.Action}}">
+  <input type="hidden" name="csrf_token" value="{{ .XSRF }}">
+  {{range .Fields}}
+    {{if eq .Type "text"}}
+      <div class="form-group">
+        <label for="{{.ID}}">{{.Label}}</label>
+        {{if .Readonly}}
+          <input type="text" value="{{.Value}}" readonly class="form-control" name="{{.ID}}" aria-describedby="{{.ID}}Help"/>
+        {{else}}
+          <input type="text" value="{{.Value}}" class="form-control" name="{{.ID}}" aria-describedby="{{.ID}}Help"/>
+        {{end}}
+        {{template "form-field-helper" .}}
+      </div>
+    {{else if eq .Type "email"}}
+      <div class="form-group">
+        <label for="{{.ID}}">{{.Label}}</label>
+        {{if .Readonly}}
+          <input readonly value="{{.Value}}" type="email" class="form-control" name="{{.ID}}" aria-describedby="{{.ID}}Help"/>
+        {{else}}
+          <input value="{{.Value}}" type="email" class="form-control" name="{{.ID}}" aria-describedby="{{.ID}}Help"/>
+        {{end}}
+        {{template "form-field-helper" .}}
+      </div>
+    {{else if eq .Type "password"}}
+      <div class="form-group">
+        <label for="{{.ID}}">{{.Label}}</label>
+        <input type="password" class="form-control" name="{{.ID}}" aria-describedby="{{.ID}}Help"/>
+        {{template "form-field-helper" .}}
+      </div>
+    {{else if eq .Type "textarea"}}
+      <div class="form-group">
+        <label for="{{.ID}}">{{.Label}}</label>
+        {{if .Readonly}}
+          <textarea readonly class="form-control" name="{{.ID}}" rows="6">{{.Value}}</textarea>
+        {{else}}
+          <textarea class="form-control" name="{{.ID}}" rows="6">{{.Value}}</textarea>
+        {{end}}
+        {{template "form-field-helper" .}}
+      </div>
+    {{else if eq .Type "select"}}
+      <div class="form-group">
+        <label for="{{.ID}}">{{.Label}}</label>
+        {{if .Multi}}
+          <select multiple class="form-control" name="{{.ID}}">
+        {{else}}
+          <select class="form-control" name="{{.ID}}">
+        {{end}}
+          {{range .Options}}
+            {{if .Selected}}
+              <option value="{{.Value}}" selected>{{.Name}}</option>
+            {{else}}
+              <option value="{{.Value}}">{{.Name}}</option>
+            {{end}}
+          {{end}}
+        </select>
+        {{template "form-field-helper" .}}
+      </div>
+    {{else if eq .Type "checkbox"}}
+    <div class="form-check">
+      <label>{{.Label}}</label>
+      {{$id := .ID}}
+      {{range .Options}}
+        <label class="form-check-label">
+          {{if .Selected}}
+            <input name={{$id}} value={{.Value}} type="checkbox" class="form-check-input" checked>
+          {{else}}
+            <input name={{$id}} value={{.Value}} type="checkbox" class="form-check-input">
+          {{end}}
+          {{.Name}}
+        </label>
+      {{end}}
+    </div>
+    {{else if eq .Type "date"}}
+      <div class="form-group">
+        <label for="{{.ID}}">{{.Label}}</label>
+        <input class="form-control" type="date" value="{{df .Value "2006-01-02"}}" name="{{.ID}}">
+      </div>
+    {{else if eq .Type "radio"}}
+      <div class="form-group">
+        {{$id := .ID}}
+        {{range .Options}}
+          <label class="form-check-inline">
+            {{if .Selected}}
+              <input type="radio" class="form-check-input" name="{{$id}}" value="{{.Value}}" checked>
+            {{else}}
+              <input type="radio" class="form-check-input" name="{{$id}}" value="{{.Value}}">
+            {{end}}
+            {{.Name}}
+          </label>
+        {{end}}
+      </div>
+    {{else}}
+      <input type="hidden" name="{{.ID}}" value="{{.Value}}"/>
+    {{end}}
+  {{end}}
+
+  <button type="submit" class="btn btn-primary">{{t .Locale "buttons.submit"}}</button>
+  <button type="reset" class="btn btn-secondary">{{t .Locale "buttons.reset"}}</button>
+</form>
+{{end}}

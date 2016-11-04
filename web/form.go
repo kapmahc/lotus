@@ -1,9 +1,6 @@
 package web
 
-import (
-	"html/template"
-	"time"
-)
+import "time"
 
 const (
 	//MethodPost post method
@@ -19,13 +16,18 @@ const (
 
 //Form form model
 type Form struct {
-	XSRF   template.HTML
+	XSRF   string
 	Locale string
 	ID     string
 	Title  string
 	Action string
 	Method string
 	Fields []Field
+}
+
+//Add add fields
+func (p *Form) Add(fields ...Field) {
+	p.Fields = append(p.Fields, fields...)
 }
 
 //Field input field

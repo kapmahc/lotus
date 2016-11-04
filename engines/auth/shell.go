@@ -18,6 +18,7 @@ import (
 	"github.com/facebookgo/inject"
 	"github.com/fvbock/endless"
 	"github.com/gin-gonic/gin"
+	"github.com/justinas/nosurf"
 	"github.com/kapmahc/lotus/web"
 	"github.com/spf13/viper"
 	"github.com/urfave/cli"
@@ -70,11 +71,17 @@ func (p *Engine) Shell() []cli.Command {
 				rt := gin.Default()
 
 				// i18n and themes
-				rt.Use(p.I18n.Handler, p.Handler.CurrentUser())
+				rt.Use(p.I18n.Handler, p.Handler.CurrentUser)
 				theme := viper.GetString("server.theme")
 				// rt.LoadHTMLGlob(path.Join("themes", theme, "/views", "*"))
 				tpl, err := template.New("").Funcs(template.FuncMap{
 					"t": p.I18n.T,
+					"df": func(t time.Time, f string) string {
+						return t.Format(f)
+					},
+					"printf": func(format string, args ...interface{}) string {
+						return fmt.Sprintf(format, args...)
+					},
 				}).ParseGlob(path.Join("themes", theme, "/views", "*"))
 				if err != nil {
 					return err
@@ -88,6 +95,7 @@ func (p *Engine) Shell() []cli.Command {
 					return nil
 				})
 
+				hnd := nosurf.New(rt)
 				// hnd := cors.New(cors.Options{
 				// 	AllowCredentials: true,
 				// 	AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "PATCH"},
@@ -99,10 +107,10 @@ func (p *Engine) Shell() []cli.Command {
 				if web.IsProduction() {
 					return endless.ListenAndServe(
 						adr,
-						rt,
+						hnd,
 					)
 				}
-				return http.ListenAndServe(adr, rt)
+				return http.ListenAndServe(adr, hnd)
 			}),
 		},
 		{
