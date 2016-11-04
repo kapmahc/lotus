@@ -208,3 +208,8 @@ ops.vpn.attributes.log-start-up = 开始时间
 ops.vpn.attributes.log-shut-down = 结束时间
 ops.vpn.attributes.log-received = 接收
 ops.vpn.attributes.log-send = 发送
+
+ops.clawer.pages.line.sign-in = Line账户登录
+ops.clawer.attributes.line.user-id = 用户ID
+ops.clawer.attributes.line.password = 密码
+ops.clawer.attributes.line.channel-id = 组ID

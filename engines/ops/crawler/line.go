@@ -36,3 +36,7 @@ func (p *Engine) getLineSignOut(c *gin.Context) {
 func (p *Engine) postLinePull(c *gin.Context) {
 
 }
+
+func pullLineMessage(userID, password, channelID string) ([]LineMessage, error) {
+
+}

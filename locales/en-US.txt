@@ -208,3 +208,8 @@ ops.vpn.attributes.log-start-up = Begin time
 ops.vpn.attributes.log-shut-down = End time
 ops.vpn.attributes.log-received = Received
 ops.vpn.attributes.log-send = Send
+
+ops.clawer.pages.line.sign-in = Sign in for line
+ops.clawer.attributes.line.user-id = User ID
+ops.clawer.attributes.line.password = Password
+ops.clawer.attributes.line.channel-id = Channel ID

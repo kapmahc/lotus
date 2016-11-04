@@ -9,12 +9,13 @@ import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 import i18n from './i18n'
 import Layout from './components/Layout'
 import NoMatch from './components/NoMatch'
-import root from './engines'
+import reducers from './engines/reducers'
+
+import OpsClawerRouter from './engines/ops/clawer/Router'
 
 console.log('react version: ' + React.version)
 console.log('lotus version: ' + CONFIG.version)
 
-const reducers = root.reducers()
 const store = createStore(
   combineReducers({
     ...reducers,
@@ -30,7 +31,7 @@ export default function (id) {
       <I18nextProvider i18n={ i18n }>
         <Router history={history}>
           <Route path="/" component={Layout}>
-            {root.routes()}
+            {OpsClawerRouter}
             <Route path="*" component={NoMatch}/>
           </Route>
         </Router>
