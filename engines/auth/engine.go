@@ -14,16 +14,12 @@ type Engine struct {
 	JobLogger *web.JobLogger    `inject:""`
 	Server    *machinery.Server `inject:""`
 	Dao       *Dao              `inject:""`
+	Handler   *Handler          `inject:""`
 }
 
 //Home home
 func (p *Engine) Home() gin.HandlerFunc {
 	return func(c *gin.Context) {}
-}
-
-//Mount web points
-func (p *Engine) Mount(*gin.Engine) {
-
 }
 
 //Dashboard dashboard's nav-bar

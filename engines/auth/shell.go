@@ -13,12 +13,12 @@ import (
 	"time"
 
 	"bitbucket.org/liamstask/goose/lib/goose"
-
 	"github.com/BurntSushi/toml"
 	"github.com/facebookgo/inject"
 	"github.com/fvbock/endless"
 	"github.com/gin-gonic/gin"
 	"github.com/kapmahc/lotus/web"
+	"github.com/rs/cors"
 	"github.com/spf13/viper"
 	"github.com/urfave/cli"
 	"golang.org/x/text/language"
@@ -68,17 +68,23 @@ func (p *Engine) Shell() []cli.Command {
 					gin.SetMode(gin.ReleaseMode)
 				}
 				rt := gin.Default()
-				rt.LoadHTMLGlob(fmt.Sprintf("themes/%s/**/*", viper.GetString("server.theme")))
-				rt.Use(p.I18n.Handler)
+				rt.Use(p.I18n.Handler, p.Handler.CurrentUser())
 
 				web.Loop(func(en web.Engine) error {
 					en.Mount(rt)
 					return nil
 				})
 
+				hnd := cors.New(cors.Options{
+					AllowCredentials: true,
+					AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "PATCH"},
+					AllowedHeaders:   []string{"*"},
+					Debug:            !web.IsProduction(),
+				}).Handler(rt)
+
 				return endless.ListenAndServe(
 					fmt.Sprintf(":%d", viper.GetInt("server.port")),
-					rt,
+					hnd,
 				)
 			}),
 		},
