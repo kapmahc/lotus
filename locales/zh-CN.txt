@@ -43,9 +43,9 @@ attributes.details = 详细信息
 attributes.startUp = 开始日期
 attributes.shutDown = 结束日期
 
-languages.en-US = English
-languages.zh-CN = 简体中文
-languages.zh-TW = 正體中文
+languages.english = English
+languages.simplified-chinese = 简体中文
+languages.traditional-chinese = 正體中文
 
 helpers.can-markdown = 可以使用markdown语法
 helpers.one-link-per-line = 每行一个链接, 例如 "/about-us = About us"

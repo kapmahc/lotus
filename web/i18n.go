@@ -127,6 +127,36 @@ func (p *I18n) Languages() ([]string, error) {
 	return keys, err
 }
 
+//Locales list locales by lang
+func (p *I18n) Locales(lang string) map[string]interface{} {
+	items := make(map[string]interface{})
+	var locales []Locale
+	if err := p.Db.
+		Select([]string{"code", "message"}).
+		Where("lang = ?", lang).
+		Order("code ASC").
+		Find(&locales).Error; err != nil {
+		p.Logger.Error("bad in select locales: %s", err.Error())
+	}
+
+	for _, l := range locales {
+		codes := strings.Split(l.Code, ".")
+		tmp := items
+		for i, c := range codes {
+			if i+1 == len(codes) {
+				tmp[c] = l.Message
+			} else {
+				if tmp[c] == nil {
+					tmp[c] = make(map[string]interface{})
+				}
+				tmp = tmp[c].(map[string]interface{})
+			}
+		}
+	}
+
+	return items
+}
+
 //Load load locales from file
 func (p *I18n) Load(dir string) error {
 	return filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {

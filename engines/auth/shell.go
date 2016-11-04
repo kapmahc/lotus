@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"html/template"
 	"log"
+	"net/http"
 	"os"
 	"os/user"
 	"path"
@@ -86,11 +87,15 @@ func (p *Engine) Shell() []cli.Command {
 					AllowedHeaders:   []string{"*"},
 					Debug:            !web.IsProduction(),
 				}).Handler(rt)
+				adr := fmt.Sprintf(":%d", viper.GetInt("server.port"))
 
-				return endless.ListenAndServe(
-					fmt.Sprintf(":%d", viper.GetInt("server.port")),
-					hnd,
-				)
+				if web.IsProduction() {
+					return endless.ListenAndServe(
+						adr,
+						hnd,
+					)
+				}
+				return http.ListenAndServe(adr, hnd)
 			}),
 		},
 		{

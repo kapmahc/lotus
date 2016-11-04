@@ -3,7 +3,7 @@ import { translate } from 'react-i18next'
 import {NavDropdown, MenuItem} from 'react-bootstrap'
 
 const Widget = ({t}) => (
-  <NavDropdown eventKey={3} title={t('languages.switch')} id="switch-lang-bar">
+  <NavDropdown eventKey={3} title={t('lang-bar.switch')} id="switch-lang-bar">
     <MenuItem eventKey={3.1} href="/?locale=en-US">
       {t('languages.english')}
     </MenuItem>
@@ -11,7 +11,7 @@ const Widget = ({t}) => (
       {t('languages.simplified-chinese')}
     </MenuItem>
     <MenuItem eventKey={3.3} href="/?locale=zh-TW">
-      {t('languages.traditional_chinese')}
+      {t('languages.traditional-chinese')}
     </MenuItem>
   </NavDropdown>
 )

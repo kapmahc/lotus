@@ -17,10 +17,10 @@ const Widget = React.createClass({
         <hr/>
         <footer>
           <p className="pull-right">
-            {t('this-site-in-other-languages')}
+            {t('lang-bar.other')}
             <a href="/?locale=en-US"> {t('languages.english')} </a>
             <a href="/?locale=zh-CN"> {t('languages.simplified-chinese')} </a>
-            <a href="/?locale=zh-TW"> {t('languages.traditional_chinese')} </a>
+            <a href="/?locale=zh-TW"> {t('languages.traditional-chinese')} </a>
           </p>
           <p>
             &copy; {info.copyright}

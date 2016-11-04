@@ -8,7 +8,7 @@ import (
 
 //Logger logger
 type Logger struct {
-	Writer *syslog.Writer
+	Writer *syslog.Writer `inject:""`
 }
 
 //Debug debug
