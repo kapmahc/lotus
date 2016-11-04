@@ -27,10 +27,17 @@ go get -u golang.org/x/tools/cmd/goimports
 go get -u github.com/kapmahc/lotus
 ```
 
-* auto rerun
+* run backend
 ```
 sudo pacman -S inotify-tools
 ./run.sh
+```
+
+* run frontend
+```
+cd front-vue
+npm install
+npm run dev
 ```
 
 ## Build
