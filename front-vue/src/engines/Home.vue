@@ -2,11 +2,12 @@
   <app-layout>
     <p>A paragraph for the main content.</p>
     <p>And another one.</p>
+    
   </app-layout>
 </template>
 
 <script>
-import AppLayout from './Layout'
+import AppLayout from '../components/Layout'
 
 export default {
   name: 'home-page',
