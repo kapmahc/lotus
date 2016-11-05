@@ -1,9 +1,3 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import VueRouter from 'vue-router'
-Vue.use(Vuex)
-Vue.use(VueRouter)
-
 import auth from './auth'
 import Home from './Home'
 
@@ -25,12 +19,7 @@ const store = {
   }, {})
 }
 
-// console.log(store)
-// console.log(routes)
-
-const root = {
-  store: new Vuex.Store(store),
-  router: new VueRouter({routes})
+export default {
+  store,
+  routes
 }
-
-export default root
