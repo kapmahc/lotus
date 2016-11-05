@@ -3,11 +3,9 @@ package web
 import (
 	"bufio"
 	"fmt"
-	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
-	"time"
 
 	"golang.org/x/text/language"
 
@@ -33,7 +31,6 @@ type I18n struct {
 //Handler locale handler
 func (p *I18n) Handler(c *gin.Context) {
 
-	write := false
 	const key = "locale"
 	// 1. Check URL arguments.
 	lng := c.Request.URL.Query().Get(key)
@@ -43,13 +40,10 @@ func (p *I18n) Handler(c *gin.Context) {
 		if ck, er := c.Request.Cookie(key); er == nil {
 			lng = ck.Value
 		}
-	} else {
-		write = true
 	}
 
 	// 3. Get language information from 'Accept-Language'.
 	if len(lng) == 0 {
-		write = true
 		al := c.Request.Header.Get("Accept-Language")
 		if len(al) > 4 {
 			lng = al[:5]
@@ -60,18 +54,17 @@ func (p *I18n) Handler(c *gin.Context) {
 	if err != nil {
 		p.Logger.Error("parse locale: %v", err)
 		tag = language.AmericanEnglish
-		write = true
 	}
 
 	// Write cookie
-	if write {
-		http.SetCookie(c.Writer, &http.Cookie{
-			Name:    key,
-			Value:   tag.String(),
-			Expires: time.Now().AddDate(10, 1, 1),
-			Path:    "/",
-		})
-	}
+	// if write {
+	// 	http.SetCookie(c.Writer, &http.Cookie{
+	// 		Name:    key,
+	// 		Value:   tag.String(),
+	// 		Expires: time.Now().AddDate(10, 1, 1),
+	// 		Path:    "/",
+	// 	})
+	// }
 
 	c.Set(key, tag.String())
 

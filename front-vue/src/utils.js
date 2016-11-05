@@ -1,1 +1,1 @@
-export const api = (url) => `${process.env.API_HOST}${url}`
+export const api = url => `${process.env.API_HOST}${url}`

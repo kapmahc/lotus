@@ -1,14 +1,8 @@
-import auth from './auth'
-import Home from './Home'
+import auth from './auth/store'
 
 const engines = {
   auth
 }
-
-const routes = Object.keys(engines).reduce(function (obj, en) {
-  return obj.concat(engines[en].routes)
-}, [])
-routes.push({path: '/', component: Home})
 
 const store = {
   state: Object.keys(engines).reduce(function (obj, en) {
@@ -19,7 +13,4 @@ const store = {
   }, {})
 }
 
-export default {
-  store,
-  routes
-}
+export default store

@@ -9,8 +9,10 @@
 </template>
 
 <script>
-import LayoutHeader from './Header'
-import LayoutFooter from './Footer'
+import LayoutHeader from '../components/Header'
+import LayoutFooter from '../components/Footer'
+import store from './store'
+store.commit('refreshLayout')
 
 export default {
   name: 'app-layout',

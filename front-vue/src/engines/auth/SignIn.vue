@@ -1,15 +1,20 @@
 <template>
-  <div>
+  <app-layout>
     sign in
-  </div>
+  </app-layout>
 </template>
 
 <script>
+import AppLayout from '../Layout'
+
 export default {
   name: 'users-sign-in',
   data () {
     return {
     }
+  },
+  components: {
+    AppLayout
   }
 }
 </script>

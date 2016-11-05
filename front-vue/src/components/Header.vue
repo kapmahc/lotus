@@ -1,6 +1,6 @@
 <template>
   <nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
-    <a class="navbar-brand" href="#">Project name</a>
+    <a class="navbar-brand" href="#">{{ info }}</a>
     <ul class="nav navbar-nav">
       <li class="nav-item active">
         <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
@@ -26,8 +26,9 @@ import PersonalBar from './PersonalBar'
 
 export default {
   name: 'layout-header',
-  data () {
-    return {
+  computed: {
+    info () {
+      return this.$store.siteInfo
     }
   },
   components: {

@@ -2,14 +2,19 @@ require('./assets/main.css')
 require('./assets/reading.css')
 
 import Vue from 'vue'
+import Vuex from 'vuex'
 import VueRouter from 'vue-router'
-Vue.use(VueRouter)
+import VueI18n from 'vue-i18n'
 
-import root from './engines'
+import routes from './engines/routes'
+import store from './engines/store'
 import {initLocales} from './i18n'
 
+Vue.use(Vuex)
+Vue.use(VueRouter)
+Vue.use(VueI18n)
+new Vuex.Store(store)
 initLocales()
-/* eslint-disable no-new */
 new Vue({
-  router: new VueRouter({routes: root.routes})
+  router
 }).$mount('#root')
