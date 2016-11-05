@@ -61,3 +61,11 @@ GRANT ALL PRIVILEGES ON DATABASE db-name TO user-name;
 ```
 initdb  -D '/var/lib/postgres/data'
 ```
+
+## Documents
+* [vuejs](https://vuejs.org/v2/guide/)
+* [vuex](https://vuex.vuejs.org/en/getting-started.html)
+* [vue-router](https://router.vuejs.org/en/index.html)
+* [vue devtools](https://github.com/vuejs/vue-devtools)
+* [gin](https://github.com/gin-gonic/gin)
+* [gorm](http://jinzhu.me/gorm/)
