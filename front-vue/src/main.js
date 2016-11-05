@@ -1,9 +1,12 @@
 import Vue from 'vue'
-import App from './App'
+import Layout from './components/Layout'
+
+require('./assets/main.css')
+require('./assets/reading.css')
 
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
-  template: '<App/>',
-  components: { App }
+  el: '#root',
+  template: '<Layout/>',
+  components: { Layout }
 })
