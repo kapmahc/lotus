@@ -2,6 +2,7 @@
   <div id="root">
     <layout-header/>
     <div class="container">
+      <slot/>
       <layout-footer/>
     </div>
   </div>
