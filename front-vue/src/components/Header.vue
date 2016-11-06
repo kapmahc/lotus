@@ -1,6 +1,6 @@
 <template>
   <nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
-    <a class="navbar-brand" href="#">{{ info }}</a>
+    <a class="navbar-brand" href="#">{{ info.subTitle }}</a>
     <ul class="nav navbar-nav">
       <li class="nav-item active">
         <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
@@ -28,7 +28,7 @@ export default {
   name: 'layout-header',
   computed: {
     info () {
-      return this.$store.siteInfo
+      return this.$store.state.siteInfo
     }
   },
   components: {

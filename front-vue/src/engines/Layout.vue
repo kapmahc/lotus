@@ -11,14 +11,18 @@
 <script>
 import LayoutHeader from '../components/Header'
 import LayoutFooter from '../components/Footer'
-import store from './store'
-store.commit('refreshLayout')
+import actions from './actions'
 
 export default {
   name: 'app-layout',
   components: {
     LayoutHeader,
     LayoutFooter
+  },
+  created () {
+    if (!this.$store.state.siteInfo.title) {
+      this.$store.commit(actions.auth.refreshLayout)
+    }
   }
 }
 </script>

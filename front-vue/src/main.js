@@ -13,8 +13,10 @@ import {initLocales} from './i18n'
 Vue.use(Vuex)
 Vue.use(VueRouter)
 Vue.use(VueI18n)
-new Vuex.Store(store)
+
+/* eslint-disable no-new */
 initLocales()
 new Vue({
-  router
+  store: new Vuex.Store(store),
+  router: new VueRouter({routes})
 }).$mount('#root')
