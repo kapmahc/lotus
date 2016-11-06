@@ -1,28 +1,28 @@
 package mail
 
 type fmAddUser struct {
-	DomainID             uint   `form:"domain_id" valid:"Required"`
-	Email                string `form:"email" valid:"Email; MaxSize(255)"`
-	Name                 string `form:"name" valid:"Required; MaxSize(128)"`
-	Password             string `form:"password" valid:"Required; MaxSize(128); MinSize(6)"`
-	PasswordConfirmation string `form:"passwordConfirmation"`
+	DomainID             uint   `form:"domain_id" binding:"required"`
+	Email                string `form:"email" binding:"email"`
+	Name                 string `form:"name" binding:"required,max=128"`
+	Password             string `form:"password" binding:"min=6,max=128"`
+	PasswordConfirmation string `form:"passwordConfirmation" binding:"eqfield=Password"`
 }
 
 type fmEditUserProfile struct {
-	Name string `form:"name" valid:"Required; MaxSize(128)"`
+	Name string `form:"name" binding:"required,max=128"`
 }
 
 type fmResetUserPassword struct {
-	Password             string `form:"password" valid:"Required; MaxSize(128); MinSize(6)"`
-	PasswordConfirmation string `form:"passwordConfirmation"`
+	Password             string `form:"password" binding:"min=6,max=128"`
+	PasswordConfirmation string `form:"passwordConfirmation" binding:"eqfield=Password"`
 }
 
 type fmDomain struct {
-	Name string `form:"name" valid:"Required; MaxSize(128)"`
+	Name string `form:"name" binding:"required,max=128"`
 }
 
 type fmAlias struct {
-	DomainID    uint   `form:"domain_id" valid:"Required"`
-	Source      string `form:"source" valid:"Email; MaxSize(255)"`
-	Destination string `form:"destination" valid:"Email; MaxSize(255)"`
+	DomainID    uint   `form:"domain_id" binding:"required"`
+	Source      string `form:"source" binding:"email"`
+	Destination string `form:"destination" binding:"email"`
 }

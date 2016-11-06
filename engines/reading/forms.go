@@ -1,6 +1,6 @@
 package reading
 
 type fmNote struct {
-	BookID uint   `form:"book_id" valid:"Required"`
-	Body   string `form:"body" valid:"Required"`
+	BookID uint   `form:"book_id" binding:"required"`
+	Body   string `form:"body" binding:"required"`
 }

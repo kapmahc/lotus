@@ -1,23 +1,23 @@
 package vpn
 
 type fmAddUser struct {
-	Email                string `form:"email" valid:"Email"`
-	Password             string `form:"password" valid:"Required; MaxSize(128); MinSize(6)"`
-	PasswordConfirmation string `form:"passwordConfirmation"`
-	StartUp              string `form:"start_up" valid:"Required"`
-	ShutDown             string `form:"shut_down" valid:"Required"`
+	Email                string `form:"email" binding:"email"`
+	Password             string `form:"password" binding:"min=6,max=128"`
+	PasswordConfirmation string `form:"passwordConfirmation" binding:"eqfield=Password"`
+	StartUp              string `form:"start_up" binding:"required"`
+	ShutDown             string `form:"shut_down" binding:"required"`
 	Details              string `form:"details"`
-	Enable               bool   `form:"enable" valid:"Required"`
+	Enable               bool   `form:"enable"`
 }
 
 type fmResetUserPassword struct {
-	Password             string `form:"password" valid:"Required; MaxSize(128); MinSize(6)"`
-	PasswordConfirmation string `form:"passwordConfirmation"`
+	Password             string `form:"password" binding:"min=6,max=128"`
+	PasswordConfirmation string `form:"passwordConfirmation" binding:"eqfield=Password"`
 }
 
 type fmEditUserProfile struct {
-	StartUp  string `form:"start_up" valid:"Required"`
-	ShutDown string `form:"shut_down" valid:"Required"`
+	StartUp  string `form:"start_up" binding:"required"`
+	ShutDown string `form:"shut_down" binding:"required"`
 	Details  string `form:"details"`
-	Enable   bool   `form:"enable" valid:"Required"`
+	Enable   bool   `form:"enable"`
 }
