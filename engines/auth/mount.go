@@ -1,6 +1,9 @@
 package auth
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+	"github.com/kapmahc/lotus/web"
+)
 
 //Mount web points
 func (p *Engine) Mount(rt *gin.Engine) {
@@ -9,5 +12,9 @@ func (p *Engine) Mount(rt *gin.Engine) {
 	rt.GET("/dashboard", p.getDashboard)
 
 	ug := rt.Group("/users")
-	ug.POST("/sign-in", p.postUsersSignIn)
+	ug.POST("/sign-in", web.JSON(p.postUsersSignIn))
+	ug.POST("/sign-up", web.JSON(p.postUsersSignUp))
+	ug.POST("/confirm", web.JSON(p.postUsersConfirm))
+	ug.POST("/unlock", web.JSON(p.postUsersUnlock))
+	ug.POST("/forgot-password", web.JSON(p.postUsersForgotPassword))
 }

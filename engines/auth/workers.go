@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"github.com/RichardKnop/machinery/v1/signatures"
 	"github.com/kapmahc/lotus/web"
 	gomail "gopkg.in/gomail.v2"
 )
@@ -45,29 +44,6 @@ func (p *Engine) Worker() {
 
 		return nil, err
 	})
-}
-
-func (p *Engine) sendMail(to, subject, body string) {
-	task := signatures.TaskSignature{
-		Name: userEmailQueue,
-		Args: []signatures.TaskArg{
-			signatures.TaskArg{
-				Type:  "string",
-				Value: to,
-			},
-			signatures.TaskArg{
-				Type:  "string",
-				Value: subject,
-			},
-			signatures.TaskArg{
-				Type:  "string",
-				Value: body,
-			},
-		},
-	}
-	if _, err := p.Server.SendTask(&task); err != nil {
-		p.Logger.Error("add mail job: %v", err)
-	}
 }
 
 const userEmailQueue = "auth.user.email"

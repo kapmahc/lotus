@@ -25,7 +25,7 @@ type User struct {
 	Home     string `json:"home"`
 	Logo     string `json:"logo"`
 	Name     string `json:"name"`
-	Password string `json:"-"`
+	Password []byte `json:"-"`
 
 	ProviderType string `json:"provider_type"`
 	ProviderID   string `json:"provider_id"`
@@ -168,3 +168,26 @@ func (p *Permission) Enable() bool {
 }
 
 //------------------------------------------------------------------------------
+
+//LeaveWord leave word
+type LeaveWord struct {
+	ID        uint      `json:"id"`
+	Content   string    `json:"content"`
+	CreatedAt time.Time `json:"created_at"`
+}
+
+//Notice notice
+type Notice struct {
+	web.Model
+	Lang    string `json:"lang"`
+	Content string `json:"content"`
+}
+
+//Setting setting
+type Setting struct {
+	web.Model
+
+	Key  string
+	Val  []byte
+	Flag bool
+}

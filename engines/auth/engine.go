@@ -12,6 +12,7 @@ type Engine struct {
 	Cache     *web.Cache        `inject:""`
 	Logger    *web.Logger       `inject:""`
 	JobLogger *web.JobLogger    `inject:""`
+	Hmac      *web.Hmac         `inject:""`
 	Server    *machinery.Server `inject:""`
 	Dao       *Dao              `inject:""`
 	Handler   *Handler          `inject:""`
