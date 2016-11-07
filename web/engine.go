@@ -1,6 +1,8 @@
 package web
 
 import (
+	"html/template"
+
 	"github.com/facebookgo/inject"
 	"github.com/gin-gonic/gin"
 	"github.com/urfave/cli"
@@ -8,6 +10,8 @@ import (
 
 //Engine web engine
 type Engine interface {
+	//FuncMap html template funcs
+	FuncMap() template.FuncMap
 	//Home home
 	Home() gin.HandlerFunc
 	//Init init ioc objects

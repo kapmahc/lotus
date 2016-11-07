@@ -1,6 +1,8 @@
 package auth
 
 import (
+	"html/template"
+
 	machinery "github.com/RichardKnop/machinery/v1"
 	"github.com/gin-gonic/gin"
 	"github.com/kapmahc/lotus/web"
@@ -16,6 +18,11 @@ type Engine struct {
 	Server    *machinery.Server `inject:""`
 	Dao       *Dao              `inject:""`
 	Handler   *Handler          `inject:""`
+}
+
+//FuncMap html template funcs
+func (p *Engine) FuncMap() template.FuncMap {
+	return template.FuncMap{}
 }
 
 //Home home

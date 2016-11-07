@@ -10,5 +10,6 @@ type Link struct {
 type Dropdown struct {
 	ID    string
 	Label string
+	Href  string
 	Links []Link
 }

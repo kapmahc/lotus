@@ -1,6 +1,8 @@
 package crawler
 
 import (
+	"html/template"
+
 	"github.com/facebookgo/inject"
 	"github.com/gin-gonic/gin"
 	"github.com/kapmahc/lotus/engines/auth"
@@ -13,6 +15,11 @@ type Engine struct {
 	I18n    *web.I18n     `inject:""`
 	Logger  *web.Logger   `inject:""`
 	Handler *auth.Handler `inject:""`
+}
+
+//Funcs html template funcs
+func (p *Engine) Funcs() template.FuncMap {
+	return template.FuncMap{}
 }
 
 //Home home
@@ -41,5 +48,5 @@ func (p *Engine) Worker() {
 }
 
 func init() {
-	web.Register(&Engine{})
+	//	web.Register(&Engine{})
 }

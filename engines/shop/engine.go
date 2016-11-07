@@ -1,6 +1,8 @@
 package shop
 
 import (
+	"html/template"
+
 	"github.com/facebookgo/inject"
 	"github.com/gin-gonic/gin"
 	"github.com/kapmahc/lotus/web"
@@ -9,6 +11,11 @@ import (
 
 //Engine shop engine
 type Engine struct {
+}
+
+//Funcs html template funcs
+func (p *Engine) Funcs() template.FuncMap {
+	return template.FuncMap{}
 }
 
 //Home home
@@ -42,5 +49,5 @@ func (p *Engine) Worker() {
 }
 
 func init() {
-	web.Register(&Engine{})
+	//	web.Register(&Engine{})
 }

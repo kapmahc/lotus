@@ -69,6 +69,20 @@ func (p *Engine) Shell() []cli.Command {
 					gin.SetMode(gin.ReleaseMode)
 				}
 				rt := gin.Default()
+				// template
+				theme := viper.GetString("server.theme")
+				tpl := template.New("")
+
+				web.Loop(func(en web.Engine) error {
+					tpl = tpl.Funcs(en.FuncMap())
+					return nil
+				})
+				var err error
+				if tpl, err = tpl.ParseGlob(path.Join("themes", theme, "views", "*")); err != nil {
+					return err
+				}
+				rt.SetHTMLTemplate(tpl)
+				rt.Static("/assets", path.Join("themes", theme, "assets"))
 
 				// i18n
 				rt.Use(p.I18n.Handler, p.Handler.CurrentUser)
