@@ -2,6 +2,7 @@ package web
 
 import (
 	"bufio"
+	"context"
 	"fmt"
 	"net/http"
 	"os"
@@ -28,9 +29,8 @@ type I18n struct {
 }
 
 //Handler locale handler
-func (p *I18n) Handler(w http.ResponseWriter, req *http.Request) {
-
-	const key = "locale"
+func (p *I18n) Handler(wrt http.ResponseWriter, req *http.Request, next http.HandlerFunc) {
+	const key = string(LOCALE)
 	// 1. Check URL arguments.
 	lng := req.URL.Query().Get(key)
 
@@ -65,9 +65,8 @@ func (p *I18n) Handler(w http.ResponseWriter, req *http.Request) {
 	// 	})
 	// }
 
-	//FIXME
-	// c.Set(key, tag.String())
-	fmt.Println("#########################", tag)
+	ctx := req.Context()
+	next(wrt, req.WithContext(context.WithValue(ctx, LOCALE, tag.String())))
 }
 
 //T translate

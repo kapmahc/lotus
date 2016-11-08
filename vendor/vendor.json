@@ -97,6 +97,12 @@
 			"revisionTime": "2016-11-01T18:13:38Z"
 		},
 		{
+			"checksumSHA1": "yRNw/uu/4N7XHVe1PHtKPl6xtDg=",
+			"path": "github.com/Sirupsen/logrus",
+			"revision": "d26492970760ca5d33129d2d799e34be5c4782eb",
+			"revisionTime": "2016-11-03T21:40:07Z"
+		},
+		{
 			"checksumSHA1": "fNAC4qgZDqF3kxq74/yyk3PWdy8=",
 			"path": "github.com/bradfitz/gomemcache/memcache",
 			"revision": "fb1f79c6b65acda83063cbc69f6bba1522558bfc",
@@ -271,6 +277,12 @@
 			"revisionTime": "2016-11-08T16:13:34Z"
 		},
 		{
+			"checksumSHA1": "pGRxz78nr9/02cKrrco43Ul6I+s=",
+			"path": "github.com/meatballhat/negroni-logrus",
+			"revision": "7c570a907cfc69cdc004ad506c6f5e234815b936",
+			"revisionTime": "2016-06-28T04:38:43Z"
+		},
+		{
 			"checksumSHA1": "UuXgD2dDojfS8AViUEe15gLIWZE=",
 			"path": "github.com/mitchellh/mapstructure",
 			"revision": "f3009df150dadf309fdee4a54ed65c124afad715",
@@ -365,6 +377,18 @@
 			"path": "github.com/streadway/amqp",
 			"revision": "2e25825abdbd7752ff08b270d313b93519a0a232",
 			"revisionTime": "2016-03-11T21:55:03Z"
+		},
+		{
+			"checksumSHA1": "ELUuwsAxinHXTzCvb13i/zS6n2A=",
+			"path": "github.com/thoas/stats",
+			"revision": "152b5d051953fdb6e45f14b6826962aadc032324",
+			"revisionTime": "2016-07-26T12:02:48Z"
+		},
+		{
+			"checksumSHA1": "m4QwaQdvaqDo6Fp4BoykRkEFQ8E=",
+			"path": "github.com/unrolled/render",
+			"revision": "526faf80cd4b305bb8134abea8d20d5ced74faa6",
+			"revisionTime": "2016-10-03T17:53:27Z"
 		},
 		{
 			"checksumSHA1": "ToTZYDqlvtuFsetAq5FeCwUxp0E=",

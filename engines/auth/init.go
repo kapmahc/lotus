@@ -3,15 +3,19 @@ package auth
 import (
 	"crypto/aes"
 	"crypto/sha512"
+	"html/template"
+	"path"
 
 	"github.com/SermoDigital/jose/crypto"
 	"github.com/facebookgo/inject"
 	"github.com/kapmahc/lotus/web"
 	"github.com/spf13/viper"
+	"github.com/unrolled/render"
 )
 
 //Init init ioc objects
 func (p *Engine) Init(inj *inject.Graph) error {
+
 	logger, err := web.OpenLogger(viper.GetString("app.name") + "-web")
 	if err != nil {
 		return err
@@ -32,6 +36,12 @@ func (p *Engine) Init(inj *inject.Graph) error {
 		return err
 	}
 
+	var fms []template.FuncMap
+	web.Loop(func(en web.Engine) error {
+		fms = append(fms, en.FuncMap())
+		return nil
+	})
+
 	return inj.Provide(
 		&inject.Object{Value: logger},
 		&inject.Object{Value: db},
@@ -45,6 +55,14 @@ func (p *Engine) Init(inj *inject.Graph) error {
 		&inject.Object{Value: sha512.New, Name: "hmac.hash"},
 		&inject.Object{Value: []byte(viper.GetString("secrets.jwt")), Name: "jwt.key"},
 		&inject.Object{Value: crypto.SigningMethodHS512, Name: "jwt.method"},
+		&inject.Object{Value: render.New(render.Options{
+			Directory:     path.Join("themes", viper.GetString("server.theme"), "views"),
+			Funcs:         fms,
+			Layout:        "layout",
+			Extensions:    []string{".html"},
+			IsDevelopment: !web.IsProduction(),
+		}),
+		},
 	)
 }
 
@@ -93,6 +111,7 @@ func init() {
 		"aes":    web.RandomStr(32),
 		"hmac":   web.RandomStr(32),
 		"cookie": web.RandomStr(32),
+		"csrf":   web.RandomStr(32),
 	})
 
 	viper.SetDefault("elasticsearch", []string{"http://localhost:9200"})

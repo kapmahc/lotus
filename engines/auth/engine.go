@@ -5,6 +5,7 @@ import (
 
 	machinery "github.com/RichardKnop/machinery/v1"
 	"github.com/kapmahc/lotus/web"
+	"github.com/unrolled/render"
 )
 
 //Engine auth engine
@@ -17,14 +18,18 @@ type Engine struct {
 	Server    *machinery.Server `inject:""`
 	Dao       *Dao              `inject:""`
 	Handler   *Handler          `inject:""`
+	Render    *render.Render    `inject:""`
 }
 
 //FuncMap html template funcs
 func (p *Engine) FuncMap() template.FuncMap {
-	return template.FuncMap{}
+	return template.FuncMap{
+		"t": p.I18n.T,
+	}
 }
 
 //Dashboard dashboard's nav-bar
 func (p *Engine) Dashboard() []web.Dropdown {
+
 	return []web.Dropdown{}
 }

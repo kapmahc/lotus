@@ -17,11 +17,13 @@ import (
 	"github.com/BurntSushi/toml"
 	"github.com/facebookgo/inject"
 	"github.com/fvbock/endless"
+	"github.com/gorilla/csrf"
 	"github.com/gorilla/mux"
 	"github.com/kapmahc/lotus/web"
-	"github.com/rs/cors"
+	negronilogrus "github.com/meatballhat/negroni-logrus"
 	"github.com/spf13/viper"
 	"github.com/urfave/cli"
+	"github.com/urfave/negroni"
 	"golang.org/x/text/language"
 )
 
@@ -57,7 +59,6 @@ func (p *Engine) Shell() []cli.Command {
 				err = end.Encode(args)
 
 				return err
-
 			},
 		},
 		{
@@ -66,24 +67,8 @@ func (p *Engine) Shell() []cli.Command {
 			Usage:   "start the app server",
 			Action: web.IocAction(func(*cli.Context, *inject.Graph) error {
 				rt := mux.NewRouter()
-				// template
-				theme := viper.GetString("server.theme")
-				tpl := template.New("")
 
-				web.Loop(func(en web.Engine) error {
-					tpl = tpl.Funcs(en.FuncMap())
-					return nil
-				})
-				var err error
-				if tpl, err = tpl.ParseGlob(path.Join("themes", theme, "views", "*")); err != nil {
-					return err
-				}
-				//FIXME
-				// rt.SetHTMLTemplate(tpl)
 				// rt.Static("/assets", path.Join("themes", theme, "assets"))
-
-				// i18n TODO
-				// rt.Use(p.I18n.Handler, p.Handler.CurrentUser)
 
 				// mount
 				web.Loop(func(en web.Engine) error {
@@ -91,21 +76,28 @@ func (p *Engine) Shell() []cli.Command {
 					return nil
 				})
 
-				hnd := cors.New(cors.Options{
-					AllowCredentials: true,
-					AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "PATCH"},
-					AllowedHeaders:   []string{"*"},
-					Debug:            !web.IsProduction(),
-				}).Handler(rt)
+				// hnd := cors.New(cors.Options{
+				// 	AllowCredentials: true,
+				// 	AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "PATCH"},
+				// 	AllowedHeaders:   []string{"*"},
+				// 	Debug:            !web.IsProduction(),
+				// }).Handler(rt)
+				hnd := csrf.Protect([]byte(viper.GetString("secrets.csrf")))(rt)
 				adr := fmt.Sprintf(":%d", viper.GetInt("server.port"))
+
+				ng := negroni.New()
+				ng.Use(negronilogrus.NewMiddleware())
+				ng.Use(negroni.HandlerFunc(p.I18n.Handler))
+				ng.UseHandler(hnd)
 
 				if web.IsProduction() {
 					return endless.ListenAndServe(
 						adr,
-						hnd,
+						ng,
 					)
 				}
-				return http.ListenAndServe(adr, hnd)
+
+				return http.ListenAndServe(adr, ng)
 			}),
 		},
 		{

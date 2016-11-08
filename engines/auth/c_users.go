@@ -1,10 +1,22 @@
 package auth
 
+import (
+	"net/http"
+
+	"github.com/kapmahc/lotus/web"
+)
+
 const (
 	actConfirm       = "confirm"
 	actResetPassword = "reset-password"
 	actUnlock        = "unlock"
 )
+
+func (p *Engine) getUsersSignIn(wrt http.ResponseWriter, req *http.Request) {
+	ctx := req.Context()
+	p.Logger.Debug("%+v", ctx.Value(web.LOCALE))
+	p.Render.JSON(wrt, http.StatusOK, map[string]interface{}{"ok": true})
+}
 
 //
 // func (p *Engine) postUsersSignIn(c *gin.Context) (interface{}, error) {
