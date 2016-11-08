@@ -1,17 +1,20 @@
 # lotus
 A web application build by go-lang.
 
-## Development(for archlinux)
+## Development(for linux)
+
 * install gvm
+
 ```
 bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
 ```
 Or if you are using zsh just change bash with zsh
 
-* after re-signin, install go
+* install go
+
 ```
 gvm install go1.7.3 -B
-gvm use go1.7.3 --default
+gvm use go1.7.3 [--default]
 ```
 
 
@@ -23,6 +26,8 @@ go get -u github.com/derekparker/delve/cmd/dlv
 go get -u github.com/alecthomas/gometalinter
 go get -u github.com/golang/lint/golint
 go get -u golang.org/x/tools/cmd/goimports
+
+go get -u github.com/kardianos/govendor
 
 go get -u github.com/kapmahc/lotus
 ```
@@ -63,9 +68,10 @@ initdb  -D '/var/lib/postgres/data'
 ```
 
 ## Documents
-* [vuejs](https://vuejs.org/v2/guide/)
-* [vuex](https://vuex.vuejs.org/en/getting-started.html)
-* [vue-router](https://router.vuejs.org/en/index.html)
-* [vue devtools](https://github.com/vuejs/vue-devtools)
-* [gin](https://github.com/gin-gonic/gin)
+* [govendor](https://github.com/kardianos/govendor/blob/master/doc/faq.md)
+* [negroni](https://github.com/urfave/negroni)
 * [gorm](http://jinzhu.me/gorm/)
+* [validator](https://github.com/go-playground/validator)
+* [form](https://github.com/go-playground/form)
+
+
