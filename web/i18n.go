@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/jinzhu/gorm"
 	"golang.org/x/text/language"
 )
@@ -24,8 +25,7 @@ type Locale struct {
 
 //I18n i18n
 type I18n struct {
-	Db     *gorm.DB `inject:""`
-	Logger *Logger  `inject:""`
+	Db *gorm.DB `inject:""`
 }
 
 //Handler locale handler
@@ -51,7 +51,7 @@ func (p *I18n) Handler(wrt http.ResponseWriter, req *http.Request, next http.Han
 
 	tag, err := language.Parse(lng)
 	if err != nil {
-		p.Logger.Error("parse locale: %v", err)
+		log.Errorf("parse locale: %v", err)
 		tag = language.AmericanEnglish
 	}
 
@@ -75,7 +75,7 @@ func (p *I18n) T(lang string, code string, args ...interface{}) string {
 	if err == nil {
 		return fmt.Sprintf(msg, args...)
 	}
-	p.Logger.Error("find locale: %s", err)
+	log.Errorf("find locale: %s", err)
 	return code
 }
 
@@ -130,7 +130,7 @@ func (p *I18n) Locales(lang string) map[string]interface{} {
 		Where("lang = ?", lang).
 		Order("code ASC").
 		Find(&locales).Error; err != nil {
-		p.Logger.Error("bad in select locales: %s", err.Error())
+		log.Errorf("bad in select locales: %v", err)
 	}
 
 	for _, l := range locales {
@@ -161,7 +161,7 @@ func (p *I18n) Load(dir string) error {
 		const ext = ".txt"
 		name := info.Name()
 		if info.Mode().IsRegular() && filepath.Ext(name) == ext {
-			p.Logger.Info("Find locale file %s", path)
+			log.Infof("Find locale file %s", path)
 			lang := name[0 : len(name)-len(ext)]
 			if _, err := language.Parse(lang); err != nil {
 				return err

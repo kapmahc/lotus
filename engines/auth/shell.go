@@ -5,7 +5,6 @@ import (
 	"database/sql"
 	"fmt"
 	"html/template"
-	"log"
 	"net/http"
 	"os"
 	"os/user"
@@ -15,6 +14,7 @@ import (
 
 	"bitbucket.org/liamstask/goose/lib/goose"
 	"github.com/BurntSushi/toml"
+	log "github.com/Sirupsen/logrus"
 	"github.com/facebookgo/inject"
 	"github.com/fvbock/endless"
 	"github.com/gorilla/csrf"
@@ -86,6 +86,12 @@ func (p *Engine) Shell() []cli.Command {
 				adr := fmt.Sprintf(":%d", viper.GetInt("server.port"))
 
 				ng := negroni.New()
+				// ng.Use(negronilogrus.NewCustomMiddleware(
+				// 	lge,
+				// 	&log.JSONFormatter{},
+				// 	viper.GetString("server.name"),
+				// ))
+
 				ng.Use(negronilogrus.NewMiddleware())
 				ng.Use(negroni.HandlerFunc(p.I18n.Handler))
 				ng.UseHandler(hnd)

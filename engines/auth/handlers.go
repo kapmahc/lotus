@@ -1,6 +1,10 @@
 package auth
 
-import "github.com/kapmahc/lotus/web"
+import (
+	"net/http"
+
+	"github.com/kapmahc/lotus/web"
+)
 
 //Handler auth-handler
 type Handler struct {
@@ -8,17 +12,17 @@ type Handler struct {
 	Dao  *Dao      `inject:""`
 }
 
-// //CurrentUser current-user
-// func (p *Handler) CurrentUser(c *gin.Context) {
-// 	//TODO
-// }
-//
-// //MustSignIn must sign-in
-// func (p *Handler) MustSignIn(c *gin.Context) {
-// 	//TODO
-// }
-//
-// //MustAdmin must has admin role
-// func (p *Handler) MustAdmin(c *gin.Context) {
-// 	//TODO
-// }
+//CurrentUser current-user
+func (p *Handler) CurrentUser(wrt http.ResponseWriter, req *http.Request, next http.HandlerFunc) {
+	//TODO
+}
+
+//MustSignIn must sign-in
+func (p *Handler) MustSignIn(wrt http.ResponseWriter, req *http.Request, next http.HandlerFunc) {
+	//TODO
+}
+
+//MustAdmin must has admin role
+func (p *Handler) MustAdmin(wrt http.ResponseWriter, req *http.Request, next http.HandlerFunc) {
+	//TODO
+}

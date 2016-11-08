@@ -15,12 +15,6 @@ import (
 
 //Init init ioc objects
 func (p *Engine) Init(inj *inject.Graph) error {
-
-	logger, err := web.OpenLogger(viper.GetString("app.name") + "-web")
-	if err != nil {
-		return err
-	}
-
 	db, err := openDatabase()
 	if err != nil {
 		return err
@@ -43,7 +37,6 @@ func (p *Engine) Init(inj *inject.Graph) error {
 	})
 
 	return inj.Provide(
-		&inject.Object{Value: logger},
 		&inject.Object{Value: db},
 		&inject.Object{Value: srv},
 		&inject.Object{

@@ -10,7 +10,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-//OpenLogger open syslog writer
+// OpenLogger open syslog writer
 func OpenLogger(tag string) (*syslog.Writer, error) {
 	priority := syslog.LOG_DEBUG
 	if IsProduction() {

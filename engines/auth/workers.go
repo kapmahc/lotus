@@ -1,6 +1,7 @@
 package auth
 
 import (
+	log "github.com/Sirupsen/logrus"
 	"github.com/kapmahc/lotus/web"
 	gomail "gopkg.in/gomail.v2"
 )
@@ -39,7 +40,7 @@ func (p *Engine) Worker() {
 				err = dia.DialAndSend(msg)
 			}
 		} else {
-			p.Logger.Debug("send mail to %s: %s \n %s", to, subject, body)
+			log.Debugf("send mail to %s: %s \n %s", to, subject, body)
 		}
 
 		return nil, err

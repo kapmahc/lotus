@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/SermoDigital/jose/jws"
+	log "github.com/Sirupsen/logrus"
 	"github.com/jinzhu/gorm"
 	"github.com/kapmahc/lotus/web"
 	"github.com/spf13/viper"
@@ -13,12 +14,11 @@ import (
 
 //Dao dao
 type Dao struct {
-	Db     *gorm.DB    `inject:""`
-	Logger *web.Logger `inject:""`
-	Cache  *web.Cache  `inject:""`
-	Aes    *web.Aes    `inject:""`
-	Hmac   *web.Hmac   `inject:""`
-	I18n   *web.I18n   `inject:""`
+	Db    *gorm.DB   `inject:""`
+	Cache *web.Cache `inject:""`
+	Aes   *web.Aes   `inject:""`
+	Hmac  *web.Hmac  `inject:""`
+	I18n  *web.I18n  `inject:""`
 }
 
 //Set set key-val
@@ -67,7 +67,7 @@ func (p *Dao) Get(key string, val interface{}) error {
 func (p *Dao) Log(user uint, msg string) {
 	l := Log{UserID: user, Message: msg}
 	if err := p.Db.Create(&l).Error; err != nil {
-		p.Logger.Error(err.Error())
+		log.Error(err)
 	}
 }
 
@@ -166,7 +166,7 @@ func (p *Dao) Authority(user uint, rty string, rid uint) []string {
 	if err := p.Db.
 		Where("resource_type = ? AND resource_id = ?", rty, rid).
 		Find(&items).Error; err != nil {
-		p.Logger.Error(err.Error())
+		log.Error(err)
 	}
 	var roles []string
 	for _, r := range items {
@@ -174,7 +174,7 @@ func (p *Dao) Authority(user uint, rty string, rid uint) []string {
 		if err := p.Db.
 			Where("role_id = ? AND user_id = ? ", r.ID, user).
 			First(&pm).Error; err != nil {
-			p.Logger.Error(err.Error())
+			log.Error(err)
 			continue
 		}
 		if pm.Enable() {

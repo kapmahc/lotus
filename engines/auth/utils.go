@@ -10,6 +10,7 @@ import (
 	machinery "github.com/RichardKnop/machinery/v1"
 	"github.com/RichardKnop/machinery/v1/config"
 	"github.com/RichardKnop/machinery/v1/logger"
+	log "github.com/Sirupsen/logrus"
 	"github.com/garyburd/redigo/redis"
 	"github.com/jinzhu/gorm"
 	"github.com/kapmahc/lotus/web"
@@ -97,11 +98,6 @@ func openDatabase() (*gorm.DB, error) {
 }
 
 func openJobServer() (*machinery.Server, error) {
-	lg, err := web.OpenLogger(viper.GetString("app.name") + "-jobs")
-	if err != nil {
-		return nil, err
-	}
-	logger.Set(&web.JobLogger{Writer: lg})
 
 	url := fmt.Sprintf(
 		"redis://%s:%d/%d",
@@ -115,6 +111,6 @@ func openJobServer() (*machinery.Server, error) {
 		ResultsExpireIn: 60 * 60 * 24 * 7 * 10,
 		DefaultQueue:    viper.GetString("app.name") + "-tasks",
 	}
-
+	logger.Set(log.New())
 	return machinery.NewServer(&cnf)
 }
