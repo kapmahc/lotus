@@ -3,7 +3,6 @@ package auth
 import (
 	"net/http"
 
-	log "github.com/Sirupsen/logrus"
 	"github.com/kapmahc/lotus/web"
 )
 
@@ -15,8 +14,10 @@ const (
 
 func (p *Engine) getUsersSignIn(wrt http.ResponseWriter, req *http.Request) {
 	ctx := req.Context()
-	log.Debugf("%+v", ctx.Value(web.LOCALE))
-	p.Render.JSON(wrt, http.StatusOK, map[string]interface{}{"ok": true})
+
+	p.Render.HTML(wrt, http.StatusOK, "users/sign-in", map[string]interface{}{
+		"locale": ctx.Value(web.LOCALE),
+	})
 }
 
 //

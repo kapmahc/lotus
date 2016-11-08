@@ -8,6 +8,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/jinzhu/gorm"
@@ -31,6 +32,7 @@ type I18n struct {
 //Handler locale handler
 func (p *I18n) Handler(wrt http.ResponseWriter, req *http.Request, next http.HandlerFunc) {
 	const key = string(LOCALE)
+	write := false
 	// 1. Check URL arguments.
 	lng := req.URL.Query().Get(key)
 
@@ -39,10 +41,13 @@ func (p *I18n) Handler(wrt http.ResponseWriter, req *http.Request, next http.Han
 		if ck, er := req.Cookie(key); er == nil {
 			lng = ck.Value
 		}
+	} else {
+		write = true
 	}
 
 	// 3. Get language information from 'Accept-Language'.
 	if len(lng) == 0 {
+		write = true
 		al := req.Header.Get("Accept-Language")
 		if len(al) > 4 {
 			lng = al[:5]
@@ -51,19 +56,20 @@ func (p *I18n) Handler(wrt http.ResponseWriter, req *http.Request, next http.Han
 
 	tag, err := language.Parse(lng)
 	if err != nil {
+		write = true
 		log.Errorf("parse locale: %v", err)
 		tag = language.AmericanEnglish
 	}
 
 	// Write cookie
-	// if write {
-	// 	http.SetCookie(c.Writer, &http.Cookie{
-	// 		Name:    key,
-	// 		Value:   tag.String(),
-	// 		Expires: time.Now().AddDate(10, 1, 1),
-	// 		Path:    "/",
-	// 	})
-	// }
+	if write {
+		http.SetCookie(wrt, &http.Cookie{
+			Name:    key,
+			Value:   tag.String(),
+			Expires: time.Now().AddDate(10, 1, 1),
+			Path:    "/",
+		})
+	}
 
 	ctx := req.Context()
 	next(wrt, req.WithContext(context.WithValue(ctx, LOCALE, tag.String())))

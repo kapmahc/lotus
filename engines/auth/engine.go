@@ -1,9 +1,12 @@
 package auth
 
 import (
+	"fmt"
 	"html/template"
+	"time"
 
 	machinery "github.com/RichardKnop/machinery/v1"
+	log "github.com/Sirupsen/logrus"
 	"github.com/kapmahc/lotus/web"
 	"github.com/unrolled/render"
 )
@@ -22,7 +25,19 @@ type Engine struct {
 //FuncMap html template funcs
 func (p *Engine) FuncMap() template.FuncMap {
 	return template.FuncMap{
-		"t": p.I18n.T,
+		"t": func(locale string, format string, args ...interface{}) string {
+			return p.I18n.T(locale, format, args...)
+		},
+		"df": func(t time.Time, l string) string {
+			return t.Format(l)
+		},
+		"nl": func(name string) []web.Link {
+			var links []web.Link
+			if err := p.Dao.Get(fmt.Sprintf("nav-links.%s", name), &links); err != nil {
+				log.Error(err)
+			}
+			return links
+		},
 	}
 }
 
