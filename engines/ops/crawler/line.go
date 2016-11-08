@@ -1,9 +1,6 @@
 package crawler
 
-import (
-	"github.com/gin-gonic/gin"
-	"github.com/kapmahc/lotus/web"
-)
+import "github.com/kapmahc/lotus/web"
 
 //LineMessage line message
 type LineMessage struct {
@@ -13,30 +10,31 @@ type LineMessage struct {
 	Content   string
 }
 
-func (p *Engine) lineCurrentUser(c *gin.Context) {
-
-}
-
-func (p *Engine) lineMustSignIn(c *gin.Context) {
-
-}
-
-func (p *Engine) postLineDownload(c *gin.Context) {
-
-}
-
-func (p *Engine) postLineSignIn(c *gin.Context) {
-
-}
-
-func (p *Engine) getLineSignOut(c *gin.Context) {
-
-}
-
-func (p *Engine) postLinePull(c *gin.Context) {
-
-}
-
-func pullLineMessage(userID, password, channelID string) ([]LineMessage, error) {
-	return nil, nil
-}
+//
+// func (p *Engine) lineCurrentUser(c *gin.Context) {
+//
+// }
+//
+// func (p *Engine) lineMustSignIn(c *gin.Context) {
+//
+// }
+//
+// func (p *Engine) postLineDownload(c *gin.Context) {
+//
+// }
+//
+// func (p *Engine) postLineSignIn(c *gin.Context) {
+//
+// }
+//
+// func (p *Engine) getLineSignOut(c *gin.Context) {
+//
+// }
+//
+// func (p *Engine) postLinePull(c *gin.Context) {
+//
+// }
+//
+// func pullLineMessage(userID, password, channelID string) ([]LineMessage, error) {
+// 	return nil, nil
+// }

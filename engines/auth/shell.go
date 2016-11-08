@@ -17,7 +17,7 @@ import (
 	"github.com/BurntSushi/toml"
 	"github.com/facebookgo/inject"
 	"github.com/fvbock/endless"
-	"github.com/gin-gonic/gin"
+	"github.com/gorilla/mux"
 	"github.com/kapmahc/lotus/web"
 	"github.com/rs/cors"
 	"github.com/spf13/viper"
@@ -65,10 +65,7 @@ func (p *Engine) Shell() []cli.Command {
 			Aliases: []string{"s"},
 			Usage:   "start the app server",
 			Action: web.IocAction(func(*cli.Context, *inject.Graph) error {
-				if web.IsProduction() {
-					gin.SetMode(gin.ReleaseMode)
-				}
-				rt := gin.Default()
+				rt := mux.NewRouter()
 				// template
 				theme := viper.GetString("server.theme")
 				tpl := template.New("")
@@ -81,11 +78,12 @@ func (p *Engine) Shell() []cli.Command {
 				if tpl, err = tpl.ParseGlob(path.Join("themes", theme, "views", "*")); err != nil {
 					return err
 				}
-				rt.SetHTMLTemplate(tpl)
-				rt.Static("/assets", path.Join("themes", theme, "assets"))
+				//FIXME
+				// rt.SetHTMLTemplate(tpl)
+				// rt.Static("/assets", path.Join("themes", theme, "assets"))
 
-				// i18n
-				rt.Use(p.I18n.Handler, p.Handler.CurrentUser)
+				// i18n TODO
+				// rt.Use(p.I18n.Handler, p.Handler.CurrentUser)
 
 				// mount
 				web.Loop(func(en web.Engine) error {

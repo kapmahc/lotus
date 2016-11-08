@@ -4,7 +4,6 @@ import (
 	"html/template"
 
 	machinery "github.com/RichardKnop/machinery/v1"
-	"github.com/gin-gonic/gin"
 	"github.com/kapmahc/lotus/web"
 )
 
@@ -23,11 +22,6 @@ type Engine struct {
 //FuncMap html template funcs
 func (p *Engine) FuncMap() template.FuncMap {
 	return template.FuncMap{}
-}
-
-//Home home
-func (p *Engine) Home() gin.HandlerFunc {
-	return func(c *gin.Context) {}
 }
 
 //Dashboard dashboard's nav-bar

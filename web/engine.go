@@ -4,7 +4,7 @@ import (
 	"html/template"
 
 	"github.com/facebookgo/inject"
-	"github.com/gin-gonic/gin"
+	"github.com/gorilla/mux"
 	"github.com/urfave/cli"
 )
 
@@ -12,12 +12,10 @@ import (
 type Engine interface {
 	//FuncMap html template funcs
 	FuncMap() template.FuncMap
-	//Home home
-	Home() gin.HandlerFunc
 	//Init init ioc objects
 	Init(*inject.Graph) error
 	//Mount web points
-	Mount(*gin.Engine)
+	Mount(*mux.Router)
 	//Dashboard dashboard's nav-bar
 	Dashboard() []Dropdown
 	//Shell command line

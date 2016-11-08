@@ -3,14 +3,13 @@ package web
 import (
 	"bufio"
 	"fmt"
+	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
 
-	"golang.org/x/text/language"
-
-	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
+	"golang.org/x/text/language"
 )
 
 //Locale locale model
@@ -29,22 +28,22 @@ type I18n struct {
 }
 
 //Handler locale handler
-func (p *I18n) Handler(c *gin.Context) {
+func (p *I18n) Handler(w http.ResponseWriter, req *http.Request) {
 
 	const key = "locale"
 	// 1. Check URL arguments.
-	lng := c.Request.URL.Query().Get(key)
+	lng := req.URL.Query().Get(key)
 
 	// 2. Get language information from cookies.
 	if len(lng) == 0 {
-		if ck, er := c.Request.Cookie(key); er == nil {
+		if ck, er := req.Cookie(key); er == nil {
 			lng = ck.Value
 		}
 	}
 
 	// 3. Get language information from 'Accept-Language'.
 	if len(lng) == 0 {
-		al := c.Request.Header.Get("Accept-Language")
+		al := req.Header.Get("Accept-Language")
 		if len(al) > 4 {
 			lng = al[:5]
 		}
@@ -66,8 +65,9 @@ func (p *I18n) Handler(c *gin.Context) {
 	// 	})
 	// }
 
-	c.Set(key, tag.String())
-
+	//FIXME
+	// c.Set(key, tag.String())
+	fmt.Println("#########################", tag)
 }
 
 //T translate
