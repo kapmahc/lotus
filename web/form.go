@@ -1,6 +1,13 @@
 package web
 
-import "time"
+import (
+	"html/template"
+	"net/http"
+	"net/url"
+	"time"
+
+	"github.com/gorilla/csrf"
+)
 
 const (
 	//MethodPost post method
@@ -14,8 +21,23 @@ const (
 	TypeHTML = "html"
 )
 
+//NewForm new form
+func NewForm(req *http.Request, id, title string, action *url.URL, fields ...Field) *Form {
+
+	return &Form{
+		CSRF:   csrf.TemplateField(req),
+		Locale: req.Context().Value(LOCALE).(string),
+		ID:     id,
+		Title:  title,
+		Method: MethodPost,
+		Action: action.String(),
+		Fields: fields,
+	}
+}
+
 //Form form model
 type Form struct {
+	CSRF   template.HTML
 	Locale string
 	ID     string
 	Title  string

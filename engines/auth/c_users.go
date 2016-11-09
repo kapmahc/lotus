@@ -20,23 +20,21 @@ func (p *Engine) getUsersSignIn(wrt http.ResponseWriter, req *http.Request) {
 	p.Render.HTML(wrt, http.StatusOK, "users/non-sign-in", map[string]interface{}{
 		"locale": lang,
 		"title":  title,
-		"form": web.Form{
-			ID:     "sign-in",
-			Locale: lang,
-			Title:  title,
-			Method: web.MethodPost,
-			Action: web.URLFor(p.Router, "users.sign-in", nil).String(),
-			Fields: []web.Field{
-				&web.EmailField{
-					ID:    "email",
-					Label: p.I18n.T(lang, "attributes.email"),
-				},
-				&web.PasswordField{
-					ID:    "password",
-					Label: p.I18n.T(lang, "attributes.password"),
-				},
+		"form": web.NewForm(
+			req,
+			"sign-in",
+			title,
+			web.URLFor(p.Router, "users.sign-in", nil),
+
+			&web.EmailField{
+				ID:    "email",
+				Label: p.I18n.T(lang, "attributes.email"),
 			},
-		},
+			&web.PasswordField{
+				ID:    "password",
+				Label: p.I18n.T(lang, "attributes.password"),
+			},
+		),
 	})
 }
 

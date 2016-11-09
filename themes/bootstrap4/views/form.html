@@ -8,6 +8,7 @@
 <h3>{{.Title}}</h3>
 <hr/>
 <form method="{{.Method}}" action="{{.Action}}">
+  {{.CSRF}}
   {{range .Fields}}
     {{if eq .Type "text"}}
       <div class="form-group">

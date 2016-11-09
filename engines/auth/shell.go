@@ -78,7 +78,7 @@ func (p *Engine) Shell() []cli.Command {
 				// 	AllowedHeaders:   []string{"*"},
 				// 	Debug:            !web.IsProduction(),
 				// }).Handler(rt)
-				hnd := csrf.Protect([]byte(viper.GetString("secrets.csrf")))(p.Router)
+
 				adr := fmt.Sprintf(":%d", viper.GetInt("server.port"))
 
 				ng := negroni.New()
@@ -88,16 +88,17 @@ func (p *Engine) Shell() []cli.Command {
 				ng.Use(negroni.NewStatic(http.Dir(
 					path.Join("themes", viper.GetString("server.theme"), "assets"),
 				)))
-				ng.UseHandler(hnd)
+				ng.UseHandler(p.Router)
 
+				hnd := csrf.Protect([]byte(viper.GetString("secrets.csrf")))(ng)
 				if web.IsProduction() {
 					return endless.ListenAndServe(
 						adr,
-						ng,
+						hnd,
 					)
 				}
 
-				return http.ListenAndServe(adr, ng)
+				return http.ListenAndServe(adr, hnd)
 			}),
 		},
 		{
