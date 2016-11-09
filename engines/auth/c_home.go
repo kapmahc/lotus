@@ -1,5 +1,11 @@
 package auth
 
+import "net/http"
+
+func (p *Engine) getLocales(wrt http.ResponseWriter, req *http.Request) {
+	c.JSON(http.StatusOK, p.I18n.Locales(c.Param("lang")))
+}
+
 //
 // func (p *Engine) getLocales(c *gin.Context) {
 // 	c.JSON(http.StatusOK, p.I18n.Locales(c.Param("lang")))

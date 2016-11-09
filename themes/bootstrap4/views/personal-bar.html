@@ -9,25 +9,25 @@
   </a>
   <div class="dropdown-menu dropdown-menu-right" aria-labelledby="personal-bar">
     {{if .currentUser}}
-      <a class="dropdown-item" href="{{urlfor "auth.Controller.GetLogs"}}">
+      <a class="dropdown-item" href="{{urlfor .locale "auth.Controller.GetLogs"}}">
         {{t .locale "auth.pages.dashboard"}}
       </a>
       <div class="dropdown-divider"></div>
-      <a class="dropdown-item" href="{{urlfor "users.sign-in"}}">
+      <a class="dropdown-item" href="{{urlfor .locale "users.sign-in"}}">
         {{t .locale "auth.pages.sign-out"}}
       </a>
     {{else}}
-      <a class="dropdown-item" href="{{urlfor "users.sign-in"}}">
+      <a class="dropdown-item" href="{{urlfor .locale "users.sign-in"}}">
         {{t .locale "auth.pages.sign-in"}}
       </a>
-      <a class="dropdown-item" href="{{urlfor "users.sign-in"}}">
+      <a class="dropdown-item" href="{{urlfor .locale "users.sign-in"}}">
         {{t .locale "auth.pages.sign-up"}}
       </a>
-      <a class="dropdown-item" href="{{urlfor "users.sign-in"}}">
+      <a class="dropdown-item" href="{{urlfor .locale "users.sign-in"}}">
         {{t .locale "auth.pages.forgot-password"}}
       </a>
       <div class="dropdown-divider"></div>
-      <a class="dropdown-item" href="{{urlfor "users.sign-in"}}">
+      <a class="dropdown-item" href="{{urlfor .locale "users.sign-in"}}">
         {{t .locale "auth.pages.confirm"}}
       </a>
     {{end}}
