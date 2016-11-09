@@ -14,9 +14,29 @@ const (
 
 func (p *Engine) getUsersSignIn(wrt http.ResponseWriter, req *http.Request) {
 	ctx := req.Context()
+	lang := ctx.Value(web.LOCALE).(string)
+	title := p.I18n.T(lang, "auth.pages.sign-in")
 
-	p.Render.HTML(wrt, http.StatusOK, "users/sign-in", map[string]interface{}{
-		"locale": ctx.Value(web.LOCALE),
+	p.Render.HTML(wrt, http.StatusOK, "users/non-sign-in", map[string]interface{}{
+		"locale": lang,
+		"title":  title,
+		"form": web.Form{
+			ID:     "sign-in",
+			Locale: lang,
+			Title:  title,
+			Method: web.MethodPost,
+			Action: web.URLFor(p.Router, "users.sign-in", nil).String(),
+			Fields: []web.Field{
+				&web.EmailField{
+					ID:    "email",
+					Label: p.I18n.T(lang, "attributes.email"),
+				},
+				&web.PasswordField{
+					ID:    "password",
+					Label: p.I18n.T(lang, "attributes.password"),
+				},
+			},
+		},
 	})
 }
 

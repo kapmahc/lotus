@@ -32,14 +32,7 @@ func (p *Engine) FuncMap() template.FuncMap {
 			return p.I18n.T(locale, format, args...)
 		},
 		"urlfor": func(name string, pairs ...string) *url.URL {
-			url, err := p.Router.Get(name).URL(pairs...)
-			if err != nil {
-				log.Error(err)
-			}
-			// qry := url.Query()
-			// qry.Set("locale", locale)
-			// url.RawQuery = qry.Encode()
-			return url
+			return web.URLFor(p.Router, name, nil, pairs...)
 		},
 		"languages": func() []string {
 			items, err := p.I18n.Languages()
@@ -48,7 +41,7 @@ func (p *Engine) FuncMap() template.FuncMap {
 			}
 			return items
 		},
-		"date_fmt": func(t time.Time, l string) string {
+		"date_format": func(t time.Time, l string) string {
 			return t.Format(l)
 		},
 		"nav_links": func(name string) []web.Link {

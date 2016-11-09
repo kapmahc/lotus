@@ -1,6 +1,28 @@
 package web
 
-import "net/http"
+import (
+	"net/http"
+	"net/url"
+
+	log "github.com/Sirupsen/logrus"
+	"github.com/gorilla/mux"
+)
+
+//URLFor build url
+func URLFor(router *mux.Router, name string, params map[string]string, pairs ...string) *url.URL {
+	url, err := router.Get(name).URL(pairs...)
+	if err != nil {
+		log.Error(err)
+	}
+	if params != nil {
+		qry := url.Query()
+		for k, v := range params {
+			qry.Set(k, v)
+		}
+		url.RawQuery = qry.Encode()
+	}
+	return url
+}
 
 //Redirect rediect response
 func Redirect(fn func(wrt http.ResponseWriter, req *http.Request) (string, error)) http.HandlerFunc {

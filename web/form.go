@@ -16,7 +16,6 @@ const (
 
 //Form form model
 type Form struct {
-	XSRF   string
 	Locale string
 	ID     string
 	Title  string
