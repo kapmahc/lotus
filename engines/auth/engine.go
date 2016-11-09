@@ -31,14 +31,14 @@ func (p *Engine) FuncMap() template.FuncMap {
 		"t": func(locale string, format string, args ...interface{}) string {
 			return p.I18n.T(locale, format, args...)
 		},
-		"urlfor": func(locale, name string, pairs ...string) *url.URL {
+		"urlfor": func(name string, pairs ...string) *url.URL {
 			url, err := p.Router.Get(name).URL(pairs...)
 			if err != nil {
 				log.Error(err)
 			}
-			qry := url.Query()
-			qry.Set("locale", locale)
-			url.RawQuery = qry.Encode()
+			// qry := url.Query()
+			// qry.Set("locale", locale)
+			// url.RawQuery = qry.Encode()
 			return url
 		},
 		"languages": func() []string {

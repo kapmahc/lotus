@@ -6,7 +6,7 @@
   <p class="float-xs-right">
     {{t .locale "lang-bar.other"}}:
     {{range languages}}
-        <a href="/?locale={{.}}">{{t $locale (printf "languages.%s" .)}}</a>
+        <a href="{{urlfor "home"}}?locale={{.}}">{{t $locale (printf "languages.%s" .)}}</a>
     {{end}}
   </p>
   <p>

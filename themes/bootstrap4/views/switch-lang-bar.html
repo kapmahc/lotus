@@ -6,7 +6,7 @@
   <div class="dropdown-menu dropdown-menu-right" aria-labelledby="switch-lang-bar">
     {{$locale := .locale}}
     {{range languages}}
-        <a class="dropdown-item" href="/?locale={{.}}">
+        <a class="dropdown-item" href="{{urlfor "home"}}?locale={{.}}">
           {{t $locale (printf "languages.%s" .)}}
         </a>
     {{end}}
