@@ -90,14 +90,20 @@ func (p *Engine) Shell() []cli.Command {
 				)))
 				ng.UseHandler(p.Router)
 
-				hnd := csrf.Protect([]byte(viper.GetString("secrets.csrf")))(ng)
+				hnd := csrf.Protect(
+					[]byte(viper.GetString("secrets.csrf")),
+					csrf.Secure(web.IsProduction()),
+					csrf.RequestHeader("Authenticity-Token"),
+					csrf.FieldName("authenticity_token"),
+					csrf.CookieName("_csrf_"),
+				)(ng)
+
 				if web.IsProduction() {
 					return endless.ListenAndServe(
 						adr,
 						hnd,
 					)
 				}
-
 				return http.ListenAndServe(adr, hnd)
 			}),
 		},

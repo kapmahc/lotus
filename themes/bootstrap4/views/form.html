@@ -7,7 +7,7 @@
 {{define "form"}}
 <h3>{{.Title}}</h3>
 <hr/>
-<form method="{{.Method}}" action="{{.Action}}">
+<form method="{{.Method}}" action="{{.Action}}" accept-charset="UTF-8">
   {{.CSRF}}
   {{range .Fields}}
     {{if eq .Type "text"}}

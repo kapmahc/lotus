@@ -145,6 +145,30 @@
 			"revisionTime": "2016-10-24T01:47:02Z"
 		},
 		{
+			"checksumSHA1": "WSkAwMi+VpbHgGmhhF3TncUhV84=",
+			"path": "github.com/go-playground/form",
+			"revision": "d18f24949d2fcf4b367cff1424a9e1a60dd5507f",
+			"revisionTime": "2016-08-31T12:50:07Z"
+		},
+		{
+			"checksumSHA1": "qKySYS70MxMe0R3Hu+2W/NOHo1Y=",
+			"path": "github.com/go-playground/locales",
+			"revision": "7832011dcf5c8b82caa7d6b379c5df17d5681fea",
+			"revisionTime": "2016-11-08T16:14:13Z"
+		},
+		{
+			"checksumSHA1": "7QFECKqCr78JnG3/+Tb9aCyqN8U=",
+			"path": "github.com/go-playground/locales/currency",
+			"revision": "7832011dcf5c8b82caa7d6b379c5df17d5681fea",
+			"revisionTime": "2016-11-08T16:14:13Z"
+		},
+		{
+			"checksumSHA1": "l93KinvWRpOyqihh4GoDzfhgd3c=",
+			"path": "github.com/go-playground/universal-translator",
+			"revision": "fc73d0c4bd37070e0d34e3647253565ff7847264",
+			"revisionTime": "2016-09-14T18:35:43Z"
+		},
+		{
 			"checksumSHA1": "YvKA0GOULlFgOGzUHdJ/nUs0Nz4=",
 			"path": "github.com/go-sql-driver/mysql",
 			"revision": "092683484a531a025afdecf48ed1b020ebbb99ae",
@@ -239,6 +263,12 @@
 			"path": "github.com/jinzhu/inflection",
 			"revision": "74387dc39a75e970e7a3ae6a3386b5bd2e5c5cff",
 			"revisionTime": "2016-08-17T01:46:01Z"
+		},
+		{
+			"checksumSHA1": "ve4j+BJutjpqooYuYQectRK9zTw=",
+			"path": "github.com/justinas/nosurf",
+			"revision": "8e15682772641a1e39c431233e6a9338a32def32",
+			"revisionTime": "2016-10-04T08:52:51Z"
 		},
 		{
 			"checksumSHA1": "KQhA4EQp4Ldwj9nJZnEURlE6aQw=",
@@ -509,6 +539,12 @@
 			"path": "gopkg.in/alexcesaro/quotedprintable.v3",
 			"revision": "2caba252f4dc53eaf6b553000885530023f54623",
 			"revisionTime": "2015-07-16T17:19:45Z"
+		},
+		{
+			"checksumSHA1": "QXmlSYHZw2kQOYlEqF7ye8+ZuGE=",
+			"path": "gopkg.in/go-playground/validator.v9",
+			"revision": "493dfb6209fcb493fcdbc2a0f14b882f2d53979f",
+			"revisionTime": "2016-09-28T14:56:49Z"
 		},
 		{
 			"checksumSHA1": "iq5WdjScmTU+LfNoerLuwcnXpdM=",

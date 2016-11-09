@@ -19,7 +19,6 @@ const (
 
 //NewForm new form
 func NewForm(req *http.Request, id, title string, action *url.URL, fields ...Field) *Form {
-
 	return &Form{
 		CSRF:   csrf.TemplateField(req),
 		Locale: req.Context().Value(LOCALE).(string),
