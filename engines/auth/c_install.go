@@ -51,5 +51,9 @@ func (p *Engine) installNew(wrt http.ResponseWriter, req *http.Request) {
 	})
 }
 func (p *Engine) installCreate(wrt http.ResponseWriter, req *http.Request) {
-	//TODO
+	var fm fmInstall
+	if err := web.ParseForm(req, p.Validate, &fm); err != nil {
+		panic(err)
+	}
+
 }

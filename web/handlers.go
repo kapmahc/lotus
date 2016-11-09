@@ -3,13 +3,31 @@ package web
 import (
 	"net/http"
 	"net/url"
+	"time"
 
 	log "github.com/Sirupsen/logrus"
+	"github.com/go-playground/form"
 	"github.com/gorilla/mux"
+	validator "gopkg.in/go-playground/validator.v9"
 )
 
 //H hash
 type H map[string]interface{}
+
+//ParseForm parse form from http request
+func ParseForm(rq *http.Request, vt *validator.Validate, fm interface{}) error {
+	if err := rq.ParseForm(); err != nil {
+		return err
+	}
+	dec := form.NewDecoder()
+	dec.RegisterCustomTypeFunc(func(vals []string) (interface{}, error) {
+		return time.Parse("2006-01-02", vals[0])
+	}, time.Time{})
+	if err := dec.Decode(fm, rq.PostForm); err != nil {
+		return err
+	}
+	return vt.Struct(fm)
+}
 
 //URLFor build url
 func URLFor(router *mux.Router, name string, params map[string]string, pairs ...string) *url.URL {

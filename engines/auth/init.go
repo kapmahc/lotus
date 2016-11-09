@@ -12,6 +12,7 @@ import (
 	"github.com/kapmahc/lotus/web"
 	"github.com/spf13/viper"
 	"github.com/unrolled/render"
+	validator "gopkg.in/go-playground/validator.v9"
 )
 
 //Init init ioc objects
@@ -38,6 +39,7 @@ func (p *Engine) Init(inj *inject.Graph) error {
 	})
 
 	return inj.Provide(
+		&inject.Object{Value: validator.New()},
 		&inject.Object{Value: mux.NewRouter()},
 		&inject.Object{Value: db},
 		&inject.Object{Value: srv},

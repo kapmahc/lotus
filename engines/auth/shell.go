@@ -82,6 +82,7 @@ func (p *Engine) Shell() []cli.Command {
 				adr := fmt.Sprintf(":%d", viper.GetInt("server.port"))
 
 				ng := negroni.New()
+				ng.Use(negroni.NewRecovery())
 				ng.Use(negronilogrus.NewMiddleware())
 				ng.Use(negroni.HandlerFunc(web.Csrf))
 				ng.Use(negroni.HandlerFunc(p.I18n.Handler))

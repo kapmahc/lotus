@@ -12,19 +12,21 @@ import (
 	"github.com/jinzhu/gorm"
 	"github.com/kapmahc/lotus/web"
 	"github.com/unrolled/render"
+	validator "gopkg.in/go-playground/validator.v9"
 )
 
 //Engine auth engine
 type Engine struct {
-	Db      *gorm.DB          `inject:""`
-	Router  *mux.Router       `inject:""`
-	I18n    *web.I18n         `inject:""`
-	Cache   *web.Cache        `inject:""`
-	Hmac    *web.Hmac         `inject:""`
-	Server  *machinery.Server `inject:""`
-	Dao     *Dao              `inject:""`
-	Handler *Handler          `inject:""`
-	Render  *render.Render    `inject:""`
+	Validate *validator.Validate `inject:""`
+	Db       *gorm.DB            `inject:""`
+	Router   *mux.Router         `inject:""`
+	I18n     *web.I18n           `inject:""`
+	Cache    *web.Cache          `inject:""`
+	Hmac     *web.Hmac           `inject:""`
+	Server   *machinery.Server   `inject:""`
+	Dao      *Dao                `inject:""`
+	Handler  *Handler            `inject:""`
+	Render   *render.Render      `inject:""`
 }
 
 //FuncMap html template funcs
