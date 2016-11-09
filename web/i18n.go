@@ -57,7 +57,7 @@ func (p *I18n) Handler(wrt http.ResponseWriter, req *http.Request, next http.Han
 	tag, err := language.Parse(lng)
 	if err != nil {
 		write = true
-		log.Errorf("parse locale: %v", err)
+		log.Error(err)
 		tag = language.AmericanEnglish
 	}
 
