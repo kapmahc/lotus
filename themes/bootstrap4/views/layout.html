@@ -1,15 +1,14 @@
-<html>
+<!DOCTYPE html>
+<html lang="{{.locale}}">
   <head>
-    <title>My Layout</title>
-    <!-- Render the partial template called `css-$current_template` here -->
-    {{ partial "css" }}
+  {{template "meta" .}}
+  <title>{{.title}}-{{t .locale "site.subTitle"}}-{{t .locale "site.title"}}</title>
   </head>
   <body>
-    <!-- render the partial template called `header-$current_template` here -->
-    {{ partial "header" }}
-    <!-- Render the current template here -->
-    {{ yield }}
-    <!-- render the partial template called `footer-$current_template` here -->
-    {{ partial "footer" }}
+    {{template "header" .}}
+    <div class="container">
+      {{yield}}
+      {{template "footer" .}}
+    </div>
   </body>
 </html>

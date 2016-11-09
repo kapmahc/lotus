@@ -1,0 +1,15 @@
+{{define "switch-lang-bar"}}
+<li class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" id="switch-lang-bar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    {{t .locale "lang-bar.switch"}}
+  </a>
+  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="switch-lang-bar">
+    {{$locale := .locale}}
+    {{range languages}}
+        <a class="dropdown-item" href="/?locale={{.}}">
+          {{t $locale (printf "languages.%s" .)}}
+        </a>
+    {{end}}
+  </div>
+</li>
+{{end}}

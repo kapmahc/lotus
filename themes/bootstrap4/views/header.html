@@ -1,0 +1,25 @@
+{{define "header"}}
+<nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
+  <a href="/" class="navbar-brand">
+    {{t .locale "site.subTitle"}}
+  </a>
+  <ul class="nav navbar-nav">
+    <li class="nav-item">
+      <a class="nav-link" href="/">
+        {{t .locale "auth.pages.home"}}
+        <span class="sr-only">(current)</span>
+      </a>
+    </li>
+    {{$locale := .locale}}
+    {{range nav_links "header"}}
+      <li class="nav-item">
+        <a class="nav-link" href="{{.Href}}">{{t $locale .Label}}</a>
+      </li>
+    {{end}}
+  </ul>
+  <ul class="nav navbar-nav float-xs-right">
+    {{template "switch-lang-bar" .}}
+    {{template "personal-bar" .}}
+  </ul>
+</nav>
+{{end}}

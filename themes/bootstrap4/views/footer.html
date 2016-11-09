@@ -1,0 +1,19 @@
+{{define "footer"}}
+{{$locale := .locale}}
+<br/>
+<hr/>
+<footer>
+  <p class="float-xs-right">
+    {{t .locale "lang-bar.other"}}:
+    {{range languages}}
+        <a href="/?locale={{.}}">{{t $locale (printf "languages.%s" .)}}</a>
+    {{end}}
+  </p>
+  <p>
+    &copy; {{t .locale "site.copyright"}}
+    {{range nav_links "bootom"}}
+      &middot; <a href="{{.Href}}">{{t $locale .Label}}</a>
+    {{end}}
+  </p>
+</footer>
+{{end}}

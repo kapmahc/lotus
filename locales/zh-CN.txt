@@ -24,6 +24,14 @@ messages.are-you-sure = 你确定么？
 messages.bad-format = 错误的格式
 messages.bad-token = token错误
 
+site.title = 标题
+site.subTitle = 副标题
+site.keywords = 关键字
+site.description = 站点介绍
+site.copyright = 2016.
+site.author-name = 用户名
+site.author-email = author@change-me.com
+
 attributes.name = 名称
 attributes.body = 正文
 attributes.title = 标题

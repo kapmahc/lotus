@@ -1,0 +1,36 @@
+{{define "personal-bar"}}
+<li class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" id="personal-bar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    {{if .currentUser}}
+      {{t .locale "auth.pages.welcome" .currentUser.Name}}
+    {{else}}
+      {{t .locale "auth.pages.sign-in-or-up"}}
+    {{end}}
+  </a>
+  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="personal-bar">
+    {{if .currentUser}}
+      <a class="dropdown-item" href="{{urlfor "auth.Controller.GetLogs"}}">
+        {{t .locale "auth.pages.dashboard"}}
+      </a>
+      <div class="dropdown-divider"></div>
+      <a class="dropdown-item" href="{{urlfor "users.sign-in"}}">
+        {{t .locale "auth.pages.sign-out"}}
+      </a>
+    {{else}}
+      <a class="dropdown-item" href="{{urlfor "users.sign-in"}}">
+        {{t .locale "auth.pages.sign-in"}}
+      </a>
+      <a class="dropdown-item" href="{{urlfor "users.sign-in"}}">
+        {{t .locale "auth.pages.sign-up"}}
+      </a>
+      <a class="dropdown-item" href="{{urlfor "users.sign-in"}}">
+        {{t .locale "auth.pages.forgot-password"}}
+      </a>
+      <div class="dropdown-divider"></div>
+      <a class="dropdown-item" href="{{urlfor "users.sign-in"}}">
+        {{t .locale "auth.pages.confirm"}}
+      </a>
+    {{end}}
+  </div>
+</li>
+{{end}}

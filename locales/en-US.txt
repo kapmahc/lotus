@@ -24,6 +24,14 @@ messages.are-you-sure = Are you sure?
 messages.bad-format = Bad format
 messages.bad-token = Bad token
 
+site.title = Title
+site.subTitle = Sub Title
+site.keywords = keywords
+site.description = description
+site.copyright = 2016.
+site.author-name = Username
+site.author-email = author@change-me.com
+
 attributes.name = Name
 attributes.body = Body
 attributes.title = Title

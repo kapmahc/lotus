@@ -66,13 +66,9 @@ func (p *Engine) Shell() []cli.Command {
 			Aliases: []string{"s"},
 			Usage:   "start the app server",
 			Action: web.IocAction(func(*cli.Context, *inject.Graph) error {
-				rt := mux.NewRouter()
-
-				// rt.Static("/assets", path.Join("themes", theme, "assets"))
-
 				// mount
 				web.Loop(func(en web.Engine) error {
-					en.Mount(rt)
+					en.Mount(p.Router)
 					return nil
 				})
 
@@ -82,12 +78,16 @@ func (p *Engine) Shell() []cli.Command {
 				// 	AllowedHeaders:   []string{"*"},
 				// 	Debug:            !web.IsProduction(),
 				// }).Handler(rt)
-				hnd := csrf.Protect([]byte(viper.GetString("secrets.csrf")))(rt)
+				hnd := csrf.Protect([]byte(viper.GetString("secrets.csrf")))(p.Router)
 				adr := fmt.Sprintf(":%d", viper.GetInt("server.port"))
 
 				ng := negroni.New()
 				ng.Use(negronilogrus.NewMiddleware())
+				ng.Use(negroni.HandlerFunc(web.Csrf))
 				ng.Use(negroni.HandlerFunc(p.I18n.Handler))
+				ng.Use(negroni.NewStatic(http.Dir(
+					path.Join("themes", viper.GetString("server.theme"), "assets"),
+				)))
 				ng.UseHandler(hnd)
 
 				if web.IsProduction() {
@@ -98,6 +98,29 @@ func (p *Engine) Shell() []cli.Command {
 				}
 
 				return http.ListenAndServe(adr, ng)
+			}),
+		},
+		{
+			Name:    "routes",
+			Aliases: []string{"rt"},
+			Usage:   "list all routes",
+			Action: web.CfgAction(func(*cli.Context) error {
+				rt := mux.NewRouter()
+
+				web.Loop(func(en web.Engine) error {
+					en.Mount(rt)
+					return nil
+				})
+
+				fmt.Println("NAME\tPATH")
+				return rt.Walk(func(route *mux.Route, router *mux.Router, ancestors []*mux.Route) error {
+					pt, er := route.GetPathTemplate()
+					if er != nil {
+						return er
+					}
+					fmt.Printf("%s\t%s\n", route.GetName(), pt)
+					return nil
+				})
 			}),
 		},
 		{

@@ -8,6 +8,7 @@ import (
 
 	"github.com/SermoDigital/jose/crypto"
 	"github.com/facebookgo/inject"
+	"github.com/gorilla/mux"
 	"github.com/kapmahc/lotus/web"
 	"github.com/spf13/viper"
 	"github.com/unrolled/render"
@@ -37,6 +38,7 @@ func (p *Engine) Init(inj *inject.Graph) error {
 	})
 
 	return inj.Provide(
+		&inject.Object{Value: mux.NewRouter()},
 		&inject.Object{Value: db},
 		&inject.Object{Value: srv},
 		&inject.Object{
