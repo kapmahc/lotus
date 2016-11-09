@@ -43,6 +43,15 @@ type fmLocale struct {
 	Message string `form:"message" binding:"required"`
 }
 
+type fmInstall struct {
+	Title                string `form:"title" binding:"required,max=255"`
+	SubTitle             string `form:"subTitle" binding:"required,max=32"`
+	Username             string `form:"username" binding:"max=32,min=2"`
+	Email                string `form:"email" binding:"email"`
+	Password             string `form:"password" binding:"max=128,min=6"`
+	PasswordConfirmation string `form:"passwordConfirmation" binding:"eqfield=Password"`
+}
+
 type fmSiteBase struct {
 	Title       string `form:"title" binding:"required,max=255"`
 	SubTitle    string `form:"subTitle" binding:"required,max=32"`

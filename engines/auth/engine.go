@@ -9,12 +9,14 @@ import (
 	machinery "github.com/RichardKnop/machinery/v1"
 	log "github.com/Sirupsen/logrus"
 	"github.com/gorilla/mux"
+	"github.com/jinzhu/gorm"
 	"github.com/kapmahc/lotus/web"
 	"github.com/unrolled/render"
 )
 
 //Engine auth engine
 type Engine struct {
+	Db      *gorm.DB          `inject:""`
 	Router  *mux.Router       `inject:""`
 	I18n    *web.I18n         `inject:""`
 	Cache   *web.Cache        `inject:""`

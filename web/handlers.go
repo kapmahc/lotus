@@ -8,6 +8,9 @@ import (
 	"github.com/gorilla/mux"
 )
 
+//H hash
+type H map[string]interface{}
+
 //URLFor build url
 func URLFor(router *mux.Router, name string, params map[string]string, pairs ...string) *url.URL {
 	url, err := router.Get(name).URL(pairs...)
@@ -25,18 +28,8 @@ func URLFor(router *mux.Router, name string, params map[string]string, pairs ...
 }
 
 //Redirect rediect response
-func Redirect(fn func(wrt http.ResponseWriter, req *http.Request) (string, error)) http.HandlerFunc {
-	return func(wrt http.ResponseWriter, req *http.Request) {
-		//TODO
-		// if url, err := fn(c); err == nil {
-		// 	c.Redirect(http.StatusTemporaryRedirect, url)
-		// } else {
-		// 	if !c.IsAborted() {
-		// 		c.AbortWithStatus(http.StatusInternalServerError)
-		// 	}
-		// 	c.Writer.WriteString(err)
-		// }
-	}
+func Redirect(w http.ResponseWriter, r *http.Request, u *url.URL) {
+	http.Redirect(w, r, u.String(), http.StatusFound)
 }
 
 //JSON json response
