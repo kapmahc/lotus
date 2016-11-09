@@ -30,10 +30,14 @@ go get -u golang.org/x/tools/cmd/goimports
 go get -u github.com/kardianos/govendor
 
 go get -u github.com/kapmahc/lotus
+# OR
+git clone https://github.com/kapmahc/lotus.git $GOPATH/src/github.com/kapmahc/lotus
 ```
 
 * run backend
 ```
+cd $GOPATH/src/github.com/kapmahc/lotus
+govendor sync
 sudo pacman -S inotify-tools
 ./run.sh
 ```
@@ -73,5 +77,3 @@ initdb  -D '/var/lib/postgres/data'
 * [gorm](http://jinzhu.me/gorm/)
 * [validator](https://github.com/go-playground/validator)
 * [form](https://github.com/go-playground/form)
-
-

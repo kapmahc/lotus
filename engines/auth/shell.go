@@ -112,13 +112,14 @@ func (p *Engine) Shell() []cli.Command {
 					return nil
 				})
 
-				fmt.Println("NAME\tPATH")
+				lnf := "%24s %s\n"
+				fmt.Printf(lnf, "NAME", "PATH")
 				return rt.Walk(func(route *mux.Route, router *mux.Router, ancestors []*mux.Route) error {
 					pt, er := route.GetPathTemplate()
 					if er != nil {
 						return er
 					}
-					fmt.Printf("%s\t%s\n", route.GetName(), pt)
+					fmt.Printf(lnf, route.GetName(), pt)
 					return nil
 				})
 			}),

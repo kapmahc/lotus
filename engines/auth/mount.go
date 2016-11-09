@@ -6,6 +6,7 @@ import "github.com/gorilla/mux"
 func (p *Engine) Mount(rt *mux.Router) {
 	rt.HandleFunc("/admin/status", p.getAdminStatus).Methods("GET")
 	rt.HandleFunc("/users/sign-in", p.getUsersSignIn).Methods("GET").Name("users.sign-in")
+	rt.HandleFunc("/locales/{lang}", p.getLocales).Methods("GET").Name("locales")
 	// rt.GET("/locales/:lang", p.getLocales)
 	// rt.GET("/layout", p.getLayout)
 	// rt.GET("/dashboard", p.getDashboard)

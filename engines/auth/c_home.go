@@ -1,9 +1,14 @@
 package auth
 
-import "net/http"
+import (
+	"net/http"
+
+	"github.com/gorilla/mux"
+)
 
 func (p *Engine) getLocales(wrt http.ResponseWriter, req *http.Request) {
-	c.JSON(http.StatusOK, p.I18n.Locales(c.Param("lang")))
+	vars := mux.Vars(req)
+	p.Render.JSON(wrt, http.StatusOK, p.I18n.Locales(vars["lang"]))
 }
 
 //
