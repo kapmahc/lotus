@@ -13,22 +13,24 @@
         {{t .locale "auth.pages.dashboard"}}
       </a>
       <div class="dropdown-divider"></div>
-      <a class="dropdown-item" href="{{urlfor "users.sign-in"}}">
+      <a class="dropdown-item" href="{{urlfor "auth.sessions.new"}}">
         {{t .locale "auth.pages.sign-out"}}
       </a>
     {{else}}
-      <a class="dropdown-item" href="{{urlfor "users.sign-in"}}">
-        {{t .locale "auth.pages.sign-in"}}
+      <a class="dropdown-item" href="{{urlfor "auth.sessions.new"}}">
+        {{t .locale "auth.pages.sessions.new"}}
       </a>
-      <a class="dropdown-item" href="{{urlfor "users.sign-in"}}">
-        {{t .locale "auth.pages.sign-up"}}
+      <a class="dropdown-item" href="{{urlfor "auth.registrations.new"}}">
+        {{t .locale "auth.pages.registrations.new"}}
       </a>
-      <a class="dropdown-item" href="{{urlfor "users.sign-in"}}">
-        {{t .locale "auth.pages.forgot-password"}}
+      <a class="dropdown-item" href="{{urlfor "auth.passwords.new"}}">
+        {{t .locale "auth.pages.passwords.new"}}
       </a>
-      <div class="dropdown-divider"></div>
-      <a class="dropdown-item" href="{{urlfor "users.sign-in"}}">
-        {{t .locale "auth.pages.confirm"}}
+      <a class="dropdown-item" href="{{urlfor "auth.confirmations.new"}}">
+        {{t .locale "auth.pages.confirmations.new"}}
+      </a>
+      <a class="dropdown-item" href="{{urlfor "auth.unlocks.new"}}">
+        {{t .locale "auth.pages.unlocks.new"}}
       </a>
     {{end}}
   </div>

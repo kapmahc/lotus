@@ -1,2 +1,23 @@
-
-{{template "form" .form}}
+<div class="row">
+  {{template "form" .form}}
+</div>
+<br/>
+<div class="row">
+  <ul>
+    <li><a href="{{urlfor "auth.sessions.new"}}">
+      {{t .locale "auth.pages.sessions.new"}}
+    </a></li>
+    <li><a href="{{urlfor "auth.registrations.new"}}">
+      {{t .locale "auth.pages.registrations.new"}}
+    </a></li>
+    <li><a href="{{urlfor "auth.passwords.new"}}">
+      {{t .locale "auth.pages.passwords.new"}}
+    </a></li>
+    <li><a href="{{urlfor "auth.confirmations.new"}}">
+      {{t .locale "auth.pages.confirmations.new"}}
+    </a></li>
+    <li><a href="{{urlfor "auth.unlocks.new"}}">
+      {{t .locale "auth.pages.unlocks.new"}}
+    </a></li>
+  </ul>
+</div>

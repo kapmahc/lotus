@@ -12,10 +12,39 @@ const (
 	actUnlock        = "unlock"
 )
 
-func (p *Engine) getUsersSignIn(wrt http.ResponseWriter, req *http.Request) {
+func (p *Engine) sessionsDestroy(wrt http.ResponseWriter, req *http.Request) {
+	//TODO
+}
+func (p *Engine) sessionsCreate(wrt http.ResponseWriter, req *http.Request) {
+	//TODO
+}
+
+func (p *Engine) passwordsNew(wrt http.ResponseWriter, req *http.Request) {
+	//TODO
+}
+func (p *Engine) passwordsEdit(wrt http.ResponseWriter, req *http.Request) {
+	//TODO
+}
+
+func (p *Engine) registrationsNew(wrt http.ResponseWriter, req *http.Request) {
+	//TODO
+}
+func (p *Engine) registrationsEdit(wrt http.ResponseWriter, req *http.Request) {
+	//TODO
+}
+
+func (p *Engine) unlocksNew(wrt http.ResponseWriter, req *http.Request) {
+	//TODO
+}
+
+func (p *Engine) confirmationsNew(wrt http.ResponseWriter, req *http.Request) {
+	//TODO
+}
+
+func (p *Engine) sessionsNew(wrt http.ResponseWriter, req *http.Request) {
 	ctx := req.Context()
 	lang := ctx.Value(web.LOCALE).(string)
-	title := p.I18n.T(lang, "auth.pages.sign-in")
+	title := p.I18n.T(lang, "auth.pages.sessions.new")
 
 	p.Render.HTML(wrt, http.StatusOK, "users/non-sign-in", map[string]interface{}{
 		"locale": lang,
@@ -24,7 +53,7 @@ func (p *Engine) getUsersSignIn(wrt http.ResponseWriter, req *http.Request) {
 			req,
 			"sign-in",
 			title,
-			web.URLFor(p.Router, "users.sign-in", nil),
+			web.URLFor(p.Router, "auth.sessions.create", nil),
 
 			&web.EmailField{
 				ID:    "email",

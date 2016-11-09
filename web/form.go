@@ -10,10 +10,6 @@ import (
 )
 
 const (
-	//MethodPost post method
-	MethodPost = "post"
-	//MethodPatch patch method
-	MethodPatch = "patch"
 
 	//TypeMarkdown markdown type
 	TypeMarkdown = "markdown"
@@ -29,7 +25,7 @@ func NewForm(req *http.Request, id, title string, action *url.URL, fields ...Fie
 		Locale: req.Context().Value(LOCALE).(string),
 		ID:     id,
 		Title:  title,
-		Method: MethodPost,
+		Method: "POST",
 		Action: action.String(),
 		Fields: fields,
 	}
