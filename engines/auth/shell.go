@@ -17,6 +17,8 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/facebookgo/inject"
 	"github.com/fvbock/endless"
+	sessions "github.com/goincremental/negroni-sessions"
+	"github.com/goincremental/negroni-sessions/cookiestore"
 	"github.com/gorilla/csrf"
 	"github.com/gorilla/mux"
 	"github.com/kapmahc/lotus/web"
@@ -84,6 +86,10 @@ func (p *Engine) Shell() []cli.Command {
 				ng := negroni.New()
 				ng.Use(negroni.NewRecovery())
 				ng.Use(negronilogrus.NewMiddleware())
+				ng.Use(sessions.Sessions(
+					"_session_",
+					cookiestore.New([]byte(viper.GetString("secrets.session"))),
+				))
 				ng.Use(negroni.HandlerFunc(web.Csrf))
 				ng.Use(negroni.HandlerFunc(p.I18n.Handler))
 				ng.Use(negroni.NewStatic(http.Dir(

@@ -50,6 +50,18 @@ func Redirect(w http.ResponseWriter, r *http.Request, u *url.URL) {
 	http.Redirect(w, r, u.String(), http.StatusFound)
 }
 
+//RedirectHandler rediect response handler
+func RedirectHandler(fn func(http.ResponseWriter, *http.Request) (*url.URL, error)) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		u, e := fn(w, r)
+		if e == nil {
+			Redirect(w, r, u)
+		} else {
+			http.Error(w, e.Error(), http.StatusInternalServerError)
+		}
+	}
+}
+
 //JSON json response
 func JSON(fn func(wrt http.ResponseWriter, req *http.Request) (interface{}, error)) http.HandlerFunc {
 	//TODO

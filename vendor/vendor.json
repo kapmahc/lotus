@@ -103,6 +103,12 @@
 			"revisionTime": "2016-11-03T21:40:07Z"
 		},
 		{
+			"checksumSHA1": "mXuhmsoWRrMxD3j836MtLNirGiM=",
+			"path": "github.com/boj/redistore",
+			"revision": "fc113767cd6b051980f260d6dbe84b2740c46ab0",
+			"revisionTime": "2016-01-28T11:33:10Z"
+		},
+		{
 			"checksumSHA1": "fNAC4qgZDqF3kxq74/yyk3PWdy8=",
 			"path": "github.com/bradfitz/gomemcache/memcache",
 			"revision": "fb1f79c6b65acda83063cbc69f6bba1522558bfc",
@@ -175,6 +181,24 @@
 			"revisionTime": "2016-11-07T13:31:20Z"
 		},
 		{
+			"checksumSHA1": "NWPy8gY+9jExHxBYKhjxJ3ir7/0=",
+			"path": "github.com/goincremental/negroni-sessions",
+			"revision": "0055e7581fb0fe0f6ee5f622199672425526e1b2",
+			"revisionTime": "2016-10-17T07:35:17Z"
+		},
+		{
+			"checksumSHA1": "r2at94ZOVarmcNNfp7zwiXXyQac=",
+			"path": "github.com/goincremental/negroni-sessions/cookiestore",
+			"revision": "0055e7581fb0fe0f6ee5f622199672425526e1b2",
+			"revisionTime": "2016-10-17T07:35:17Z"
+		},
+		{
+			"checksumSHA1": "1tyw2ZVCZSNA9HZgyF2p429yYaA=",
+			"path": "github.com/goincremental/negroni-sessions/redisstore",
+			"revision": "0055e7581fb0fe0f6ee5f622199672425526e1b2",
+			"revisionTime": "2016-10-17T07:35:17Z"
+		},
+		{
 			"checksumSHA1": "g/V4qrXjUGG9B+e3hB+4NAYJ5Gs=",
 			"path": "github.com/gorilla/context",
 			"revision": "08b5f424b9271eedf6f9f0ce86cb9396ed337a42",
@@ -197,6 +221,12 @@
 			"path": "github.com/gorilla/securecookie",
 			"revision": "fa5329f913702981df43dcb2a380bac429c810b5",
 			"revisionTime": "2016-10-03T05:16:01Z"
+		},
+		{
+			"checksumSHA1": "f1dfF3vmO95G/hbwMYlFru/FfMo=",
+			"path": "github.com/gorilla/sessions",
+			"revision": "ca9ada44574153444b00d3fd9c8559e4cc95f896",
+			"revisionTime": "2016-09-22T14:58:04Z"
 		},
 		{
 			"checksumSHA1": "8OPDk+bKyRGJoKcS4QNw9F7dpE8=",

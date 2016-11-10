@@ -2,7 +2,9 @@ package auth
 
 import (
 	"net/http"
+	"time"
 
+	sessions "github.com/goincremental/negroni-sessions"
 	"github.com/kapmahc/lotus/web"
 )
 
@@ -51,9 +53,24 @@ func (p *Engine) installNew(wrt http.ResponseWriter, req *http.Request) {
 	})
 }
 func (p *Engine) installCreate(wrt http.ResponseWriter, req *http.Request) {
+	session := sessions.GetSession(req)
+	lang := req.Context().Value(web.LOCALE).(string)
 	var fm fmInstall
-	if err := web.ParseForm(req, p.Validate, &fm); err != nil {
-		panic(err)
-	}
+	err := web.ParseForm(req, p.Validate, &fm)
+	var user *User
+	if err == nil {
+		p.I18n.Set(lang, "site.title", fm.Title)
+		p.I18n.Set(lang, "site.subTitle", fm.SubTitle)
+		user, err = p.Dao.AddEmailUser(lang, fm.Email, fm.Username, fm.Password)
 
+	}
+	if err == nil {
+		err = p.Db.Model(user).Update("confirmed_at", time.Now()).Error
+	}
+	if err == nil {
+		session.AddFlash(web.Notice(p.I18n.T(lang, "messages.success")))
+	} else {
+		session.AddFlash(web.Error(err.Error()))
+	}
+	session.Save(wrt, req)
 }
