@@ -129,6 +129,10 @@ func (p *Engine) Shell() []cli.Command {
 				if err != nil {
 					return err
 				}
+				web.Loop(func(en web.Engine) error {
+					en.Worker()
+					return nil
+				})
 				worker := p.Server.NewWorker(fmt.Sprintf("%s@%s", un.Name, hn))
 				return worker.Launch()
 			}),

@@ -43,7 +43,7 @@ func (p *Engine) Worker() {
 			log.Debugf("send mail to %s: %s \n %s", to, subject, body)
 		}
 
-		return nil, err
+		return "done", err
 	})
 }
 

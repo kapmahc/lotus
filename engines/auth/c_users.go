@@ -48,7 +48,7 @@ func (p *Engine) postUsersSignUp(c *gin.Context) (interface{}, error) {
 		return nil, err
 	}
 	p.Dao.Log(user.ID, p.I18n.T(lang, "auth.logs.sign-up"))
-	p.sendMail(user, actConfirm)
+	p._sendMail(user, actConfirm)
 	return gin.H{
 		"user":    user,
 		"message": p.I18n.T(lang, "auth.pages.confirm-success"),
@@ -68,7 +68,7 @@ func (p *Engine) postUsersConfirm(c *gin.Context) (interface{}, error) {
 	if user.IsConfirmed() {
 		return nil, errors.New(p.I18n.T(lang, "auth.messages.user-already-confirmed"))
 	}
-	p.sendMail(user, actConfirm)
+	p._sendMail(user, actConfirm)
 	return gin.H{
 		"user":    user,
 		"message": p.I18n.T(lang, "auth.pages.confirm-success"),
@@ -88,7 +88,7 @@ func (p *Engine) postUsersUnlock(c *gin.Context) (interface{}, error) {
 	if !user.IsLocked() {
 		return nil, errors.New(p.I18n.T(lang, "auth.messages.user-not-locked"))
 	}
-	p.sendMail(user, actUnlock)
+	p._sendMail(user, actUnlock)
 	return user, nil
 }
 
@@ -101,13 +101,13 @@ func (p *Engine) postUsersForgotPassword(c *gin.Context) (interface{}, error) {
 	if err != nil {
 		return nil, err
 	}
-	p.sendMail(user, actResetPassword)
+	p._sendMail(user, actResetPassword)
 	return user, nil
 }
 
-func (p *Engine) sendMail(user *User, act string) {
-	var subject string
-	var body string
+func (p *Engine) _sendMail(user *User, act string) {
+	subject := "aaa"
+	body := "bbb"
 	//TODO
 	task := signatures.TaskSignature{
 		Name: userEmailQueue,

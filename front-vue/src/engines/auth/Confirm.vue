@@ -2,10 +2,10 @@
   <app-layout>
     <h3>{{ $t('auth.pages.confirm') }}</h3>
     <hr/>
-    <form>
+    <form v-on:submit.prevent="onSubmit">
       <div class="form-group">
         <label for="email">{{ $t("attributes.email") }}</label>
-        <input type="email" class="form-control" id="email">
+        <input v-model="email" type="email" class="form-control" id="email">
       </div>
       <button type="submit" class="btn btn-primary">{{ $t('buttons.submit') }}</button>
       <button type="reset" class="btn btn-secondary">{{ $t('buttons.reset') }}</button>
@@ -18,16 +18,31 @@
 <script>
 import AppLayout from '../Layout'
 import SharedLinks from './NonSignInLinks'
+import {postForm} from '../../utils'
 
 export default {
   name: 'users-confirm',
   data () {
     return {
+      email: ''
     }
   },
   components: {
     AppLayout,
     SharedLinks
+  },
+  methods: {
+    onSubmit () {
+      postForm(
+        '/users/confirm',
+        {
+          email: this.email
+        },
+        function (result) {
+          window.alert(result.message)
+        }
+      )
+    }
   }
 }
 </script>
