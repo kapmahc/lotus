@@ -6,10 +6,15 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/kapmahc/lotus/web"
+	"golang.org/x/text/language"
 )
 
-func (p *Engine) getLocales(c *gin.Context) {
-	c.JSON(http.StatusOK, p.I18n.Locales(c.Param("lang")))
+func (p *Engine) getLocales(c *gin.Context) (interface{}, error) {
+	lang, err := language.Parse(c.Param("lang"))
+	if err != nil {
+		return nil, err
+	}
+	return p.I18n.Locales(lang.String()), nil
 }
 
 func (p *Engine) getLayout(c *gin.Context) {

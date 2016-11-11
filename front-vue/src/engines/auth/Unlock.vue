@@ -1,15 +1,11 @@
 <template>
   <app-layout>
-    <h3>{{ $t('auth.pages.sign-in') }}</h3>
+    <h3>{{ $t('auth.pages.unlock') }}</h3>
     <hr/>
     <form>
       <div class="form-group">
         <label for="email">{{ $t("attributes.email") }}</label>
         <input type="email" class="form-control" id="email">
-      </div>
-      <div class="form-group">
-        <label for="password">{{ $t("attributes.password") }}</label>
-        <input type="password" class="form-control" id="password">
       </div>
       <button type="submit" class="btn btn-primary">{{ $t('buttons.submit') }}</button>
       <button type="reset" class="btn btn-secondary">{{ $t('buttons.reset') }}</button>
@@ -24,7 +20,7 @@ import AppLayout from '../Layout'
 import SharedLinks from './NonSignInLinks'
 
 export default {
-  name: 'users-sign-in',
+  name: 'users-unlock',
   data () {
     return {
     }

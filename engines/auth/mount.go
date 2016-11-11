@@ -7,7 +7,7 @@ import (
 
 //Mount web points
 func (p *Engine) Mount(rt *gin.Engine) {
-	rt.GET("/locales/:lang", p.getLocales)
+	rt.GET("/locales/:lang", web.JSON(p.getLocales))
 	rt.GET("/layout", p.getLayout)
 	rt.GET("/dashboard", p.getDashboard)
 

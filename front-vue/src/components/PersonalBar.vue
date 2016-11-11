@@ -4,12 +4,9 @@
       {{ $t('auth.pages.sign-in-or-up') }}
     </a>
     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="switch-lang-bar">
-      <router-link class="dropdown-item" :to="{ name: 'users.sign-in' }">
-        {{ $t('auth.pages.sign-in') }}
-      </router-link>
-      <router-link class="dropdown-item" :to="{ name: 'users.sign-up' }">
-        {{ $t('auth.pages.sign-up') }}
-      </router-link>
+      <router-link v-for="l in non_sign_in" class="dropdown-item" :to="{ name: `users.${l}` }">
+        {{ $t(`auth.pages.${l}`) }}
+      </router-link>      
     </div>
   </li>
 </template>
@@ -19,6 +16,13 @@ export default {
   name: 'forgot-password',
   data () {
     return {
+      non_sign_in: [
+        'sign-in',
+        'sign-up',
+        'forgot-password',
+        'confirm',
+        'unlock'
+      ]
     }
   }
 }
