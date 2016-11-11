@@ -622,7 +622,13 @@ server {
 						if c.Bool("deny") {
 							err = p.Dao.Deny(role.ID, user.ID)
 						} else {
-							err = p.Dao.Allow(role.ID, user.ID, 50, 0, 0)
+
+							if !user.IsConfirmed() {
+								err = p.Db.Model(user).Update("confirmed_at", time.Now()).Error
+							}
+							if err == nil {
+								err = p.Dao.Allow(role.ID, user.ID, 50, 0, 0)
+							}
 						}
 						return err
 					}),
