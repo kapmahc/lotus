@@ -59,7 +59,7 @@ export default {
           passwordConfirmation: this.passwordConfirmation
         },
         function (result) {
-          console.log(result)
+          window.alert(result.message)
         }
       )
     }

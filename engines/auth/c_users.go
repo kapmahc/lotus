@@ -49,7 +49,10 @@ func (p *Engine) postUsersSignUp(c *gin.Context) (interface{}, error) {
 	}
 	p.Dao.Log(user.ID, p.I18n.T(lang, "auth.logs.sign-up"))
 	p.sendMail(user, actConfirm)
-	return user, nil
+	return gin.H{
+		"user":    user,
+		"message": p.I18n.T(lang, "auth.pages.confirm-success"),
+	}, nil
 }
 
 func (p *Engine) postUsersConfirm(c *gin.Context) (interface{}, error) {
@@ -66,7 +69,10 @@ func (p *Engine) postUsersConfirm(c *gin.Context) (interface{}, error) {
 		return nil, errors.New(p.I18n.T(lang, "auth.messages.user-already-confirmed"))
 	}
 	p.sendMail(user, actConfirm)
-	return user, nil
+	return gin.H{
+		"user":    user,
+		"message": p.I18n.T(lang, "auth.pages.confirm-success"),
+	}, nil
 }
 
 func (p *Engine) postUsersUnlock(c *gin.Context) (interface{}, error) {
