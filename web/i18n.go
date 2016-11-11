@@ -108,10 +108,15 @@ func (p *I18n) Del(lang string, code string) error {
 }
 
 //Codes get codes
-func (p *I18n) Codes(lang string) ([]string, error) {
+func (p *I18n) Codes(lang string) []string {
 	var keys []string
-	err := p.Db.Model(&Locale{}).Where("lang = ?", lang).Order("code ASC").Pluck("code", &keys).Error
-	return keys, err
+	if err := p.Db.Model(&Locale{}).
+		Where("lang = ?", lang).
+		Order("code ASC").
+		Pluck("code", &keys).Error; err != nil {
+		log.Error(err)
+	}
+	return keys
 }
 
 //Languages supported languages

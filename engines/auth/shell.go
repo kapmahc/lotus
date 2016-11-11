@@ -547,7 +547,7 @@ server {
 					Flags: []cli.Flag{
 						cli.StringFlag{
 							Name:  "lang, l",
-							Value: language.SimplifiedChinese.String(),
+							Value: language.AmericanEnglish.String(),
 							Usage: "language",
 						},
 					},
@@ -557,10 +557,7 @@ server {
 						if err != nil {
 							return err
 						}
-						keys, err := p.I18n.Codes(tag.String())
-						if err != nil {
-							return err
-						}
+						keys := p.I18n.Codes(tag.String())
 						for _, k := range keys {
 							fmt.Println(k)
 						}
@@ -573,6 +570,46 @@ server {
 					Aliases: []string{"i"},
 					Action: web.IocAction(func(c *cli.Context, _ *inject.Graph) error {
 						return p.I18n.Load("locales")
+					}),
+				},
+				{
+					Name:    "generate",
+					Usage:   "generate locale file",
+					Aliases: []string{"g"},
+					Flags: []cli.Flag{
+						cli.StringFlag{
+							Name:  "lang, l",
+							Value: language.AmericanEnglish.String(),
+							Usage: "language",
+						},
+					},
+					Action: web.IocAction(func(c *cli.Context, _ *inject.Graph) error {
+						lang := c.String("lang")
+						tag, err := language.Parse(lang)
+						if err != nil {
+							return err
+						}
+						fn := path.Join("locales", fmt.Sprintf("%s.txt", tag.String()))
+						log.Infof("generate file %s", fn)
+						fd, err := os.OpenFile(
+							fn,
+							os.O_WRONLY|os.O_CREATE|os.O_EXCL,
+							0600)
+						if err != nil {
+							return err
+						}
+						defer fd.Close()
+
+						var keys []string
+						if err := p.Db.Model(&web.Locale{}).
+							Order("code ASC").
+							Pluck("DISTINCT code", &keys).Error; err != nil {
+							return err
+						}
+						for _, k := range keys {
+							fd.WriteString(fmt.Sprintf("%s = \n", k))
+						}
+						return nil
 					}),
 				},
 			},

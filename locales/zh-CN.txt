@@ -127,7 +127,7 @@ auth.models.user = 用户
 auth.helpers.need-password-to-change = 需要你的密码才能继续修改
 auth.helpers.password-must-in-size = 密码长度在6位至128位之间
 
-auth.messages.user-already-comfirmed = 用户已经被激活
+auth.messages.user-already-confirmed = 用户已经被激活
 auth.messages.email-already-exists = 邮箱已存在
 auth.messages.email-password-not-match = 邮箱和密码不匹配
 
