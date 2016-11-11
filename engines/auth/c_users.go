@@ -110,6 +110,32 @@ func (p *Engine) postUsersConfirm(c *gin.Context) (interface{}, error) {
 	}, err
 }
 
+func (p *Engine) getUsersUnlock(c *gin.Context) (string, error) {
+	lang := c.MustGet(web.LOCALE).(string)
+	cm, err := p.Jwt.Validate([]byte(c.Query("token")))
+	if err == nil {
+		if cm.Get("act").(string) != actUnlock {
+			err = p.I18n.E(lang, "messages.bad-token")
+		}
+	}
+	var user *User
+	if err == nil {
+		user, err = p.Dao.GetUserByEmail(cm.Get("email").(string))
+	}
+	if err == nil {
+		if !user.IsLocked() {
+			err = p.I18n.E(lang, "auth.logs.user-not-locked")
+		}
+	}
+	if err == nil {
+		err = p.Db.Model(user).Update("locked_at", nil).Error
+	}
+	if err == nil {
+		p.Dao.Logf(user.ID, lang, "auth.logs.unlock")
+	}
+	return p._signInURL(), err
+}
+
 func (p *Engine) postUsersUnlock(c *gin.Context) (interface{}, error) {
 	lang := c.MustGet(web.LOCALE).(string)
 	var fm fmEmail
