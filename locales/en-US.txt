@@ -132,11 +132,11 @@ auth.messages.email-already-exists = Email already exists
 auth.messages.email-password-not-match = Email and password not match
 
 auth.emails.confirm-subject = Confirmation instructions
-auth.emails.confirm-body = You can confirm your account email through the link below. <br/> <a href="{{.Href}}">{{.Href}}</a>
+auth.emails.confirm-body = You can confirm your account email through the link below. <br/> <a href="{{.Backend}}/users/{{.Action}}?token={{.Token}}">{{.Backend}}/users/{{.Action}}?token={{.Token}}</a>
 auth.emails.unlock-subject = Unlock instructions
-auth.emails.unlock-body = Click the link below to unlock your account. <br/> <a href="{{.Href}}">{{.Href}}</a>
+auth.emails.unlock-body = Click the link below to unlock your account. <br/> <a href="{{.Backend}}/users/{{.Action}}?token={{.Token}}">{{.Backend}}/users/{{.Action}}?token={{.Token}}</a>
 auth.emails.reset-password-subject = Reset password instructions
-auth.emails.reset-password-body = Someone has requested a link to change your password, and you can do this through the link below.<br/> <a href="{{.Href}}">{{.Href}}</a><br/>If you didn't request this, please ignore this email.<br/>Your password won't change until you access the link above and create a new one.
+auth.emails.reset-password-body = Someone has requested a link to change your password, and you can do this through the link below.<br/> <a href="{{.Frontend}}/users/{{.Action}}?token={{.Token}}">{{.Frontend}}/users/{{.Action}}?token={{.Token}}</a><br/>If you didn't request this, please ignore this email.<br/>Your password won't change until you access the link above and create a new one.
 
 reading.pages.profile = Reading
 reading.pages.my-notes = My notes

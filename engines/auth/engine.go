@@ -15,6 +15,7 @@ type Engine struct {
 	Server  *machinery.Server `inject:""`
 	Dao     *Dao              `inject:""`
 	Db      *gorm.DB          `inject:""`
+	Jwt     *Jwt              `inject:""`
 	Handler *Handler          `inject:""`
 }
 

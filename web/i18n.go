@@ -2,6 +2,7 @@ package web
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -27,16 +28,18 @@ type I18n struct {
 	Db *gorm.DB `inject:""`
 }
 
+//LOCALE locale key
+const LOCALE = "locale"
+
 //Handler locale handler
 func (p *I18n) Handler(c *gin.Context) {
 
-	const key = "locale"
 	// 1. Check URL arguments.
-	lng := c.Request.URL.Query().Get(key)
+	lng := c.Request.URL.Query().Get(LOCALE)
 
 	// 2. Get language information from cookies.
 	if len(lng) == 0 {
-		if ck, er := c.Request.Cookie(key); er == nil {
+		if ck, er := c.Request.Cookie(LOCALE); er == nil {
 			lng = ck.Value
 		}
 	}
@@ -65,7 +68,7 @@ func (p *I18n) Handler(c *gin.Context) {
 	// 	})
 	// }
 
-	c.Set(key, tag.String())
+	c.Set(LOCALE, tag.String())
 
 }
 
@@ -77,6 +80,16 @@ func (p *I18n) T(lang string, code string, args ...interface{}) string {
 	}
 	log.Error(err)
 	return code
+}
+
+//E error
+func (p *I18n) E(lang string, code string, args ...interface{}) error {
+	msg, err := p.Get(lang, code)
+	if err == nil {
+		return fmt.Errorf(msg, args...)
+	}
+	log.Error(err)
+	return errors.New(code)
 }
 
 //Set set message

@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"errors"
 	"fmt"
 	"time"
 
@@ -71,6 +70,11 @@ func (p *Dao) Log(user uint, msg string) {
 	}
 }
 
+//Logf add log
+func (p *Dao) Logf(user uint, lang, format string, args ...interface{}) {
+	p.Log(user, p.I18n.T(lang, format, args...))
+}
+
 //-----------------------------------------------------------------------------
 
 //UserClaims generate user claims
@@ -97,7 +101,7 @@ func (p *Dao) AddEmailUser(lang, email, name, password string) (*User, error) {
 		return nil, err
 	}
 	if count != 0 {
-		return nil, errors.New(p.I18n.T(lang, "auth.messages.email-already-exists"))
+		return nil, p.I18n.E(lang, "auth.messages.email-already-exists")
 	}
 
 	u.Email = email

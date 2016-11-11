@@ -18,7 +18,7 @@ func (p *Engine) getLocales(c *gin.Context) (interface{}, error) {
 }
 
 func (p *Engine) getLayout(c *gin.Context) {
-	lang := c.MustGet("locale").(string)
+	lang := c.MustGet(web.LOCALE).(string)
 	ret := gin.H{}
 	for _, k := range []string{"title", "subTitle", "keywords", "description", "copyright"} {
 		ret[k] = p.I18n.T(lang, fmt.Sprintf("site.%s", k))
