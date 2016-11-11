@@ -5,7 +5,6 @@ import (
 	"database/sql"
 	"fmt"
 	"html/template"
-	"log"
 	"net/http"
 	"os"
 	"os/user"
@@ -15,6 +14,7 @@ import (
 
 	"bitbucket.org/liamstask/goose/lib/goose"
 	"github.com/BurntSushi/toml"
+	log "github.com/Sirupsen/logrus"
 	"github.com/facebookgo/inject"
 	"github.com/fvbock/endless"
 	"github.com/gin-gonic/gin"
@@ -95,6 +95,26 @@ func (p *Engine) Shell() []cli.Command {
 				}
 				return http.ListenAndServe(adr, hnd)
 			}),
+		},
+		{
+			Name:    "routes",
+			Aliases: []string{"rt"},
+			Usage:   "list routes",
+			Action: func(*cli.Context) error {
+				gin.SetMode(gin.ReleaseMode)
+				rt := gin.Default()
+				// mount
+				web.Loop(func(en web.Engine) error {
+					en.Mount(rt)
+					return nil
+				})
+				lnf := "%6s %s\n"
+				fmt.Printf(lnf, "METHOD", "PATH")
+				for _, r := range rt.Routes() {
+					fmt.Printf(lnf, r.Method, r.Path)
+				}
+				return nil
+			},
 		},
 		{
 			Name:    "worker",

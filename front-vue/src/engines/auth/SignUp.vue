@@ -32,6 +32,7 @@
 <script>
 import AppLayout from '../Layout'
 import SharedLinks from './NonSignInLinks'
+import {postForm} from '../../utils'
 
 export default {
   name: 'users-sign-up',
@@ -49,7 +50,18 @@ export default {
   },
   methods: {
     onSubmit () {
-      console.log(this.email)
+      postForm(
+        '/users/sign-up',
+        {
+          email: this.email,
+          name: this.name,
+          password: this.password,
+          passwordConfirmation: this.passwordConfirmation
+        },
+        function (result) {
+          console.log(result)
+        }
+      )
     }
   }
 }

@@ -26,7 +26,7 @@ function loadLocales (lang) {
     })
   }, function () {
     Vue.config.lang = lang
-    Vue.config.fallbackLang = 'en-US'
+    // Vue.config.fallbackLang = 'en-US'
   })
 }
 
