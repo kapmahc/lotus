@@ -2,6 +2,7 @@ import SignIn from './SignIn'
 import SignUp from './SignUp'
 import Confirm from './Confirm'
 import ForgotPassword from './ForgotPassword'
+import ResetPassword from './ResetPassword'
 import Unlock from './Unlock'
 
 export default [
@@ -19,6 +20,11 @@ export default [
     name: 'users.forgot-password',
     path: '/users/forgot-password',
     component: ForgotPassword
+  },
+  {
+    name: 'users.reset-password',
+    path: '/users/reset-password',
+    component: ResetPassword
   },
   {
     name: 'users.confirm',

@@ -19,4 +19,5 @@ func (p *Engine) Mount(rt *gin.Engine) {
 	ug.GET("/unlock", web.Redirect(p.getUsersUnlock))
 	ug.POST("/unlock", web.JSON(p.postUsersUnlock))
 	ug.POST("/forgot-password", web.JSON(p.postUsersForgotPassword))
+	ug.POST("/reset-password", web.JSON(p.postUsersResetPassword))
 }

@@ -173,6 +173,36 @@ func (p *Engine) postUsersForgotPassword(c *gin.Context) (interface{}, error) {
 	}, err
 }
 
+func (p *Engine) postUsersResetPassword(c *gin.Context) (interface{}, error) {
+	lang := c.MustGet(web.LOCALE).(string)
+	var fm fmResetPassword
+	if err := c.Bind(&fm); err != nil {
+		return nil, err
+	}
+	cm, err := p.Jwt.Validate([]byte(fm.Token))
+	if err == nil {
+		if cm.Get("act").(string) != actResetPassword {
+			err = p.I18n.E(lang, "messages.bad-token")
+		}
+	}
+	var user *User
+	if err == nil {
+		user, err = p.Dao.GetUserByEmail(cm.Get("email").(string))
+	}
+
+	if err == nil {
+		err = p.Db.Model(user).Update("password", p.Hmac.Sum([]byte(fm.Password))).Error
+	}
+	if err == nil {
+		p.Dao.Logf(user.ID, lang, "auth.logs.reset-password")
+	}
+
+	return gin.H{
+		"user":    user,
+		"message": p.I18n.T(lang, "auth.pages.reset-password-success"),
+	}, err
+}
+
 func (p *Engine) _sendMail(lang string, user *User, act string) error {
 	cm := jws.Claims{}
 	cm.Set("act", act)
