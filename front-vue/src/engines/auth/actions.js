@@ -1,3 +1,5 @@
 export default {
-  refreshLayout: 'refreshLayout'
+  refreshLayout: 'refreshLayout',
+  signIn: 'signIn',
+  signOut: 'signOut'
 }

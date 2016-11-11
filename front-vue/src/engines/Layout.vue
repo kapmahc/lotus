@@ -23,6 +23,12 @@ export default {
     if (!this.$store.state.siteInfo.title) {
       this.$store.commit(actions.auth.refreshLayout)
     }
+    if (!this.$store.state.currentUser.uid) {
+      this.$store.commit(
+        actions.auth.signIn,
+        window.sessionStorage.getItem('token')
+      )
+    }
   }
 }
 </script>

@@ -24,6 +24,7 @@ import AppLayout from '../Layout'
 import SharedLinks from './NonSignInLinks'
 import {postForm} from '../../utils'
 import router from '../router'
+import actions from './actions'
 
 export default {
   name: 'users-sign-in',
@@ -46,9 +47,11 @@ export default {
           password: this.password
         },
         function (result) {
-          router.push('/')
-          window.sessionStorage.setItem('token', result.token)
-        }
+          var token = result.token
+          this.$store.commit(actions.signIn, token)
+          window.sessionStorage.setItem('token', token)
+          router.push({name: 'home'})
+        }.bind(this)
       )
     }
   }

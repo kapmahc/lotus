@@ -50,7 +50,7 @@ export default {
         },
         function (result) {
           window.alert(result.message)
-          router.push('/')
+          router.push({name: 'users.sign-in'})
         }
       )
     }
