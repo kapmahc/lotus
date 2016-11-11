@@ -43,9 +43,9 @@ attributes.details = Details
 attributes.startUp = Begin date
 attributes.shutDown = End date
 
-languages.english = English
-languages.simplified-chinese = 简体中文
-languages.traditional-chinese = 正體中文
+languages.en-US = English
+languages.zh-CN = 简体中文
+languages.zh-TW = 正體中文
 
 helpers.can-markdown = Can use markdown
 helpers.one-link-per-line = One line per line, like "/about-us = About us"

@@ -2,9 +2,14 @@
   <div class="row">
     <hr>
       <footer>
-        <p class="float-xs-right"><a href="#">Back to top</a></p>
+        <p class="float-xs-right">
+          {{ $t('lang-bar.other') }}:
+          <button v-on:click="swtichLang(l)" v-for="l in info.languages" class="btn btn-link btn-sm">
+            {{ $t(`languages.${l}`) }}
+          </button>
+        </p>
         <p>
-          &copy; {{ $t('attributes.body') }}
+          &copy; {{ info.copyright }}
           &middot; <a href="#">Privacy</a>
           &middot; <a href="#">Terms</a>
         </p>
@@ -13,11 +18,17 @@
 </template>
 
 <script>
+import {swtichLang} from '../i18n'
+
 export default {
   name: 'layout-footer',
-  data () {
-    return {
+  computed: {
+    info () {
+      return this.$store.state.siteInfo
     }
+  },
+  methods: {
+    swtichLang
   }
 }
 </script>
