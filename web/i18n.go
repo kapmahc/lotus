@@ -7,10 +7,10 @@ import (
 	"path/filepath"
 	"strings"
 
-	"golang.org/x/text/language"
-
+	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
+	"golang.org/x/text/language"
 )
 
 //Locale locale model
@@ -24,8 +24,7 @@ type Locale struct {
 
 //I18n i18n
 type I18n struct {
-	Db     *gorm.DB `inject:""`
-	Logger *Logger  `inject:""`
+	Db *gorm.DB `inject:""`
 }
 
 //Handler locale handler
@@ -52,7 +51,7 @@ func (p *I18n) Handler(c *gin.Context) {
 
 	tag, err := language.Parse(lng)
 	if err != nil {
-		p.Logger.Error("parse locale: %v", err)
+		log.Error(err)
 		tag = language.AmericanEnglish
 	}
 
@@ -76,7 +75,7 @@ func (p *I18n) T(lang string, code string, args ...interface{}) string {
 	if err == nil {
 		return fmt.Sprintf(msg, args...)
 	}
-	p.Logger.Error("find locale: %s", err)
+	log.Error(err)
 	return code
 }
 
@@ -116,10 +115,12 @@ func (p *I18n) Codes(lang string) ([]string, error) {
 }
 
 //Languages supported languages
-func (p *I18n) Languages() ([]string, error) {
+func (p *I18n) Languages() []string {
 	var keys []string
-	err := p.Db.Model(&Locale{}).Pluck("DISTINCT lang", &keys).Error
-	return keys, err
+	if err := p.Db.Model(&Locale{}).Pluck("DISTINCT lang", &keys).Error; err != nil {
+		log.Error(err)
+	}
+	return keys
 }
 
 //Locales list locales by lang
@@ -131,7 +132,7 @@ func (p *I18n) Locales(lang string) map[string]interface{} {
 		Where("lang = ?", lang).
 		Order("code ASC").
 		Find(&locales).Error; err != nil {
-		p.Logger.Error("bad in select locales: %s", err.Error())
+		log.Error(err)
 	}
 
 	for _, l := range locales {
@@ -162,7 +163,7 @@ func (p *I18n) Load(dir string) error {
 		const ext = ".txt"
 		name := info.Name()
 		if info.Mode().IsRegular() && filepath.Ext(name) == ext {
-			p.Logger.Info("Find locale file %s", path)
+			log.Infof("Find locale file %s", path)
 			lang := name[0 : len(name)-len(ext)]
 			if _, err := language.Parse(lang); err != nil {
 				return err

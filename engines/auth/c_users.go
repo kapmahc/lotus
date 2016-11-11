@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"github.com/RichardKnop/machinery/v1/signatures"
+	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
 )
 
@@ -120,6 +121,6 @@ func (p *Engine) sendMail(user *User, act string) {
 		},
 	}
 	if _, err := p.Server.SendTask(&task); err != nil {
-		p.Logger.Error("add mail job: %v", err)
+		log.Error(err)
 	}
 }

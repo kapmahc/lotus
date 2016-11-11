@@ -40,6 +40,8 @@ func (p *Engine) getLayout(c *gin.Context) {
 	}
 	ret["links"] = links
 
+	ret["languages"] = p.I18n.Languages()
+
 	c.JSON(http.StatusOK, ret)
 }
 
