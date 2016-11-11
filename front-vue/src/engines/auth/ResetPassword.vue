@@ -25,6 +25,7 @@
 import AppLayout from '../Layout'
 import SharedLinks from './NonSignInLinks'
 import {postForm} from '../../utils'
+import router from '../router'
 
 export default {
   name: 'users-reset-password',
@@ -49,6 +50,7 @@ export default {
         },
         function (result) {
           window.alert(result.message)
+          router.push('/')
         }
       )
     }

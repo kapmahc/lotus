@@ -2,14 +2,14 @@
   <app-layout>
     <h3>{{ $t('auth.pages.sign-in') }}</h3>
     <hr/>
-    <form>
+    <form v-on:submit.prevent="onSubmit">
       <div class="form-group">
         <label for="email">{{ $t("attributes.email") }}</label>
-        <input type="email" class="form-control" id="email">
+        <input v-model="email" type="email" class="form-control" id="email">
       </div>
       <div class="form-group">
         <label for="password">{{ $t("attributes.password") }}</label>
-        <input type="password" class="form-control" id="password">
+        <input v-model="password" type="password" class="form-control" id="password">
       </div>
       <button type="submit" class="btn btn-primary">{{ $t('buttons.submit') }}</button>
       <button type="reset" class="btn btn-secondary">{{ $t('buttons.reset') }}</button>
@@ -22,16 +22,35 @@
 <script>
 import AppLayout from '../Layout'
 import SharedLinks from './NonSignInLinks'
+import {postForm} from '../../utils'
+import router from '../router'
 
 export default {
   name: 'users-sign-in',
   data () {
     return {
+      email: '',
+      password: ''
     }
   },
   components: {
     AppLayout,
     SharedLinks
+  },
+  methods: {
+    onSubmit () {
+      postForm(
+        '/users/sign-in',
+        {
+          email: this.email,
+          password: this.password
+        },
+        function (result) {
+          router.push('/')
+          window.sessionStorage.setItem('token', result.token)
+        }
+      )
+    }
   }
 }
 </script>
