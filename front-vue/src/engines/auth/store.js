@@ -1,6 +1,6 @@
 import jwtDecode from 'jwt-decode'
 
-import {api} from '../../utils'
+import {get, _delete} from '../../utils'
 
 export default {
   state: {
@@ -19,16 +19,22 @@ export default {
     },
     signOut (state) {
       state.currentUser = {}
+      _delete('/users/sign-out', function () {
+        window.sessionStorage.removeItem('token')
+      })
     },
     refreshLayout (state) {
-      window.fetch(api(`/layout`)).then(function (res) {
-        return res.json()
-      }).then(function (info) {
+      get('/layout', null, function (info) {
         state.siteInfo = info
-      }).catch(function (error) {
-        console.log(error.message)
-        return Promise.reject()
       })
+      // window.fetch(api(`/layout`)).then(function (res) {
+      //   return res.json()
+      // }).then(function (info) {
+      //   state.siteInfo = info
+      // }).catch(function (error) {
+      //   console.log(error.message)
+      //   return Promise.reject()
+      // })
     }
   }
 }

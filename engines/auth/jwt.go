@@ -87,7 +87,7 @@ func (p *Jwt) CurrentUserHandler(must bool) gin.HandlerFunc {
 			}
 			return
 		}
-		c.Set("user", &user)
+		c.Set(CurrentUser, &user)
 	}
 }
 

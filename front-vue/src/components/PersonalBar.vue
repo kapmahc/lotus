@@ -43,7 +43,6 @@ export default {
   },
   methods: {
     signOut () {
-      window.sessionStorage.removeItem('token')
       this.$store.commit(actions.auth.signOut)
       router.push({name: 'usres.sign-in'})
     }

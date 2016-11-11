@@ -211,6 +211,13 @@ func (p *Engine) postUsersResetPassword(c *gin.Context) (interface{}, error) {
 	}, err
 }
 
+func (p *Engine) deleteSignOut(c *gin.Context) (interface{}, error) {
+	user := c.MustGet(CurrentUser).(*User)
+	lang := c.MustGet(web.LOCALE).(string)
+	p.Dao.Logf(user.ID, lang, "auth.logs.sign-out")
+	return user, nil
+}
+
 func (p *Engine) _sendMail(lang string, user *User, act string) error {
 	cm := jws.Claims{}
 	cm.Set("act", act)
