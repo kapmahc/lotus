@@ -3,6 +3,7 @@ package auth
 import (
 	machinery "github.com/RichardKnop/machinery/v1"
 	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/gorm"
 	"github.com/kapmahc/lotus/web"
 )
 
@@ -13,6 +14,7 @@ type Engine struct {
 	Hmac    *web.Hmac         `inject:""`
 	Server  *machinery.Server `inject:""`
 	Dao     *Dao              `inject:""`
+	Db      *gorm.DB          `inject:""`
 	Handler *Handler          `inject:""`
 }
 

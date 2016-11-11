@@ -534,6 +534,7 @@ server {
 				},
 			},
 		},
+
 		{
 			Name:    "locales",
 			Aliases: []string{"l"},
@@ -572,6 +573,77 @@ server {
 					Aliases: []string{"i"},
 					Action: web.IocAction(func(c *cli.Context, _ *inject.Graph) error {
 						return p.I18n.Load("locales")
+					}),
+				},
+			},
+		},
+
+		{
+			Name:    "users",
+			Aliases: []string{"u"},
+			Usage:   "users operations",
+			Subcommands: []cli.Command{
+				{
+					Name:    "role",
+					Usage:   "apply/deny role to user by uid",
+					Aliases: []string{"r"},
+					Flags: []cli.Flag{
+						cli.StringFlag{
+							Name:  "name, n",
+							Value: "admin",
+							Usage: "role's name",
+						},
+						cli.StringFlag{
+							Name:  "uid, u",
+							Usage: "user's uid",
+						},
+						cli.BoolFlag{
+							Name:  "deny, d",
+							Usage: "deny?",
+						},
+					},
+					Action: web.IocAction(func(c *cli.Context, _ *inject.Graph) error {
+
+						uid := c.String("uid")
+						if uid == "" {
+							cli.ShowSubcommandHelp(c)
+							return nil
+						}
+
+						role, err := p.Dao.Role(c.String("name"), DefaultResourceType, DefaultResourceID)
+						if err != nil {
+							return err
+						}
+						user, err := p.Dao.GetUserByUID(uid)
+						if err != nil {
+							return err
+						}
+
+						if c.Bool("deny") {
+							err = p.Dao.Deny(role.ID, user.ID)
+						} else {
+							err = p.Dao.Allow(role.ID, user.ID, 50, 0, 0)
+						}
+						return err
+					}),
+				},
+				{
+					Name:    "list",
+					Usage:   "list all users",
+					Aliases: []string{"l"},
+					Action: web.IocAction(func(c *cli.Context, _ *inject.Graph) error {
+						lnr := "%36s %s<%s>\n"
+						fmt.Printf(lnr, "UID", "NAME", "EMAIL")
+						var users []User
+						if err := p.Db.
+							Select([]string{"uid", "name", "email"}).
+							Order("id DESC").Find(&users).Error; err != nil {
+							return err
+						}
+						for _, u := range users {
+							fmt.Printf(lnr, u.UID, u.Name, u.Email)
+						}
+						return nil
 					}),
 				},
 			},
