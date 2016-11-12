@@ -14,8 +14,6 @@ type Engine interface {
 	Init(*inject.Graph) error
 	//Mount web points
 	Mount(*gin.Engine)
-	//Dashboard dashboard's nav-bar
-	Dashboard() []Dropdown
 	//Shell command line
 	Shell() []cli.Command
 	//Worker register worker
@@ -26,6 +24,12 @@ var engines []Engine
 
 //Register register engines
 func Register(en ...Engine) {
+	// for _, e := range en {
+	// 	viper.SetDefault(
+	// 		fmt.Sprintf("engines.%s", reflect.TypeOf(e).Elem().PkgPath()),
+	// 		true,
+	// 	)
+	// }
 	engines = append(engines, en...)
 }
 

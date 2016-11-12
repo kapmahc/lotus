@@ -44,7 +44,3 @@ func (p *Engine) getLayout(c *gin.Context) {
 
 	c.JSON(http.StatusOK, ret)
 }
-
-func (p *Engine) getDashboard(c *gin.Context) {
-	//TODO
-}

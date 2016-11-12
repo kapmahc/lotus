@@ -24,11 +24,6 @@ func (p *Engine) Init(*inject.Graph) error {
 	return nil
 }
 
-//Dashboard dashboard's nav-bar
-func (p *Engine) Dashboard() []web.Dropdown {
-	return []web.Dropdown{}
-}
-
 //Shell command line
 func (p *Engine) Shell() []cli.Command {
 	return []cli.Command{}

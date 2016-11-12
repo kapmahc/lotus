@@ -23,8 +23,3 @@ type Engine struct {
 func (p *Engine) Home() gin.HandlerFunc {
 	return func(c *gin.Context) {}
 }
-
-//Dashboard dashboard's nav-bar
-func (p *Engine) Dashboard() []web.Dropdown {
-	return []web.Dropdown{}
-}

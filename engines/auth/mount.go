@@ -9,7 +9,6 @@ import (
 func (p *Engine) Mount(rt *gin.Engine) {
 	rt.GET("/locales/:lang", web.JSON(p.getLocales))
 	rt.GET("/layout", p.getLayout)
-	rt.GET("/dashboard", p.getDashboard)
 
 	ug := rt.Group("/users")
 	ug.POST("/sign-in", web.JSON(p.postUsersSignIn))
