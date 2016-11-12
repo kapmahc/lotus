@@ -1,5 +1,10 @@
-require('./assets/main.css')
-require('./assets/reading.css')
+import 'bootstrap/scss/bootstrap.scss'
+import './assets/main.css'
+import './assets/reading.css'
+
+import 'tether'
+import 'jquery'
+import 'bootstrap'
 
 import Vue from 'vue'
 import Vuex from 'vuex'
