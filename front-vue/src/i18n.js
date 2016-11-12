@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import moment from 'moment'
 
 import {api} from './utils'
 
@@ -41,9 +42,12 @@ function loadLocales (lang) {
 
 export const swtichLang = (lang) => {
   window.localStorage.setItem(key, lang)
+  moment.locale(lang)
   loadLocales(lang)
 }
 
 export const initLocales = () => {
-  loadLocales(window.localStorage.getItem(key) || 'en-US')
+  var lang = currentLocale()
+  moment.locale(lang)
+  loadLocales(lang)
 }
