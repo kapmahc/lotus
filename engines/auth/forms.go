@@ -31,7 +31,7 @@ type fmInfo struct {
 type fmChangePassword struct {
 	CurrentPassword      string `form:"currentPassword" binding:"required"`
 	NewPassword          string `form:"newPassword" binding:"max=128,min=6"`
-	PasswordConfirmation string `form:"passwordConfirmation" binding:"eqfield=Password"`
+	PasswordConfirmation string `form:"passwordConfirmation" binding:"eqfield=NewPassword"`
 }
 
 type fmContent struct {
