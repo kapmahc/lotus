@@ -21,8 +21,6 @@ export default {
         'unlock'
       ]
     }
-  },
-  components: {
   }
 }
 </script>

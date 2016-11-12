@@ -30,9 +30,9 @@
 </template>
 
 <script>
-import AppLayout from '../Layout'
+import AppLayout from '../../Layout'
 import SharedLinks from './NonSignInLinks'
-import {postForm} from '../../utils'
+import {postForm} from '../../../utils'
 
 export default {
   name: 'users-sign-up',

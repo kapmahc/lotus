@@ -1,10 +1,12 @@
-import SignIn from './SignIn'
-import SignUp from './SignUp'
-import Confirm from './Confirm'
-import ForgotPassword from './ForgotPassword'
-import ResetPassword from './ResetPassword'
-import Unlock from './Unlock'
-import Logs from './Logs'
+import SignIn from './users/SignIn'
+import SignUp from './users/SignUp'
+import Confirm from './users/Confirm'
+import ForgotPassword from './users/ForgotPassword'
+import ResetPassword from './users/ResetPassword'
+import Unlock from './users/Unlock'
+import Logs from './users/Logs'
+import ChangePassword from './users/ChangePassword'
+import UserInfo from './users/Info'
 
 export default [
   {
@@ -38,6 +40,16 @@ export default [
     component: Unlock
   },
 
+  {
+    name: 'users.info',
+    path: '/users/info',
+    component: UserInfo
+  },
+  {
+    name: 'users.change-password',
+    path: '/users/change-password',
+    component: ChangePassword
+  },
   {
     name: 'users.logs',
     path: '/users/logs',

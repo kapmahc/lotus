@@ -64,11 +64,11 @@ export default {
           links: [
             {
               label: 'auth.pages.info',
-              href: 'users.logs'
+              href: 'users.info'
             },
             {
               label: 'auth.pages.change-password',
-              href: 'users.logs'
+              href: 'users.change-password'
             },
             {
               label: 'auth.pages.logs',

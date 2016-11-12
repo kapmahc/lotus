@@ -1,6 +1,6 @@
 <template>
   <app-layout>
-    <h3>{{ $t('auth.pages.forgot-password') }}</h3>
+    <h3>{{ $t('auth.pages.confirm') }}</h3>
     <hr/>
     <form v-on:submit.prevent="onSubmit">
       <div class="form-group">
@@ -16,12 +16,12 @@
 </template>
 
 <script>
-import AppLayout from '../Layout'
+import AppLayout from '../../Layout'
 import SharedLinks from './NonSignInLinks'
-import {postForm} from '../../utils'
+import {postForm} from '../../../utils'
 
 export default {
-  name: 'users-forgot-password',
+  name: 'users-confirm',
   data () {
     return {
       email: ''
@@ -34,7 +34,7 @@ export default {
   methods: {
     onSubmit () {
       postForm(
-        '/users/forgot-password',
+        '/users/confirm',
         {
           email: this.email
         },

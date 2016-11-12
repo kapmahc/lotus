@@ -1,15 +1,11 @@
 <template>
   <app-layout>
-    <h3>{{ $t('auth.pages.sign-in') }}</h3>
+    <h3>{{ $t('auth.pages.unlock') }}</h3>
     <hr/>
     <form v-on:submit.prevent="onSubmit">
       <div class="form-group">
         <label for="email">{{ $t("attributes.email") }}</label>
         <input v-model="email" type="email" class="form-control" id="email">
-      </div>
-      <div class="form-group">
-        <label for="password">{{ $t("attributes.password") }}</label>
-        <input v-model="password" type="password" class="form-control" id="password">
       </div>
       <button type="submit" class="btn btn-primary">{{ $t('buttons.submit') }}</button>
       <button type="reset" class="btn btn-secondary">{{ $t('buttons.reset') }}</button>
@@ -20,18 +16,15 @@
 </template>
 
 <script>
-import AppLayout from '../Layout'
+import AppLayout from '../../Layout'
 import SharedLinks from './NonSignInLinks'
-import {postForm} from '../../utils'
-import router from '../router'
-import actions from './actions'
+import {postForm} from '../../../utils'
 
 export default {
-  name: 'users-sign-in',
+  name: 'users-unlock',
   data () {
     return {
-      email: '',
-      password: ''
+      email: ''
     }
   },
   components: {
@@ -41,17 +34,13 @@ export default {
   methods: {
     onSubmit () {
       postForm(
-        '/users/sign-in',
+        '/users/unlock',
         {
-          email: this.email,
-          password: this.password
+          email: this.email
         },
         function (result) {
-          var token = result.token
-          this.$store.commit(actions.signIn, token)
-          window.sessionStorage.setItem('token', token)
-          router.push({name: 'home'})
-        }.bind(this)
+          window.alert(result.message)
+        }
       )
     }
   }
