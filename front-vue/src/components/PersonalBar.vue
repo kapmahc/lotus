@@ -4,7 +4,7 @@
       {{ $t('auth.pages.welcome', {name: user.sub}) }}
     </a>
     <div class="dropdown-menu dropdown-menu-right" :aria-labelledby="bar_id">
-      <router-link class="dropdown-item" :to="{ name: 'users.logs' }">
+      <router-link class="dropdown-item" :to="{ name: 'dashboard' }">
         {{ $t('auth.pages.dashboard') }}
       </router-link>
       <a v-on:click="signOut()" class="dropdown-item">{{ $t('auth.pages.sign-out') }}</a>

@@ -6,17 +6,23 @@
       </router-link>
       <ul class="nav navbar-nav">
         <li class="nav-item active">
-          <router-link class="nav-link" :to="{ name: 'users.logs' }">
+          <router-link class="nav-link" :to="{ name: 'dashboard' }">
             {{ $t('auth.pages.dashboard') }}
             <span class="sr-only">(current)</span>
           </router-link>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">About111</a>
+
+        <li v-for="nv in header" class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" :id="nv.id" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{ $t(nv.title) }}
+          </a>
+          <div class="dropdown-menu" :aria-labelledby="nv.id">
+            <router-link v-for="lk in nv.links" class="dropdown-item" :to="{ name: lk.href }">
+              {{ $t(lk.label) }}
+            </router-link>
+          </div>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Contact</a>
-        </li>
+
       </ul>
 
       <ul class="nav navbar-nav float-xs-right">
@@ -25,7 +31,18 @@
       </ul>
      </nav>
     <div class="container">
-      <slot/>
+      <slot>
+        <div v-for="nv in header" class="row">
+          <br/>
+          <h4>{{ $t(nv.title) }}</h4>
+          <hr/>
+          <div class="btn-group" role="group">
+            <router-link v-for="lk in nv.links" class="btn btn-secondary" :to="{ name: lk.href }">
+              {{ $t(lk.label) }}
+            </router-link>
+          </div>
+        </div>
+      </slot>
       <layout-footer/>
     </div>
   </div>
@@ -38,6 +55,35 @@ import PersonalBar from '../components/PersonalBar'
 
 export default {
   name: 'app-dashboard',
+  data () {
+    return {
+      header: [
+        {
+          id: 'auth-users',
+          title: 'auth.pages.profile',
+          links: [
+            {
+              label: 'auth.pages.info',
+              href: 'users.logs'
+            },
+            {
+              label: 'auth.pages.change-password',
+              href: 'users.logs'
+            },
+            {
+              label: 'auth.pages.logs',
+              href: 'users.logs'
+            }
+          ]
+        },
+        {
+          id: 'auth-site',
+          title: 'auth.pages.admin-profile',
+          links: []
+        }
+      ]
+    }
+  },
   computed: {
     info () {
       return this.$store.state.siteInfo
