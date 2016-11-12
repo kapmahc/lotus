@@ -25,6 +25,7 @@ export default {
     },
     refreshLayout (state) {
       get('/layout', null, function (info) {
+        window.document.title = `${info.subTitle}-${info.title}`
         state.siteInfo = info
       })
       // window.fetch(api(`/layout`)).then(function (res) {

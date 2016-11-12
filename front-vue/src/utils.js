@@ -1,6 +1,10 @@
 import $ from 'jquery'
 import {currentLocale} from './i18n'
 
+// export const isSignIn = user => user && user.uid
+// export const hasRole = (user, role) => isSignIn(user) && user.roles && user.roles.contains(role)
+// export const isAdmin = user => hasRole(user, 'admin')
+
 export const api = url => `${process.env.API_HOST}${url}`
 
 export const get = (url, data, success, fail) => {

@@ -19,6 +19,7 @@
 
 <script>
 import {swtichLang} from '../i18n'
+import actions from '../engines/actions'
 
 export default {
   name: 'layout-footer',
@@ -29,6 +30,11 @@ export default {
   },
   methods: {
     swtichLang
+  },
+  created () {
+    if (!this.$store.state.siteInfo.copyright) {
+      this.$store.commit(actions.auth.refreshLayout)
+    }
   }
 }
 </script>

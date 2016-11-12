@@ -1,9 +1,14 @@
 <template>
   <nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
-    <a class="navbar-brand" href="#">{{ info.subTitle }}</a>
+    <router-link class="navbar-brand" :to="{ name: 'home' }">
+      {{ info.subTitle }}
+    </router-link>
     <ul class="nav navbar-nav">
       <li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        <router-link class="nav-link" :to="{ name: 'home' }">
+          {{ $t('auth.pages.home') }}
+          <span class="sr-only">(current)</span>
+        </router-link>        
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#">About</a>
