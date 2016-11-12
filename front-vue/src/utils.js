@@ -1,4 +1,5 @@
 import $ from 'jquery'
+import {currentLocale} from './i18n'
 
 export const api = url => `${process.env.API_HOST}${url}`
 
@@ -15,6 +16,10 @@ export const postForm = (url, data, success, fail) => {
 }
 
 function ajax (method, url, data, success, fail) {
+  if (data == null) {
+    data = {}
+  }
+  data.locale = currentLocale()
   if (success == null) {
     success = function (result) {
       console.log(result)

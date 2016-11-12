@@ -4,6 +4,15 @@ import {api} from './utils'
 
 const key = 'locale'
 
+export function currentLocale () {
+  var locale = window.localStorage.getItem(key)
+  if (locale == null) {
+    locale = 'en-US'
+    window.localStorage.setItem(key, locale)
+  }
+  return locale
+}
+
 function loadLocales (lang) {
   Vue.locale(lang, function () {
     return window.fetch(api(`/locales/${lang}`), {
