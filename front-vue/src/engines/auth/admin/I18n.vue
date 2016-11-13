@@ -54,8 +54,8 @@ export default {
           message: this.message
         },
         function (result) {
-          window.alert(result.message)
-        }
+          window.alert(this.$t('messages.success'))
+        }.bind(this)
       )
     }
   }

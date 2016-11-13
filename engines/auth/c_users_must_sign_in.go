@@ -27,7 +27,6 @@ func (p *Engine) getUsersInfo(c *gin.Context) (interface{}, error) {
 
 func (p *Engine) postUsersInfo(c *gin.Context) (interface{}, error) {
 	user := c.MustGet(CurrentUser).(*User)
-	lang := c.MustGet(web.LOCALE).(string)
 
 	var fm fmInfo
 	if err := c.Bind(&fm); err != nil {
@@ -43,8 +42,7 @@ func (p *Engine) postUsersInfo(c *gin.Context) (interface{}, error) {
 	}
 
 	return gin.H{
-		"user":    user,
-		"message": p.I18n.T(lang, "messages.success"),
+		"user": user,
 	}, nil
 }
 
@@ -65,7 +63,6 @@ func (p *Engine) postUsersChangePassword(c *gin.Context) (interface{}, error) {
 	}
 
 	return gin.H{
-		"user":    user,
-		"message": p.I18n.T(lang, "messages.success"),
+		"user": user,
 	}, nil
 }

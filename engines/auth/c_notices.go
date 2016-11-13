@@ -18,9 +18,7 @@ func (p *Engine) noticesCreate(c *gin.Context) (interface{}, error) {
 		return nil, err
 	}
 	err := p.Db.Create(&Notice{Lang: lang, Content: fm.Content}).Error
-	return gin.H{
-		"message": p.I18n.T(lang, "messages.success"),
-	}, err
+	return gin.H{}, err
 }
 
 func (p *Engine) noticesShow(c *gin.Context) (interface{}, error) {
@@ -43,9 +41,6 @@ func (p *Engine) noticesUpdate(c *gin.Context) (interface{}, error) {
 }
 
 func (p *Engine) noticeDestroy(c *gin.Context) (interface{}, error) {
-	lang := c.MustGet(web.LOCALE).(string)
 	e := p.Db.Where("id = ?", c.Param("id")).Delete(&Notice{}).Error
-	return gin.H{
-		"message": p.I18n.T(lang, "messages.success"),
-	}, e
+	return gin.H{}, e
 }

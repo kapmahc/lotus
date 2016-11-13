@@ -47,8 +47,8 @@ export default {
           email: this.email
         },
         function (result) {
-          window.alert(result.message)
-        }
+          window.alert(this.$t('messages.success'))
+        }.bind(this)
       )
     }
   }

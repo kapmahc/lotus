@@ -50,8 +50,8 @@ export default {
           passwordConfirmation: this.passwordConfirmation
         },
         function (result) {
-          window.alert(result.message)
-        }
+          window.alert(this.$t('messages.success'))
+        }.bind(this)
       )
     }
   }

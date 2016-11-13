@@ -39,8 +39,8 @@ export default {
           content: this.content
         },
         function (result) {
-          window.alert(result.message)
-        }
+          window.alert(this.$t('messages.success'))
+        }.bind(this)
       )
     }
   }

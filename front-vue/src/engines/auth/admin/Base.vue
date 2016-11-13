@@ -68,8 +68,8 @@ export default {
           copyright: this.copyright
         },
         function (result) {
-          window.alert(result.message)
-        }
+          window.alert(this.$t('messages.success'))
+        }.bind(this)
       )
     }
   }

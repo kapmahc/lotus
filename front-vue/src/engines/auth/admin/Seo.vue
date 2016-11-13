@@ -47,8 +47,8 @@ export default {
           baidu: this.baidu
         },
         function (result) {
-          window.alert(result.message)
-        }
+          window.alert(this.$t('messages.success'))
+        }.bind(this)
       )
     }
   }

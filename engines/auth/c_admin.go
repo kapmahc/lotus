@@ -19,8 +19,6 @@ func (p *Engine) getAdminAuthor(c *gin.Context) (interface{}, error) {
 }
 
 func (p *Engine) postAdminAuthor(c *gin.Context) (interface{}, error) {
-	lang := c.MustGet(web.LOCALE).(string)
-
 	var fm fmSiteAuthor
 	if err := c.Bind(&fm); err != nil {
 		return nil, err
@@ -28,9 +26,7 @@ func (p *Engine) postAdminAuthor(c *gin.Context) (interface{}, error) {
 	p.Dao.Set("site.author.name", fm.Name, false)
 	p.Dao.Set("site.author.email", fm.Email, false)
 
-	return gin.H{
-		"message": p.I18n.T(lang, "messages.success"),
-	}, nil
+	return gin.H{}, nil
 }
 
 func (p *Engine) getAdminBase(c *gin.Context) (interface{}, error) {
@@ -56,9 +52,7 @@ func (p *Engine) postAdminBase(c *gin.Context) (interface{}, error) {
 	p.I18n.Set(lang, "site.description", fm.Description)
 	p.I18n.Set(lang, "site.copyright", fm.Copyright)
 
-	return gin.H{
-		"message": p.I18n.T(lang, "messages.success"),
-	}, nil
+	return gin.H{}, nil
 }
 
 func (p *Engine) getAdminI18n(c *gin.Context) (interface{}, error) {
@@ -79,9 +73,7 @@ func (p *Engine) postAdminI18n(c *gin.Context) (interface{}, error) {
 	}
 
 	p.I18n.Set(lang, fm.Code, fm.Message)
-	return gin.H{
-		"message": p.I18n.T(lang, "messages.success"),
-	}, nil
+	return gin.H{}, nil
 }
 
 func (p *Engine) getAdminSeo(c *gin.Context) (interface{}, error) {
@@ -95,8 +87,6 @@ func (p *Engine) getAdminSeo(c *gin.Context) (interface{}, error) {
 }
 
 func (p *Engine) postAdminSeo(c *gin.Context) (interface{}, error) {
-	lang := c.MustGet(web.LOCALE).(string)
-
 	var fm fmSeo
 	if err := c.Bind(&fm); err != nil {
 		return nil, err
@@ -104,9 +94,7 @@ func (p *Engine) postAdminSeo(c *gin.Context) (interface{}, error) {
 
 	p.Dao.Set("google.verify.code", fm.Google, false)
 	p.Dao.Set("baidu.verify.code", fm.Baidu, false)
-	return gin.H{
-		"message": p.I18n.T(lang, "messages.success"),
-	}, nil
+	return gin.H{}, nil
 }
 
 func (p *Engine) getAdminSMTP(c *gin.Context) (interface{}, error) {
@@ -116,8 +104,6 @@ func (p *Engine) getAdminSMTP(c *gin.Context) (interface{}, error) {
 }
 
 func (p *Engine) postAdminSMTP(c *gin.Context) (interface{}, error) {
-	lang := c.MustGet(web.LOCALE).(string)
-
 	var fm fmSMTP
 	if err := c.Bind(&fm); err != nil {
 		return nil, err
@@ -129,9 +115,7 @@ func (p *Engine) postAdminSMTP(c *gin.Context) (interface{}, error) {
 		Username: fm.Username,
 		Password: fm.Password,
 	}, true)
-	return gin.H{
-		"message": p.I18n.T(lang, "messages.success"),
-	}, nil
+	return gin.H{}, nil
 }
 
 func (p *Engine) getAdminStatus(c *gin.Context) (interface{}, error) {

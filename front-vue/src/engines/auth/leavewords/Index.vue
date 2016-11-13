@@ -37,7 +37,9 @@ export default {
   },
   methods: {
     onDelete (id) {
-      _delete(`/leavewords/${id}`)
+      if (window.confirm(this.$t('messages.are-you-sure'))) {
+        _delete(`/leavewords/${id}`)
+      }
     }
   }
 }
