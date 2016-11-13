@@ -19,6 +19,11 @@ import AdminUsers from './admin/Users'
 import LeavewordsNew from './leavewords/New'
 import LeavewordsIndex from './leavewords/Index'
 
+import NoticesNew from './notices/New'
+import NoticesEdit from './notices/Edit'
+import NoticesAdmin from './notices/Admin'
+import NoticesIndex from './notices/Index'
+
 export default [
   {
     name: 'users.sign-in',
@@ -112,5 +117,26 @@ export default [
     name: 'leavewords.index',
     path: '/leavewords/index',
     component: LeavewordsIndex
+  },
+
+  {
+    name: 'notices.new',
+    path: '/notices/new',
+    component: NoticesNew
+  },
+  {
+    name: 'notices.edit',
+    path: '/notices/:id/edit',
+    component: NoticesEdit
+  },
+  {
+    name: 'notices.admin',
+    path: '/admin/notices',
+    component: NoticesAdmin
+  },
+  {
+    name: 'notices.index',
+    path: '/notices',
+    component: NoticesIndex
   }
 ]

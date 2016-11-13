@@ -111,6 +111,10 @@ export default {
             {
               label: 'auth.pages.leavewords',
               href: 'leavewords.index'
+            },
+            {
+              label: 'auth.pages.notices',
+              href: 'notices.admin'
             }
           ]
         }

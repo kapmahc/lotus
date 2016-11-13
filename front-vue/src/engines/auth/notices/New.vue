@@ -1,6 +1,6 @@
 <template>
   <app-dashboard>
-    <h3>{{ $t('auth.pages.edit-notice', {id: id}) }}</h3>
+    <h3>{{ $t('auth.pages.new-notice') }}</h3>
     <hr/>
     <form v-on:submit.prevent="onSubmit">
       <div class="form-group">
@@ -15,29 +15,23 @@
 
 <script>
 import AppDashboard from '../../Dashboard'
-import {postForm, get} from '../../../utils'
+import {postForm} from '../../../utils'
 import router from '../../router'
 
 export default {
-  name: 'edit-notice',
+  name: 'new-notice',
   data () {
     return {
-      id: this.$route.params.id,
       content: ''
     }
   },
   components: {
     AppDashboard
   },
-  created () {
-    get(`/notices/${this.id}`, null, function (rst) {
-      this.content = rst.content
-    }.bind(this))
-  },
   methods: {
     onSubmit () {
       postForm(
-        `/notices/${this.id}`,
+        '/notices',
         {
           content: this.content
         },
