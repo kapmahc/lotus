@@ -79,7 +79,36 @@ export default {
         {
           id: 'auth-site',
           title: 'auth.pages.admin-profile',
-          links: []
+          links: [
+            {
+              label: 'auth.pages.admin-author',
+              href: 'admin.author'
+            },
+            {
+              label: 'auth.pages.admin-base',
+              href: 'admin.base'
+            },
+            {
+              label: 'auth.pages.admin-i18n',
+              href: 'admin.i18n'
+            },
+            {
+              label: 'auth.pages.admin-seo',
+              href: 'admin.seo'
+            },
+            {
+              label: 'auth.pages.admin-smtp',
+              href: 'admin.smtp'
+            },
+            {
+              label: 'auth.pages.admin-status',
+              href: 'admin.status'
+            },
+            {
+              label: 'auth.pages.admin-users',
+              href: 'admin.users'
+            }
+          ]
         }
       ]
     }

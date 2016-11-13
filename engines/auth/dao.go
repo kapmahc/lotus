@@ -40,7 +40,7 @@ func (p *Dao) Set(key string, val interface{}, flag bool) error {
 	} else {
 		m.Val = buf
 		m.Flag = flag
-		err = p.Db.Update(&m).Error
+		err = p.Db.Model(&Setting{}).Update(m).Error
 	}
 	return err
 }

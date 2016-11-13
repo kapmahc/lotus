@@ -26,4 +26,10 @@ func (p *Engine) Mount(rt *gin.Engine) {
 	ugm.GET("/info", web.JSON(p.getUsersInfo))
 	ugm.POST("/info", web.JSON(p.postUsersInfo))
 	ugm.POST("/change-password", web.JSON(p.postUsersChangePassword))
+
+	ag := rt.Group("/admin", p.Jwt.CurrentUserHandler(true), p.Jwt.MustAdminHandler())
+	ag.GET("/base", web.JSON(p.getAdminBase))
+	ag.POST("/base", web.JSON(p.postAdminBase))
+	ag.GET("/author", web.JSON(p.getAdminAuthor))
+	ag.POST("/author", web.JSON(p.postAdminAuthor))
 }

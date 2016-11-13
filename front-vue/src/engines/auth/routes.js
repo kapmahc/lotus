@@ -8,6 +8,14 @@ import Logs from './users/Logs'
 import ChangePassword from './users/ChangePassword'
 import UserInfo from './users/Info'
 
+import AdminAuthor from './admin/Author'
+import AdminBase from './admin/Base'
+import AdminI18n from './admin/I18n'
+import AdminSeo from './admin/Seo'
+import AdminSmtp from './admin/Smtp'
+import AdminStatus from './admin/Status'
+import AdminUsers from './admin/Users'
+
 export default [
   {
     name: 'users.sign-in',
@@ -54,5 +62,41 @@ export default [
     name: 'users.logs',
     path: '/users/logs',
     component: Logs
+  },
+
+  {
+    name: 'admin.author',
+    path: '/admin/author',
+    component: AdminAuthor
+  },
+  {
+    name: 'admin.base',
+    path: '/admin/base',
+    component: AdminBase
+  },
+  {
+    name: 'admin.i18n',
+    path: '/admin/i18n',
+    component: AdminI18n
+  },
+  {
+    name: 'admin.seo',
+    path: '/admin/seo',
+    component: AdminSeo
+  },
+  {
+    name: 'admin.smtp',
+    path: '/admin/smtp',
+    component: AdminSmtp
+  },
+  {
+    name: 'admin.status',
+    path: '/admin/status',
+    component: AdminStatus
+  },
+  {
+    name: 'admin.users',
+    path: '/admin/users',
+    component: AdminUsers
   }
 ]
