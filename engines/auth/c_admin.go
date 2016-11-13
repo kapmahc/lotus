@@ -2,6 +2,7 @@ package auth
 
 import (
 	"fmt"
+	"runtime"
 
 	"github.com/gin-gonic/gin"
 	"github.com/kapmahc/lotus/web"
@@ -131,4 +132,34 @@ func (p *Engine) postAdminSMTP(c *gin.Context) (interface{}, error) {
 	return gin.H{
 		"message": p.I18n.T(lang, "messages.success"),
 	}, nil
+}
+
+func (p *Engine) getAdminStatus(c *gin.Context) (interface{}, error) {
+	status := gin.H{}
+	var mem runtime.MemStats
+	runtime.ReadMemStats(&mem)
+
+	status["os"] = map[string]string{
+		"OS":      fmt.Sprintf("%s %s", runtime.GOOS, runtime.GOARCH),
+		"go-lang": fmt.Sprintf("%s %s", runtime.Version(), runtime.GOROOT()),
+		"host": fmt.Sprintf(
+			"cpus(%d) memory(%.1fG)",
+			runtime.NumCPU(),
+			float64(mem.HeapSys)/1024.0/1024.0,
+		),
+	}
+	status["jobs"] = gin.H{
+		"tasks": p.Server.GetRegisteredTaskNames(),
+	}
+
+	return status, nil
+}
+
+func (p *Engine) getAdminUsers(c *gin.Context) (interface{}, error) {
+	var users []User
+	err := p.Db.
+		Select([]string{"email", "name", "last_sign_in_at"}).
+		Order("sign_in_count DESC").Find(&users).Error
+
+	return users, err
 }

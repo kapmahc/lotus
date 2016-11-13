@@ -38,4 +38,6 @@ func (p *Engine) Mount(rt *gin.Engine) {
 	ag.POST("/seo", web.JSON(p.postAdminSeo))
 	ag.GET("/smtp", web.JSON(p.getAdminSMTP))
 	ag.POST("/smtp", web.JSON(p.postAdminSMTP))
+	ag.GET("/status", web.JSON(p.getAdminStatus))
+	ag.GET("/users", web.JSON(p.getAdminUsers))
 }

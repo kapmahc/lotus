@@ -38,6 +38,11 @@ func (p *Engine) postUsersSignIn(c *gin.Context) (interface{}, error) {
 	if user.IsLocked() {
 		return nil, p.I18n.E(lang, "auth.messages.need-unlock")
 	}
+	now := time.Now()
+	p.Db.Model(user).Updates(User{
+		SignInCount:  user.SignInCount + 1,
+		LastSignInAt: &now,
+	})
 	p.Dao.Logf(user.ID, lang, "auth.logs.sign-in")
 
 	tkn, err := p.Jwt.Sum(p.Dao.UserClaims(user), 7)
