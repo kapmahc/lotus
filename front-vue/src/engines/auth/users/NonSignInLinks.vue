@@ -5,6 +5,11 @@
         {{ $t(`auth.pages.${l}`) }}
       </router-link>
     </li>
+    <li>
+      <router-link :to="{ name: 'leavewords.new' }">
+        {{ $t('auth.pages.new-leaveword') }}
+      </router-link>
+    </li>
   </ul>
 </template>
 

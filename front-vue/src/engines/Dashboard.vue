@@ -107,6 +107,10 @@ export default {
             {
               label: 'auth.pages.admin-users',
               href: 'admin.users'
+            },
+            {
+              label: 'auth.pages.leavewords',
+              href: 'leavewords.index'
             }
           ]
         }

@@ -16,6 +16,9 @@ import AdminSmtp from './admin/Smtp'
 import AdminStatus from './admin/Status'
 import AdminUsers from './admin/Users'
 
+import LeavewordsNew from './leavewords/New'
+import LeavewordsIndex from './leavewords/Index'
+
 export default [
   {
     name: 'users.sign-in',
@@ -98,5 +101,16 @@ export default [
     name: 'admin.users',
     path: '/admin/users',
     component: AdminUsers
+  },
+
+  {
+    name: 'leavewords.new',
+    path: '/leavewords/new',
+    component: LeavewordsNew
+  },
+  {
+    name: 'leavewords.index',
+    path: '/leavewords/index',
+    component: LeavewordsIndex
   }
 ]

@@ -34,7 +34,7 @@ export default {
     return {
       code: '',
       message: '',
-      items: ''
+      items: []
     }
   },
   components: {

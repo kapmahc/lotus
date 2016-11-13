@@ -40,4 +40,25 @@ func (p *Engine) Mount(rt *gin.Engine) {
 	ag.POST("/smtp", web.JSON(p.postAdminSMTP))
 	ag.GET("/status", web.JSON(p.getAdminStatus))
 	ag.GET("/users", web.JSON(p.getAdminUsers))
+
+	rt.POST("/notices",
+		p.Jwt.CurrentUserHandler(true), p.Jwt.MustAdminHandler(),
+		web.JSON(p.noticesCreate))
+	rt.POST("/notices/:id",
+		p.Jwt.CurrentUserHandler(true), p.Jwt.MustAdminHandler(),
+		web.JSON(p.noticesUpdate))
+	rt.DELETE("/notices/:id",
+		p.Jwt.CurrentUserHandler(true), p.Jwt.MustAdminHandler(),
+		web.JSON(p.noticeDestroy))
+	rt.GET("/notices/:id", web.JSON(p.noticesShow))
+	rt.GET("/notices", web.JSON(p.noticesIndex))
+
+	rt.GET("/leavewords",
+		p.Jwt.CurrentUserHandler(true), p.Jwt.MustAdminHandler(),
+		web.JSON(p.leavewordsIndex))
+	rt.POST("/leavewords", web.JSON(p.leavewordsCreate))
+	rt.DELETE("/leavewords/:id",
+		p.Jwt.CurrentUserHandler(true), p.Jwt.MustAdminHandler(),
+		web.JSON(p.leavewordDestroy))
+
 }

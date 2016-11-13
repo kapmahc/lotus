@@ -12,7 +12,9 @@ export const get = (url, data, success, fail) => {
 }
 
 export const _delete = (url, success, fail) => {
-  ajax('DELETE', url, null, success, fail)
+  if (window.confirm('are you sure')) {
+    ajax('DELETE', url, null, success, fail)
+  }
 }
 
 export const postForm = (url, data, success, fail) => {
@@ -26,7 +28,7 @@ function ajax (method, url, data, success, fail) {
   data.locale = currentLocale()
   if (success == null) {
     success = function (result) {
-      console.log(result)
+      window.alert(result.message)
     }
   }
   if (fail == null) {

@@ -91,7 +91,7 @@ create table notices(
 );
 create index idx_notices_lang on notices(lang);
 
-create table leave_words(
+create table leavewords(
   id serial primary key,
   content text not null,
   created_at timestamp without time zone not null default now()
@@ -114,7 +114,7 @@ create index idx_attachments_media_type on attachments(media_type);
 -- +goose Down
 -- SQL section 'Down' is executed when this migration is rolled back
 drop table attachments;
-drop table leave_words;
+drop table leavewords;
 drop table notices;
 drop table locales;
 drop table settings;

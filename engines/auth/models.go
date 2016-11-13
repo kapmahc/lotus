@@ -169,8 +169,8 @@ func (p *Permission) Enable() bool {
 
 //------------------------------------------------------------------------------
 
-//LeaveWord leave word
-type LeaveWord struct {
+//Leaveword leave word
+type Leaveword struct {
 	ID        uint      `json:"id"`
 	Content   string    `json:"content"`
 	CreatedAt time.Time `json:"created_at"`
