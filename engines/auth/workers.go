@@ -8,11 +8,11 @@ import (
 
 //SMTP smtp config
 type SMTP struct {
-	From     string
-	Username string
-	Password string
-	Host     string
-	Port     int
+	From     string `json:"form"`
+	Username string `json:"username"`
+	Password string `json:"-"`
+	Host     string `json:"host"`
+	Port     int    `json:"port"`
 }
 
 //Worker register worker

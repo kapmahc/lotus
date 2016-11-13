@@ -82,3 +82,53 @@ func (p *Engine) postAdminI18n(c *gin.Context) (interface{}, error) {
 		"message": p.I18n.T(lang, "messages.success"),
 	}, nil
 }
+
+func (p *Engine) getAdminSeo(c *gin.Context) (interface{}, error) {
+	ret := gin.H{}
+	for _, k := range []string{"google", "baidu"} {
+		var code string
+		p.Dao.Get(fmt.Sprintf("%s.verify.code", k), &code)
+		ret[k] = code
+	}
+	return ret, nil
+}
+
+func (p *Engine) postAdminSeo(c *gin.Context) (interface{}, error) {
+	lang := c.MustGet(web.LOCALE).(string)
+
+	var fm fmSeo
+	if err := c.Bind(&fm); err != nil {
+		return nil, err
+	}
+
+	p.Dao.Set("google.verify.code", fm.Google, false)
+	p.Dao.Set("baidu.verify.code", fm.Baidu, false)
+	return gin.H{
+		"message": p.I18n.T(lang, "messages.success"),
+	}, nil
+}
+
+func (p *Engine) getAdminSMTP(c *gin.Context) (interface{}, error) {
+	var m SMTP
+	p.Dao.Get("site.smtp", &m)
+	return m, nil
+}
+
+func (p *Engine) postAdminSMTP(c *gin.Context) (interface{}, error) {
+	lang := c.MustGet(web.LOCALE).(string)
+
+	var fm fmSMTP
+	if err := c.Bind(&fm); err != nil {
+		return nil, err
+	}
+
+	p.Dao.Set("site.smtp", SMTP{
+		Host:     fm.Host,
+		Port:     fm.Port,
+		Username: fm.Username,
+		Password: fm.Password,
+	}, true)
+	return gin.H{
+		"message": p.I18n.T(lang, "messages.success"),
+	}, nil
+}

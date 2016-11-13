@@ -38,9 +38,7 @@ func (p *Dao) Set(key string, val interface{}, flag bool) error {
 		m.Flag = flag
 		err = p.Db.Create(&m).Error
 	} else {
-		m.Val = buf
-		m.Flag = flag
-		err = p.Db.Model(&Setting{}).Update(m).Error
+		err = p.Db.Model(&m).Updates(Setting{Flag: flag, Val: buf}).Error
 	}
 	return err
 }
