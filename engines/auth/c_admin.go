@@ -59,3 +59,26 @@ func (p *Engine) postAdminBase(c *gin.Context) (interface{}, error) {
 		"message": p.I18n.T(lang, "messages.success"),
 	}, nil
 }
+
+func (p *Engine) getAdminI18n(c *gin.Context) (interface{}, error) {
+	lang := c.MustGet(web.LOCALE).(string)
+	var items []web.Locale
+	err := p.Db.Select([]string{"code", "message"}).
+		Where("lang = ?", lang).
+		Order("code ASC").Find(&items).Error
+	return items, err
+}
+
+func (p *Engine) postAdminI18n(c *gin.Context) (interface{}, error) {
+	lang := c.MustGet(web.LOCALE).(string)
+
+	var fm fmLocale
+	if err := c.Bind(&fm); err != nil {
+		return nil, err
+	}
+
+	p.I18n.Set(lang, fm.Code, fm.Message)
+	return gin.H{
+		"message": p.I18n.T(lang, "messages.success"),
+	}, nil
+}

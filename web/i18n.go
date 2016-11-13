@@ -18,9 +18,9 @@ import (
 type Locale struct {
 	Model
 
-	Lang    string
-	Code    string
-	Message string
+	Lang    string `json:"lang"`
+	Code    string `json:"code"`
+	Message string `json:"message"`
 }
 
 //I18n i18n
@@ -102,8 +102,7 @@ func (p *I18n) Set(lang string, code, message string) error {
 		l.Message = message
 		err = p.Db.Create(&l).Error
 	} else {
-		l.Message = message
-		err = p.Db.Save(&l).Error
+		err = p.Db.Model(&l).Update("message", message).Error
 	}
 	return err
 }
