@@ -9,7 +9,7 @@ import (
 	"github.com/urfave/cli"
 )
 
-//Engine shop engine
+//Engine forum engine
 type Engine struct {
 	I18n  *web.I18n  `inject:""`
 	Cache *web.Cache `inject:""`

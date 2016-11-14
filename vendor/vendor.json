@@ -235,6 +235,12 @@
 			"revisionTime": "2016-08-17T01:46:01Z"
 		},
 		{
+			"checksumSHA1": "AkE9JjcFUMHcLLP904tYScbyVS0=",
+			"path": "github.com/kapmahc/lotus",
+			"revision": "b1bdab3bf6e57b2696fef98deb61f4771bd724f0",
+			"revisionTime": "2016-10-20T21:10:52Z"
+		},
+		{
 			"checksumSHA1": "p+Bj1OSkp9/zxr6oZGzBAvYsdm0=",
 			"path": "github.com/kylelemons/go-gypsy/yaml",
 			"revision": "08cad365cd28a7fba23bb1e57aa43c5e18ad8bb8",

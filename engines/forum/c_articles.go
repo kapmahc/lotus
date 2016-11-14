@@ -3,6 +3,7 @@ package forum
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/kapmahc/lotus/engines/auth"
+	"github.com/kapmahc/lotus/web"
 )
 
 func (p *Engine) articlesIndex(c *gin.Context) (interface{}, error) {
@@ -66,6 +67,12 @@ func (p *Engine) articlesUpdate(c *gin.Context) (interface{}, error) {
 		return nil, err
 	}
 
+	lang := c.MustGet(web.LOCALE).(string)
+	user := c.MustGet(auth.CurrentUser).(*auth.User)
+	if !p._canArticle(user, &item) {
+		return nil, p.I18n.E(lang, "messages.bad-token")
+	}
+
 	if err := p.Db.Model(&item).Updates(Article{
 		Title:   fm.Title,
 		Summary: fm.Summary,
@@ -90,6 +97,13 @@ func (p *Engine) articlesDestroy(c *gin.Context) (interface{}, error) {
 	if err := p.Db.Where("id = ?", c.Param("id")).Limit(1).Find(&item).Error; err != nil {
 		return nil, err
 	}
+
+	lang := c.MustGet(web.LOCALE).(string)
+	user := c.MustGet(auth.CurrentUser).(*auth.User)
+	if !p._canArticle(user, &item) {
+		return nil, p.I18n.E(lang, "messages.bad-token")
+	}
+
 	if err := p.Db.Model(&item).Association("Tags").Clear().Error; err != nil {
 		return nil, err
 	}
@@ -101,4 +115,8 @@ func (p *Engine) articlesDestroy(c *gin.Context) (interface{}, error) {
 	}
 
 	return item, nil
+}
+
+func (p *Engine) _canArticle(u *auth.User, a *Article) bool {
+	return u.ID == a.UserID || p.Dao.Is(u.ID, auth.RoleAdmin)
 }
