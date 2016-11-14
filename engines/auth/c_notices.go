@@ -17,8 +17,9 @@ func (p *Engine) noticesCreate(c *gin.Context) (interface{}, error) {
 	if err := c.Bind(&fm); err != nil {
 		return nil, err
 	}
-	err := p.Db.Create(&Notice{Lang: lang, Content: fm.Content}).Error
-	return gin.H{}, err
+	n := Notice{Lang: lang, Content: fm.Content}
+	err := p.Db.Create(&n).Error
+	return n, err
 }
 
 func (p *Engine) noticesShow(c *gin.Context) (interface{}, error) {

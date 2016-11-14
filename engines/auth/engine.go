@@ -9,14 +9,13 @@ import (
 
 //Engine auth engine
 type Engine struct {
-	I18n    *web.I18n         `inject:""`
-	Cache   *web.Cache        `inject:""`
-	Hmac    *web.Hmac         `inject:""`
-	Server  *machinery.Server `inject:""`
-	Dao     *Dao              `inject:""`
-	Db      *gorm.DB          `inject:""`
-	Jwt     *Jwt              `inject:""`
-	Handler *Handler          `inject:""`
+	I18n   *web.I18n         `inject:""`
+	Cache  *web.Cache        `inject:""`
+	Hmac   *web.Hmac         `inject:""`
+	Server *machinery.Server `inject:""`
+	Dao    *Dao              `inject:""`
+	Db     *gorm.DB          `inject:""`
+	Jwt    *Jwt              `inject:""`
 }
 
 //Home home

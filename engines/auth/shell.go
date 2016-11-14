@@ -71,7 +71,7 @@ func (p *Engine) Shell() []cli.Command {
 				rt := gin.Default()
 
 				// i18n
-				rt.Use(p.I18n.Handler, p.Handler.CurrentUser)
+				rt.Use(p.I18n.Handler)
 
 				// mount
 				web.Loop(func(en web.Engine) error {

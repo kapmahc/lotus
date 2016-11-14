@@ -13,8 +13,9 @@ func (p *Engine) leavewordsCreate(c *gin.Context) (interface{}, error) {
 	if err := c.Bind(&fm); err != nil {
 		return nil, err
 	}
-	err := p.Db.Create(&Leaveword{Content: fm.Content}).Error
-	return gin.H{}, err
+	lw := Leaveword{Content: fm.Content}
+	err := p.Db.Create(&lw).Error
+	return lw, err
 }
 
 func (p *Engine) leavewordDestroy(c *gin.Context) (interface{}, error) {
