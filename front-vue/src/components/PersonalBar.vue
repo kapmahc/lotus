@@ -24,7 +24,6 @@
 
 <script>
 import actions from '../engines/actions'
-import router from '../engines/router'
 
 export default {
   name: 'forgot-password',
@@ -47,8 +46,8 @@ export default {
   },
   methods: {
     signOut () {
+      this.$router.push({name: 'usres.sign-in'})
       this.$store.commit(actions.auth.signOut)
-      router.push({name: 'usres.sign-in'})
     }
   },
   created () {

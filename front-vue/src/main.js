@@ -9,11 +9,13 @@ import 'bootstrap'
 import Vue from 'vue'
 import Vuex from 'vuex'
 import VueI18n from 'vue-i18n'
+import VueRouter from 'vue-router'
 
-import router from './engines/router'
+import routes from './engines/routes'
 import store from './engines/store'
 import {initLocales} from './i18n'
 
+Vue.use(VueRouter)
 Vue.use(Vuex)
 Vue.use(VueI18n)
 
@@ -21,5 +23,5 @@ Vue.use(VueI18n)
 initLocales()
 new Vue({
   store: new Vuex.Store(store),
-  router
+  router: new VueRouter({routes})
 }).$mount('#root')

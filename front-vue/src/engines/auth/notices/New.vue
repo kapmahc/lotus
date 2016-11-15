@@ -16,7 +16,6 @@
 <script>
 import AppDashboard from '../../Dashboard'
 import {postForm} from '../../../utils'
-import router from '../../router'
 
 export default {
   name: 'new-notice',
@@ -36,8 +35,8 @@ export default {
           content: this.content
         },
         function (result) {
-          router.push({name: 'notices.admin'})
-        }
+          this.$router.push({name: 'notices.admin'})
+        }.bind(this)
       )
     }
   }

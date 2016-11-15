@@ -60,7 +60,8 @@ export default {
         },
         function (result) {
           window.alert(result.message)
-        }
+          this.$router.push({name: 'users.sign-in'})
+        }.bind(this)
       )
     }
   }

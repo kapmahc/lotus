@@ -23,7 +23,6 @@
 import AppLayout from '../../Layout'
 import SharedLinks from './NonSignInLinks'
 import {postForm} from '../../../utils'
-import router from '../../router'
 import actions from '../actions'
 
 export default {
@@ -50,7 +49,7 @@ export default {
           var token = result.token
           this.$store.commit(actions.signIn, token)
           window.sessionStorage.setItem('token', token)
-          router.push({name: 'home'})
+          this.$router.push({name: 'home'})
         }.bind(this)
       )
     }
