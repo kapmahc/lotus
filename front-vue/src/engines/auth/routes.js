@@ -10,7 +10,7 @@ import UserInfo from './users/Info'
 
 import AdminAuthor from './admin/Author'
 import AdminBase from './admin/Base'
-import AdminI18n from './admin/I18n'
+import AdminLocales from './admin/Locales'
 import AdminSeo from './admin/Seo'
 import AdminSmtp from './admin/Smtp'
 import AdminStatus from './admin/Status'
@@ -83,9 +83,9 @@ export default [
     component: AdminBase
   },
   {
-    name: 'admin.i18n',
-    path: '/admin/i18n',
-    component: AdminI18n
+    name: 'admin.locales',
+    path: '/admin/locales',
+    component: AdminLocales
   },
   {
     name: 'admin.seo',

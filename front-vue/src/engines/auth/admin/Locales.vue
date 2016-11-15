@@ -1,6 +1,6 @@
 <template>
   <app-dashboard>
-    <h3>{{ $t('auth.pages.admin-i18n') }}</h3>
+    <h3>{{ $t('auth.pages.admin-locales') }}</h3>
     <hr/>
     <form v-on:submit.prevent="onSubmit">
       <div class="form-group">
@@ -16,7 +16,7 @@
     </form>
     <br/>
     <div class="list-group">
-      <a v-for="item in items" class="list-group-item list-group-item-action">
+      <a v-for="item in items" v-on:click="onEdit(item)" class="list-group-item list-group-item-action">
         <h5 class="list-group-item-heading">{{item.code}}</h5>
         <p class="list-group-item-text">{{item.message}}</p>
       </a>
@@ -29,7 +29,7 @@ import AppDashboard from '../../Dashboard'
 import {get, postForm} from '../../../utils'
 
 export default {
-  name: 'admin-i18n',
+  name: 'locales-index',
   data () {
     return {
       code: '',
@@ -41,20 +41,28 @@ export default {
     AppDashboard
   },
   created () {
-    get('/admin/i18n', null, function (rst) {
-      this.items = rst
-    }.bind(this))
+    this.onRefresh()
   },
   methods: {
+    onEdit (item) {
+      this.code = item.code
+      this.message = item.message
+    },
+    onRefresh () {
+      get('/admin/locales', null, function (rst) {
+        this.items = rst
+      }.bind(this))
+    },
     onSubmit () {
       postForm(
-        '/admin/i18n',
+        '/admin/locales',
         {
           code: this.code,
           message: this.message
         },
         function (result) {
           window.alert(this.$t('messages.success'))
+          this.onRefresh()
         }.bind(this)
       )
     }

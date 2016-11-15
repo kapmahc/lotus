@@ -82,8 +82,8 @@ export default {
           href: 'admin.base'
         },
         {
-          label: 'auth.pages.admin-i18n',
-          href: 'admin.i18n'
+          label: 'auth.pages.admin-locales',
+          href: 'admin.locales'
         },
         {
           label: 'auth.pages.admin-seo',

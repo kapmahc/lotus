@@ -55,7 +55,7 @@ func (p *Engine) postAdminBase(c *gin.Context) (interface{}, error) {
 	return gin.H{}, nil
 }
 
-func (p *Engine) getAdminI18n(c *gin.Context) (interface{}, error) {
+func (p *Engine) getAdminLocales(c *gin.Context) (interface{}, error) {
 	lang := c.MustGet(web.LOCALE).(string)
 	var items []web.Locale
 	err := p.Db.Select([]string{"code", "message"}).
@@ -64,7 +64,7 @@ func (p *Engine) getAdminI18n(c *gin.Context) (interface{}, error) {
 	return items, err
 }
 
-func (p *Engine) postAdminI18n(c *gin.Context) (interface{}, error) {
+func (p *Engine) postAdminLocales(c *gin.Context) (interface{}, error) {
 	lang := c.MustGet(web.LOCALE).(string)
 
 	var fm fmLocale
