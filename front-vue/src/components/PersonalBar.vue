@@ -46,8 +46,11 @@ export default {
   },
   methods: {
     signOut () {
-      this.$router.push({name: 'usres.sign-in'})
       this.$store.commit(actions.auth.signOut)
+      window.sessionStorage.removeItem('token')
+      this.$router.push({name: 'users.sign-in'})
+      // window.location.refresh
+      // this.$router.push({name: 'users.sign-in'})
     }
   },
   created () {

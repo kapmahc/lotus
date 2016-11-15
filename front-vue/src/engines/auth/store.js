@@ -19,9 +19,7 @@ export default {
     },
     signOut (state) {
       state.currentUser = {}
-      _delete('/users/sign-out', function () {
-        window.sessionStorage.removeItem('token')
-      })
+      _delete('/users/sign-out')
     },
     refreshLayout (state) {
       get('/layout', null, function (info) {
