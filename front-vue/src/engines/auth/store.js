@@ -4,7 +4,7 @@ import {get, _delete} from '../../utils'
 
 export default {
   state: {
-    currentUser: {},
+    currentUser: {roles: []},
     siteInfo: {
       author: {}
     }
