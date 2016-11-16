@@ -84,6 +84,7 @@ func init() {
 
 	viper.SetDefault("server", map[string]interface{}{
 		"port":     8080,
+		"manager":  "admin@change-me.com",
 		"name":     "www.change-me.com",
 		"theme":    "bootstrap4",
 		"frontend": "http://localhost:4200",

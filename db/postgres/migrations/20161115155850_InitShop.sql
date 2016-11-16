@@ -27,6 +27,7 @@ create unique index idx_shop_variants_sku on shop_variants(sku);
 create table shop_countries(
   id serial primary key,
   name varchar(255) not null,
+  active boolean not null,
   created_at timestamp without time zone not null default now(),
   updated_at timestamp without time zone not null
 );
@@ -143,6 +144,8 @@ create index idx_shop_payments_state on shop_payments(state);
 create table shop_shipment_methods(
   id serial primary key,
   name varchar(255) not null,
+  active boolean not null,
+  tracking varchar(255) not null,
   created_at timestamp without time zone not null default now(),
   updated_at timestamp without time zone not null
 );

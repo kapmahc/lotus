@@ -7,7 +7,6 @@ https://baya.github.io/2015/09/17/%E7%94%B5%E5%AD%90%E5%95%86%E5%8A%A1%E7%B3%BB%
 import (
 	"time"
 
-	"github.com/jinzhu/gorm"
 	"github.com/kapmahc/lotus/engines/auth"
 	"github.com/kapmahc/lotus/web"
 )
@@ -55,6 +54,7 @@ type Country struct {
 
 	Name   string  `json:"name"`
 	States []State `json:"states"`
+	Active bool    `json:"active"`
 }
 
 //TableName table name
@@ -68,8 +68,8 @@ type State struct {
 
 	Name string
 
-	CountryID uint   `json:"country_id"`
-	Country   string `json:"country"`
+	CountryID uint    `json:"country_id"`
+	Country   Country `json:"country"`
 }
 
 //TableName table name
@@ -219,9 +219,11 @@ func (p *Payment) TableName() string {
 
 //ShipmentMethod shipment method
 type ShipmentMethod struct {
-	gorm.Model
+	web.Model
 
-	Name string `json:"name"`
+	Name     string `json:"name"`
+	Active   bool   `json:"active"`
+	Tracking string `json:"tracking"`
 }
 
 //TableName table name

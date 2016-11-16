@@ -375,6 +375,16 @@ server {
 					}),
 				},
 				{
+					Name:    "seed",
+					Usage:   "insert seed data",
+					Aliases: []string{"s"},
+					Action: web.IocAction(func(*cli.Context, *inject.Graph) error {
+						return web.Loop(func(en web.Engine) error {
+							return en.Seed()
+						})
+					}),
+				},
+				{
 					Name:    "rollback",
 					Usage:   "rollback the database",
 					Aliases: []string{"r"},

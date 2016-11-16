@@ -16,6 +16,8 @@ type Engine interface {
 	Mount(*gin.Engine)
 	//Shell command line
 	Shell() []cli.Command
+	//Insert seed data
+	Seed() error
 	//Worker register worker
 	Worker()
 }

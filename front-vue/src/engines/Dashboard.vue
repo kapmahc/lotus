@@ -54,18 +54,9 @@ export default {
       id: 'auth-users',
       title: 'auth.pages.profile',
       links: [
-        {
-          label: 'auth.pages.info',
-          href: 'users.info'
-        },
-        {
-          label: 'auth.pages.change-password',
-          href: 'users.change-password'
-        },
-        {
-          label: 'auth.pages.logs',
-          href: 'users.logs'
-        }
+        {label: 'auth.pages.info', href: 'users.info'},
+        {label: 'auth.pages.change-password', href: 'users.change-password'},
+        {label: 'auth.pages.logs', href: 'users.logs'}
       ]
     })
 
@@ -73,42 +64,41 @@ export default {
       id: 'auth-site',
       title: 'auth.pages.admin-profile',
       links: [
-        {
-          label: 'auth.pages.admin-author',
-          href: 'admin.author'
-        },
-        {
-          label: 'auth.pages.admin-base',
-          href: 'admin.base'
-        },
-        {
-          label: 'auth.pages.admin-locales',
-          href: 'admin.locales'
-        },
-        {
-          label: 'auth.pages.admin-seo',
-          href: 'admin.seo'
-        },
-        {
-          label: 'auth.pages.admin-smtp',
-          href: 'admin.smtp'
-        },
-        {
-          label: 'auth.pages.admin-status',
-          href: 'admin.status'
-        },
-        {
-          label: 'auth.pages.admin-users',
-          href: 'admin.users'
-        },
-        {
-          label: 'auth.pages.leavewords',
-          href: 'leavewords.index'
-        },
-        {
-          label: 'auth.pages.notices',
-          href: 'notices.admin'
-        }
+        {label: 'auth.pages.admin-author', href: 'admin.author'},
+        {label: 'auth.pages.admin-base', href: 'admin.base'},
+        {label: 'auth.pages.admin-locales', href: 'admin.locales'},
+        {label: 'auth.pages.admin-seo', href: 'admin.seo'},
+        {label: 'auth.pages.admin-smtp', href: 'admin.smtp'},
+        {label: 'auth.pages.admin-status', href: 'admin.status'},
+        {label: 'auth.pages.admin-users', href: 'admin.users'},
+        {label: 'auth.pages.leavewords', href: 'leavewords.index'},
+        {label: 'auth.pages.notices', href: 'notices.admin'}
+      ]
+    })
+
+    member.push({
+      id: 'shop-member',
+      title: 'shop.pages.self-profile',
+      links: [
+        {label: 'shop.pages.self-addresses', href: 'home'},
+        {label: 'shop.pages.self-cart', href: 'home'},
+        {label: 'shop.pages.self-orders', href: 'home'},
+        {label: 'shop.pages.self-returns', href: 'home'},
+        {label: 'shop.pages.self-messages', href: 'home'},
+        {label: 'shop.pages.self-history', href: 'home'}
+      ]
+    })
+    admin.push({
+      id: 'shop-admin',
+      title: 'shop.pages.admin-profile',
+      links: [
+        {label: 'shop.pages.admin-properties', href: 'home'},
+        {label: 'shop.pages.admin-payments', href: 'home'},
+        {label: 'shop.pages.admin-shipments', href: 'home'},
+        {label: 'shop.pages.admin-products', href: 'home'},
+        {label: 'shop.pages.admin-promotions', href: 'home'},
+        {label: 'shop.pages.admin-orders', href: 'home'},
+        {label: 'shop.pages.admin-returns', href: 'home'}
       ]
     })
 

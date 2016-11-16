@@ -3,12 +3,19 @@ package shop
 import (
 	"github.com/facebookgo/inject"
 	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/gorm"
+	"github.com/kapmahc/lotus/engines/auth"
 	"github.com/kapmahc/lotus/web"
 	"github.com/urfave/cli"
 )
 
 //Engine shop engine
 type Engine struct {
+	I18n  *web.I18n  `inject:""`
+	Cache *web.Cache `inject:""`
+	Db    *gorm.DB   `inject:""`
+	Jwt   *auth.Jwt  `inject:""`
+	Dao   *auth.Dao  `inject:""`
 }
 
 //Home home
