@@ -92,6 +92,7 @@ export default {
       id: 'shop-admin',
       title: 'shop.pages.admin-profile',
       links: [
+        {label: 'shop.pages.admin-countries', href: 'shop.countries.index'},
         {label: 'shop.pages.admin-properties', href: 'home'},
         {label: 'shop.pages.admin-payments', href: 'home'},
         {label: 'shop.pages.admin-shipments', href: 'home'},

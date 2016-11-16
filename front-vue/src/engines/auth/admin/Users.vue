@@ -2,7 +2,7 @@
   <app-dashboard>
     <h3>{{ $t('auth.pages.admin-users') }}</h3>
     <hr/>
-    <table class="table table-bordered">
+    <table class="table table-bordered table-hover">
       <thead>
         <tr>
           <th>{{$t('auth.models.user')}}</th>

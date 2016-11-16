@@ -66,7 +66,7 @@ func (p *Country) TableName() string {
 type State struct {
 	web.Model
 
-	Name string
+	Name string `json:"name"`
 
 	CountryID uint    `json:"country_id"`
 	Country   Country `json:"country"`

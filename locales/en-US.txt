@@ -23,6 +23,7 @@ flash.error = Error
 messages.are-you-sure = Are you sure?
 messages.bad-format = Bad format
 messages.bad-token = Bad token
+messages.in-using = In using
 messages.success = Success.
 
 attributes.name = Name
@@ -43,6 +44,8 @@ attributes.username = Username
 attributes.details = Details
 attributes.startUp = Begin date
 attributes.shutDown = End date
+attributes.active = Active
+attributes.state = State
 
 languages.en-US = English
 languages.zh-CN = 简体中文

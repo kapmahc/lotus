@@ -28,11 +28,6 @@ func (p *Engine) Init(*inject.Graph) error {
 	return nil
 }
 
-//Mount web points
-func (p *Engine) Mount(*gin.Engine) {
-
-}
-
 //Shell command line
 func (p *Engine) Shell() []cli.Command {
 	return []cli.Command{}
