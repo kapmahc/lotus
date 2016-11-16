@@ -16,7 +16,7 @@
           v-for="(item, index) in member"
           v-bind:item="item"
           v-bind:id="index" />
-        <drop-link v-if="user.roles.includes('admin')"
+        <drop-link v-if="user.roles && user.roles.includes('admin')"
           v-for="(item, index) in admin"
           v-bind:item="item"
           v-bind:id="index" />
@@ -30,7 +30,7 @@
     <div class="container">
       <slot>
         <nav-pane v-if="user.uid" :items="member" />
-        <nav-pane v-if="user.roles.includes('admin')" :items="admin" />
+        <nav-pane v-if="user.roles && user.roles.includes('admin')" :items="admin" />
       </slot>
       <layout-footer/>
     </div>

@@ -132,6 +132,8 @@ auth.messages.user-already-confirmed = User was already confirmed.
 auth.messages.user-not-locked = User wasn't locked.
 auth.messages.email-already-exists = Email already exists
 auth.messages.email-password-not-match = Email and password not match
+auth.messages.need-confirm = Your account wasn't confirmed.
+auth.messages.need-unlock = Your account was locked.
 
 auth.emails.confirm-subject = Confirmation instructions
 auth.emails.confirm-body = You can confirm your account email through the link below. <br/> <a href="{{.Backend}}/users/{{.Action}}?token={{.Token}}">{{.Backend}}/users/{{.Action}}?token={{.Token}}</a>
