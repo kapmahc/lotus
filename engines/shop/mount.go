@@ -8,6 +8,7 @@ import (
 //Mount web points
 func (p *Engine) Mount(rt *gin.Engine) {
 	sg := rt.Group("/shop")
+
 	sg.GET("/countries", web.JSON(p.countriesIndex))
 	sg.POST("/countries",
 		p.Jwt.CurrentUserHandler(true), p.Jwt.MustAdminHandler(),
@@ -18,5 +19,21 @@ func (p *Engine) Mount(rt *gin.Engine) {
 		p.Jwt.CurrentUserHandler(true), p.Jwt.MustAdminHandler(),
 		web.JSON(p.countriesUpdate),
 	)
-	sg.DELETE("/countries/:id", web.JSON(p.countriesDestroy))
+	sg.DELETE("/countries/:id",
+		p.Jwt.CurrentUserHandler(true), p.Jwt.MustAdminHandler(),
+		web.JSON(p.countriesDestroy))
+
+	sg.GET("/states", web.JSON(p.statesIndex))
+	sg.POST("/states",
+		p.Jwt.CurrentUserHandler(true), p.Jwt.MustAdminHandler(),
+		web.JSON(p.statesCreate),
+	)
+	sg.GET("/states/:id", web.JSON(p.statesShow))
+	sg.POST("/states/:id",
+		p.Jwt.CurrentUserHandler(true), p.Jwt.MustAdminHandler(),
+		web.JSON(p.statesUpdate),
+	)
+	sg.DELETE("/states/:id",
+		p.Jwt.CurrentUserHandler(true), p.Jwt.MustAdminHandler(),
+		web.JSON(p.statesDestroy))
 }

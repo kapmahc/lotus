@@ -25,6 +25,7 @@ messages.bad-format = 错误的格式
 messages.bad-token = token错误
 messages.in-using = 正在被使用
 messages.success = 操作成功
+messages.name-already-exists = 名称已存在
 
 attributes.name = 名称
 attributes.body = 正文
@@ -180,8 +181,6 @@ forum.models.comment = 评论
 
 forum.attributes.article-tags = 标签列表
 
-forum.messages.tag-name-already-exists = 标签名已存在
-
 ops.mail.pages.profile = 邮件系统
 ops.mail.pages.domains = 域
 ops.mail.pages.new-domain = 添加域
@@ -197,8 +196,6 @@ ops.mail.pages.edit-alias = 编辑别名 [{id}]
 ops.mail.attributes.alias-source = 来源
 ops.mail.attributes.alias-destination = 目的
 ops.mail.attributes.domain = 域
-
-ops.mail.messages.domain-already-exists = 域名已存在
 
 ops.vpn.pages.profile = VPN系统
 ops.vpn.pages.users = 用户列表
@@ -237,10 +234,8 @@ shop.pages.admin-products = 商品管理
 shop.pages.admin-promotions = 促销活动
 shop.pages.admin-orders = 订单处理
 shop.pages.admin-returns = 退货处理
-shop.pages.new-country = 添加国家/地区
-shop.pages.edit-country = 编辑国家/地区[{id}]
-shop.pages.countries = 国家/地区列表
+
+shop.models.country = 国家/地区
+shop.models.state = 省份/州
 
 shop.attributes.country-states = 省份/州列表
-
-shop.messages.country-name-already-exists = 名称已存在

@@ -19,7 +19,9 @@ func (p *Engine) Mount(rt *gin.Engine) {
 		p.Jwt.CurrentUserHandler(true), p.Jwt.MustAdminHandler(),
 		web.JSON(p.tagsUpdate),
 	)
-	fg.DELETE("/tags/:id", web.JSON(p.tagsDestroy))
+	fg.DELETE("/tags/:id",
+		p.Jwt.CurrentUserHandler(true), p.Jwt.MustAdminHandler(),
+		web.JSON(p.tagsDestroy))
 
 	fg.GET("/articles", web.JSON(p.articlesIndex))
 	fg.POST("/articles", p.Jwt.CurrentUserHandler(true), web.JSON(p.articlesCreate))

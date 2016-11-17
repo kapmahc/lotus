@@ -15,14 +15,14 @@ func (p *Engine) countriesIndex(c *gin.Context) (interface{}, error) {
 	if err := p.Db.Order("updated_at DESC").Find(&items).Error; err != nil {
 		return nil, err
 	}
-	for i, item := range items {
-		if err := p.Db.
-			Model(&item).Order("name ASC").
-			Association("States").
-			Find(&items[i].States).Error; err != nil {
-			return nil, err
-		}
-	}
+	// for i, item := range items {
+	// 	if err := p.Db.
+	// 		Model(&item).Order("name ASC").
+	// 		Association("States").
+	// 		Find(&items[i].States).Error; err != nil {
+	// 		return nil, err
+	// 	}
+	// }
 
 	return items, nil
 }
@@ -39,7 +39,7 @@ func (p *Engine) countriesCreate(c *gin.Context) (interface{}, error) {
 		return nil, err
 	}
 	if count > 0 {
-		return nil, p.I18n.E(lang, "shop.messages.country-name-already-exists")
+		return nil, p.I18n.E(lang, "messages.name-already-exists")
 	}
 	item := Country{Name: fm.Name, Active: fm.Active}
 	err := p.Db.Create(&item).Error
@@ -71,7 +71,7 @@ func (p *Engine) countriesUpdate(c *gin.Context) (interface{}, error) {
 		return nil, err
 	}
 	if count > 0 {
-		return nil, p.I18n.E(lang, "shop.messages.country-name-already-exists")
+		return nil, p.I18n.E(lang, "messages.name-already-exists")
 	}
 
 	err := p.Db.Model(&item).

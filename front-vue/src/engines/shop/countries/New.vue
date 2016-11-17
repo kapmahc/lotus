@@ -1,6 +1,6 @@
 <template>
   <app-dashboard>
-    <h3>{{ $t('shop.pages.new-country') }}</h3>
+    <h3>{{$t('buttons.new')}} {{ $t('shop.models.country') }}</h3>
     <hr/>
     <form v-on:submit.prevent="onSubmit">
       <div class="form-group">

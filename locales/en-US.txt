@@ -25,6 +25,7 @@ messages.bad-format = Bad format
 messages.bad-token = Bad token
 messages.in-using = In using
 messages.success = Success.
+messages.name-already-exists = 名称已存在
 
 attributes.name = Name
 attributes.body = Body
@@ -180,8 +181,6 @@ forum.models.comment = Comment
 
 forum.attributes.article-tags = Tags
 
-forum.messages.tag-name-already-exists = Tag name Already exists
-
 ops.mail.pages.profile = Mail system
 ops.mail.pages.domains = Domains
 ops.mail.pages.new-domain = New domain
@@ -197,8 +196,6 @@ ops.mail.pages.edit-alias = Edit alias [{id}]
 ops.mail.attributes.alias-source = Source
 ops.mail.attributes.alias-destination = Destination
 ops.mail.attributes.domain = Domain
-
-ops.mail.messages.domain-already-exists = Domain already exists
 
 ops.vpn.pages.profile = Vpn system
 ops.vpn.pages.users = Users
