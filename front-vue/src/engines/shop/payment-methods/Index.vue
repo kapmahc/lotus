@@ -1,18 +1,19 @@
 <template>
   <app-dashboard>
-    <shipment-zone/>
     <br/>
     <h3>
-      {{ $t('shop.models.state') }}
+      {{ $t('shop.models.payment-method') }}
     </h3>
     <table class="table table-bordered table-hover">
       <thead>
         <tr>
+          <th>{{$t('attributes.type')}}</th>
           <th>{{$t('attributes.name')}}</th>
-          <th>{{$t('shop.models.country')}}?</th>
+          <th>{{$t('attributes.active')}}</th>
+          <th>{{$t('attributes.description')}}</th>
           <th>
             {{$t('buttons.manage')}}
-            <router-link class="btn btn-link" :to="{name: 'shop.states.new'}">
+            <router-link class="btn btn-link" :to="{name: 'shop.payment-methods.new'}">
               {{$t('buttons.new')}}
             </router-link>
           </th>
@@ -20,10 +21,12 @@
       </thead>
       <tbody>
         <tr v-for="i in items">
-          <th scope="row">{{i.name}}</th>
-          <td>{{i.country.name}}</td>
+          <th scope="row">{{i.type}}</th>
+          <td>{{i.name}}</td>
+          <td>{{i.active}}</td>
+          <td>{{i.description}}</td>
           <td>
-            <router-link class="btn btn-warning btn-sm" :to="{name: 'shop.states.edit', params:{id: i.id}}">
+            <router-link class="btn btn-warning btn-sm" :to="{name: 'shop.payment-methods.edit', params:{id: i.id}}">
               {{$t('buttons.edit')}}
             </router-link>
             <button v-on:click="onDelete(i.id)" class="btn btn-danger btn-sm">
@@ -38,11 +41,10 @@
 
 <script>
 import AppDashboard from '../../Dashboard'
-import ShipmentZone from '../shared/ShipmentZone'
 import {get, _delete} from '../../../utils'
 
 export default {
-  name: 'shop-states',
+  name: 'shop-payment-methods',
   data () {
     return {
       items: []
@@ -52,18 +54,17 @@ export default {
     this.refresh()
   },
   components: {
-    AppDashboard,
-    ShipmentZone
+    AppDashboard
   },
   methods: {
     refresh () {
-      get('/shop/states', null, function (rst) {
+      get('/shop/payment-methods', null, function (rst) {
         this.items = rst
       }.bind(this))
     },
     onDelete (id) {
       if (window.confirm(this.$t('messages.are-you-sure'))) {
-        _delete(`/shop/states/${id}`, function () {
+        _delete(`/shop/payment-methods/${id}`, function () {
           this.refresh()
         }.bind(this))
       }

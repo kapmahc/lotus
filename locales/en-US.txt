@@ -47,6 +47,7 @@ attributes.startUp = Begin date
 attributes.shutDown = End date
 attributes.active = Active
 attributes.state = State
+attributes.type = Type
 
 languages.en-US = English
 languages.zh-CN = 简体中文

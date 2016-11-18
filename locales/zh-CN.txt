@@ -47,6 +47,7 @@ attributes.startUp = 开始日期
 attributes.shutDown = 结束日期
 attributes.active = 激活
 attributes.state = 状态
+attributes.type = 类型
 
 languages.en-US = English
 languages.zh-CN = 简体中文
@@ -236,7 +237,7 @@ shop.pages.admin-returns = 退货处理
 
 shop.models.country = 国家/地区
 shop.models.state = 省份/州
-shop.models.payment_method = 快递方式
-shop.models.shipment_method = 快递方式
+shop.models.payment-method = 支付方式
+shop.models.shipment-method = 快递方式
 
 shop.attributes.country-states = 省份/州列表

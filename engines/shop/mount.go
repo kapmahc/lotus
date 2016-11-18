@@ -36,4 +36,18 @@ func (p *Engine) Mount(rt *gin.Engine) {
 	sg.DELETE("/states/:id",
 		p.Jwt.CurrentUserHandler(true), p.Jwt.MustAdminHandler(),
 		web.JSON(p.statesDestroy))
+
+	sg.GET("/payment-methods", web.JSON(p.paymentMethodsIndex))
+	sg.POST("/payment-methods",
+		p.Jwt.CurrentUserHandler(true), p.Jwt.MustAdminHandler(),
+		web.JSON(p.paymentMethodsCreate),
+	)
+	sg.GET("/payment-methods/:id", web.JSON(p.paymentMethodsShow))
+	sg.POST("/payment-methods/:id",
+		p.Jwt.CurrentUserHandler(true), p.Jwt.MustAdminHandler(),
+		web.JSON(p.paymentMethodsUpdate),
+	)
+	sg.DELETE("/payment-methods/:id",
+		p.Jwt.CurrentUserHandler(true), p.Jwt.MustAdminHandler(),
+		web.JSON(p.paymentMethodsDestroy))
 }

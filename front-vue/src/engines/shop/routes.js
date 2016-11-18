@@ -4,8 +4,14 @@ import CountriesEdit from './countries/Edit'
 import StatesIndex from './states/Index'
 import StatesNew from './states/New'
 import StatesEdit from './states/Edit'
+import PaymentMethodsIndex from './payment-methods/Index'
+import PaymentMethodsNew from './payment-methods/New'
+import PaymentMethodsEdit from './payment-methods/Edit'
 
 export default [
+  {name: 'shop.payment-methods.index', path: '/shop/payment-methods', component: PaymentMethodsIndex},
+  {name: 'shop.payment-methods.new', path: '/shop/payment-methods/new', component: PaymentMethodsNew},
+  {name: 'shop.payment-methods.edit', path: '/shop/payment-methods/:id/edit', component: PaymentMethodsEdit},
   {name: 'shop.states.index', path: '/shop/states', component: StatesIndex},
   {name: 'shop.states.new', path: '/shop/states/new', component: StatesNew},
   {name: 'shop.states.edit', path: '/shop/states/:id/edit', component: StatesEdit},
