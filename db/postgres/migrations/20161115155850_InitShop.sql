@@ -10,6 +10,23 @@ create table shop_products(
 );
 create index idx_shop_products_name on shop_products(name);
 
+create table shop_categories(
+  id serial primary key,
+  name varchar(255) not null,
+  parent_id int,
+  created_at timestamp without time zone not null default now(),
+  updated_at timestamp without time zone not null
+);
+create unique index idx_shop_categories on shop_categories(name);
+
+create table shop_products_categories(
+  id serial primary key,
+  product_id int not null,
+  category_id int not null,
+  updated_at timestamp without time zone not null
+);
+create unique index idx_shop_products_categories_ids on shop_products_categories(category_id, product_id);
+
 create table shop_variants(
   id serial primary key,
   sku varchar(255) not null,
@@ -142,7 +159,7 @@ create table shop_payments(
 create index idx_shop_payments_state on shop_payments(state);
 
 create table shop_shipping_methods(
-  id serial primary key,  
+  id serial primary key,
   name varchar(255) not null,
   active boolean not null,
   tracking varchar(255) not null,
@@ -223,4 +240,6 @@ drop table shop_tax_rates;
 drop table shop_states;
 drop table shop_countries;
 drop table shop_variants;
+drop table shop_products_categories;
+drop table shop_categories;
 drop table shop_products;

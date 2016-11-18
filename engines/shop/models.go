@@ -11,6 +11,16 @@ import (
 	"github.com/kapmahc/lotus/web"
 )
 
+//Category category
+type Category struct {
+	web.Model
+
+	Name     string `json:"name"`
+	ParentID uint   `json:"parent_id"`
+
+	Products []Product `json:"products" gorm:"many2many:shop_products_categories;"`
+}
+
 //Product product
 type Product struct {
 	web.Model
@@ -18,7 +28,8 @@ type Product struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
 
-	Variants []Variant `json:"variants"`
+	Variants   []Variant  `json:"variants"`
+	Categories []Category `json:"categories" gorm:"many2many:shop_products_categories;"`
 }
 
 //TableName table name
