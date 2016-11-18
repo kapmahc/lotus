@@ -141,7 +141,7 @@ create table shop_payments(
 );
 create index idx_shop_payments_state on shop_payments(state);
 
-create table shop_shipment_methods(
+create table shop_shipping_methods(
   id serial primary key,
   name varchar(255) not null,
   active boolean not null,
@@ -149,7 +149,7 @@ create table shop_shipment_methods(
   created_at timestamp without time zone not null default now(),
   updated_at timestamp without time zone not null
 );
-create unique index idx_shop_shipment_methods_name on shop_shipment_methods(name);
+create unique index idx_shop_shipping_methods_name on shop_shipping_methods(name);
 
 create table shop_shipments(
   id serial primary key,
@@ -211,7 +211,7 @@ drop table shop_chargebacks;
 drop table shop_inventory_units;
 drop table shop_return_authorizations;
 drop table shop_shipments;
-drop table shop_shipment_methods;
+drop table shop_shipping_methods;
 drop table shop_payments;
 drop table shop_payment_methods;
 drop table shop_line_items;

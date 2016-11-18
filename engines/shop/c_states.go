@@ -86,10 +86,28 @@ func (p *Engine) statesUpdate(c *gin.Context) (interface{}, error) {
 }
 
 func (p *Engine) statesDestroy(c *gin.Context) (interface{}, error) {
+	id := c.Param("id")
+	lang := c.MustGet(web.LOCALE).(string)
+
 	var item State
-	if err := p.Db.Where("id = ?", c.Param("id")).Limit(1).Find(&item).Error; err != nil {
+	if err := p.Db.Where("id = ?", id).Limit(1).Find(&item).Error; err != nil {
 		return nil, err
 	}
+
+	for _, obj := range []interface{}{
+		&Address{},
+		&TaxRate{},
+	} {
+		var count int
+		if err := p.Db.Model(obj).
+			Where("state_id = ?", id).Count(&count).Error; err != nil {
+			return nil, err
+		}
+		if count > 0 {
+			return nil, p.I18n.E(lang, "messages.in-using")
+		}
+	}
+
 	err := p.Db.Delete(&item).Error
 	return item, err
 }

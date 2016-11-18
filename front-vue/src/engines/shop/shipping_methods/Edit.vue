@@ -1,14 +1,8 @@
 <template>
   <app-dashboard>
-    <h3>{{$t('buttons.new')}} {{ $t('shop.models.state') }}</h3>
+    <h3>{{$t('buttons.edit')}} {{ $t('shop.models.payment') }} [{{id}}]</h3>
     <hr/>
     <form v-on:submit.prevent="onSubmit">
-      <div class="form-group">
-        <label for="country_id">{{$t("shop.models.country")}}</label>
-        <select class="form-control" id="country_id" v-model="country_id">
-          <option v-for="c in countries" :value="c.id">{{c.name}}</option>
-        </select>
-      </div>
       <div class="form-group">
         <label for="name">{{ $t("attributes.name") }}</label>
         <input v-model="name" type="text" class="form-control" id="name">
@@ -24,29 +18,27 @@ import AppDashboard from '../../Dashboard'
 import {postForm, get} from '../../../utils'
 
 export default {
-  name: 'new-state',
+  name: 'edit-state',
   data () {
     return {
-      name: '',
-      country_id: 0,
-      countries: []
+      id: this.$route.params.id,
+      name: ''
     }
   },
   components: {
     AppDashboard
   },
   created () {
-    get('/shop/countries', null, function (rst) {
-      this.countries = rst
+    get(`/shop/states/${this.id}`, null, function (rst) {
+      this.name = rst.name
     }.bind(this))
   },
   methods: {
     onSubmit () {
       postForm(
-        '/shop/states',
+        `/shop/states/${this.id}`,
         {
-          name: this.name,
-          country_id: this.country_id
+          name: this.name
         },
         function (result) {
           this.$router.push({name: 'shop.states.index'})

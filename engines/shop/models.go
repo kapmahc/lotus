@@ -217,18 +217,19 @@ func (p *Payment) TableName() string {
 	return "shop_payments"
 }
 
-//ShipmentMethod shipment method
-type ShipmentMethod struct {
+//ShippingMethod shipping method
+type ShippingMethod struct {
 	web.Model
 
+	Type     string `json:"type"`
 	Name     string `json:"name"`
 	Active   bool   `json:"active"`
 	Tracking string `json:"tracking"`
 }
 
 //TableName table name
-func (p *ShipmentMethod) TableName() string {
-	return "shop_shipment_methods"
+func (p *ShippingMethod) TableName() string {
+	return "shop_shipping_methods"
 }
 
 //Shipment shipment
@@ -242,10 +243,12 @@ type Shipment struct {
 	//:ready, :pending, :assemble, :cancelled, :shipped
 	State string `json:"state"`
 
-	OrderID         uint          `json:"order_id"`
-	Order           Order         `json:"order"`
-	PaymentMethodID uint          `json:"payment_method_id"`
-	PaymentMethod   PaymentMethod `json:"payment_method"`
+	OrderID          uint          `json:"order_id"`
+	Order            Order         `json:"order"`
+	PaymentMethodID  uint          `json:"payment_method_id"`
+	PaymentMethod    PaymentMethod `json:"payment_method"`
+	ShippingMethodID uint          `json:"shipping_method_id"`
+	ShippingMethod   PaymentMethod `json:"shipping_method"`
 }
 
 //TableName table name

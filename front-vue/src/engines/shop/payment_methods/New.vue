@@ -4,14 +4,14 @@
     <hr/>
     <form v-on:submit.prevent="onSubmit">
       <div class="form-group">
+        <label for="name">{{ $t("attributes.name") }}</label>
+        <input v-model="name" type="text" class="form-control" id="name">
+      </div>
+      <div class="form-group">
         <label for="country_id">{{$t("shop.models.country")}}</label>
         <select class="form-control" id="country_id" v-model="country_id">
           <option v-for="c in countries" :value="c.id">{{c.name}}</option>
         </select>
-      </div>
-      <div class="form-group">
-        <label for="name">{{ $t("attributes.name") }}</label>
-        <input v-model="name" type="text" class="form-control" id="name">
       </div>
       <button type="submit" class="btn btn-primary">{{ $t('buttons.submit') }}</button>
       <button type="reset" class="btn btn-secondary">{{ $t('buttons.reset') }}</button>

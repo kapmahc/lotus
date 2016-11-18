@@ -15,14 +15,14 @@ func (p *Engine) _initPaymentMethods(t, n string) error {
 	return nil
 }
 
-func (p *Engine) _initShipmentMethod(name, tracking string) error {
+func (p *Engine) _initShippingMethod(name, tracking string) error {
 
 	var count int
-	if err := p.Db.Model(&ShipmentMethod{}).Where("name = ?", name).Count(&count).Error; err != nil {
+	if err := p.Db.Model(&ShippingMethod{}).Where("name = ?", name).Count(&count).Error; err != nil {
 		return err
 	}
 	if count == 0 {
-		return p.Db.Create(&ShipmentMethod{
+		return p.Db.Create(&ShippingMethod{
 			Name:     name,
 			Tracking: tracking,
 			Active:   true,
@@ -84,25 +84,25 @@ func (p *Engine) Seed() error {
 		return err
 	}
 
-	if err := p._initShipmentMethod(
+	if err := p._initShippingMethod(
 		"UPS",
 		"https://www.ups.com/WebTracking/track",
 	); err != nil {
 		return nil
 	}
-	if err := p._initShipmentMethod(
+	if err := p._initShippingMethod(
 		"USPS",
 		"https://tools.usps.com/go/TrackConfirmAction_input",
 	); err != nil {
 		return nil
 	}
-	if err := p._initShipmentMethod(
+	if err := p._initShippingMethod(
 		"Fedex",
 		"https://www.fedex.com/apps/fedextrack/",
 	); err != nil {
 		return nil
 	}
-	if err := p._initShipmentMethod(
+	if err := p._initShippingMethod(
 		"中国邮政速递",
 		"http://www.ems.com.cn/mailtracking/you_jian_cha_xun.html",
 	); err != nil {

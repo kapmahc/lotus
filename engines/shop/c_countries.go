@@ -81,14 +81,17 @@ func (p *Engine) countriesUpdate(c *gin.Context) (interface{}, error) {
 }
 
 func (p *Engine) countriesDestroy(c *gin.Context) (interface{}, error) {
+	id := c.Param("id")
 	lang := c.MustGet(web.LOCALE).(string)
 	var item Country
-	if err := p.Db.Where("id = ?", c.Param("id")).Limit(1).Find(&item).Error; err != nil {
+	if err := p.Db.Where("id = ?", id).Limit(1).Find(&item).Error; err != nil {
 		return nil, err
 	}
+
 	if p.Db.Model(&item).Association("States").Count() > 0 {
 		return nil, p.I18n.E(lang, "messages.in-using")
 	}
+
 	err := p.Db.Delete(&item).Error
 	return item, err
 }

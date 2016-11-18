@@ -5,15 +5,15 @@ import (
 	"github.com/kapmahc/lotus/web"
 )
 
-type fmPaymentMethod struct {
-	Type        string `form:"type" binding:"required,max=16"`
-	Name        string `form:"name" binding:"required,max=255"`
-	Description string `form:"description"`
-	Active      bool   `form:"active"`
+type fmShippingMethod struct {
+	Type     string `form:"type" binding:"required,max=16"`
+	Name     string `form:"name" binding:"required,max=255"`
+	Tracking string `form:"tracking" binding:"required,max=255"`
+	Active   bool   `form:"active"`
 }
 
-func (p *Engine) paymentMethodsIndex(c *gin.Context) (interface{}, error) {
-	var items []PaymentMethod
+func (p *Engine) shipmentMethodsIndex(c *gin.Context) (interface{}, error) {
+	var items []ShippingMethod
 	if err := p.Db.Order("updated_at DESC").Find(&items).Error; err != nil {
 		return nil, err
 	}
@@ -21,14 +21,14 @@ func (p *Engine) paymentMethodsIndex(c *gin.Context) (interface{}, error) {
 	return items, nil
 }
 
-func (p *Engine) paymentMethodsCreate(c *gin.Context) (interface{}, error) {
+func (p *Engine) shipmentMethodsCreate(c *gin.Context) (interface{}, error) {
 	lang := c.MustGet(web.LOCALE).(string)
-	var fm fmPaymentMethod
+	var fm fmShippingMethod
 	if err := c.Bind(&fm); err != nil {
 		return nil, err
 	}
 	var count int
-	if err := p.Db.Model(&PaymentMethod{}).
+	if err := p.Db.Model(&ShippingMethod{}).
 		Where("name = ?", fm.Name).
 		Count(&count).Error; err != nil {
 		return nil, err
@@ -37,37 +37,37 @@ func (p *Engine) paymentMethodsCreate(c *gin.Context) (interface{}, error) {
 		return nil, p.I18n.E(lang, "messages.name-already-exists")
 	}
 
-	item := PaymentMethod{
-		Type:        fm.Type,
-		Name:        fm.Name,
-		Description: fm.Description,
-		Active:      fm.Active,
+	item := ShippingMethod{
+		Type:     fm.Type,
+		Name:     fm.Name,
+		Tracking: fm.Tracking,
+		Active:   fm.Active,
 	}
 	err := p.Db.Create(&item).Error
 	return item, err
 }
 
-func (p *Engine) paymentMethodsShow(c *gin.Context) (interface{}, error) {
-	var item PaymentMethod
+func (p *Engine) shipmentMethodsShow(c *gin.Context) (interface{}, error) {
+	var item ShippingMethod
 	e := p.Db.Where("id = ?", c.Param("id")).Limit(1).Find(&item).Error
 	return item, e
 }
 
-func (p *Engine) paymentMethodsUpdate(c *gin.Context) (interface{}, error) {
+func (p *Engine) shipmentMethodsUpdate(c *gin.Context) (interface{}, error) {
 	lang := c.MustGet(web.LOCALE).(string)
 
-	var fm fmPaymentMethod
+	var fm fmShippingMethod
 	if err := c.Bind(&fm); err != nil {
 		return nil, err
 	}
 
-	var item PaymentMethod
+	var item ShippingMethod
 	if err := p.Db.Where("id = ?", c.Param("id")).Limit(1).Find(&item).Error; err != nil {
 		return nil, err
 	}
 
 	var count int
-	if err := p.Db.Model(&PaymentMethod{}).
+	if err := p.Db.Model(&ShippingMethod{}).
 		Where("name = ? AND id != ?", fm.Name, item.ID).
 		Count(&count).Error; err != nil {
 		return nil, err
@@ -77,30 +77,30 @@ func (p *Engine) paymentMethodsUpdate(c *gin.Context) (interface{}, error) {
 	}
 
 	err := p.Db.Model(&item).Updates(map[string]interface{}{
-		"type":        fm.Type,
-		"name":        fm.Name,
-		"description": fm.Description,
-		"active":      fm.Active,
+		"type":     fm.Type,
+		"name":     fm.Name,
+		"tracking": fm.Tracking,
+		"active":   fm.Active,
 	}).Error
 
 	return item, err
 }
 
-func (p *Engine) paymentMethodsDestroy(c *gin.Context) (interface{}, error) {
+func (p *Engine) shipmentMethodsDestroy(c *gin.Context) (interface{}, error) {
 	id := c.Param("id")
 
-	var item PaymentMethod
+	var item ShippingMethod
 	lang := c.MustGet(web.LOCALE).(string)
 
 	if err := p.Db.Where("id = ?", id).Limit(1).Find(&item).Error; err != nil {
 		return nil, err
 	}
 	for _, obj := range []interface{}{
-		&Payment{},
+		&Shipment{},
 	} {
 		var count int
 		if err := p.Db.Model(obj).
-			Where("payment_method_id = ?", id).Count(&count).Error; err != nil {
+			Where("shipping_method_id = ?", id).Count(&count).Error; err != nil {
 			return nil, err
 		}
 		if count > 0 {
