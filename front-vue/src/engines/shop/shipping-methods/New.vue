@@ -1,6 +1,6 @@
 <template>
   <app-dashboard>
-    <h3>{{$t('buttons.new')}} {{ $t('shop.models.state') }}</h3>
+    <h3>{{$t('buttons.new')}} {{ $t('shop.models.shipping-method') }}</h3>
     <hr/>
     <form v-on:submit.prevent="onSubmit">
       <div class="form-group">
@@ -8,10 +8,14 @@
         <input v-model="name" type="text" class="form-control" id="name">
       </div>
       <div class="form-group">
-        <label for="country_id">{{$t("shop.models.country")}}</label>
-        <select class="form-control" id="country_id" v-model="country_id">
-          <option v-for="c in countries" :value="c.id">{{c.name}}</option>
-        </select>
+        <label for="type">{{ $t("shop.attributes.shipping-method-tracking") }}</label>
+        <input v-model="tracking" type="text" class="form-control" id="tracking">
+      </div>
+      <div class="form-check">
+        <label class="form-check-label">
+          <input class="form-check-input" type="checkbox" v-model="active">
+          {{ $t("attributes.active") }}
+        </label>
       </div>
       <button type="submit" class="btn btn-primary">{{ $t('buttons.submit') }}</button>
       <button type="reset" class="btn btn-secondary">{{ $t('buttons.reset') }}</button>
@@ -21,35 +25,32 @@
 
 <script>
 import AppDashboard from '../../Dashboard'
-import {postForm, get} from '../../../utils'
+import {postForm} from '../../../utils'
 
 export default {
-  name: 'new-state',
+  name: 'new-shipping-method',
   data () {
     return {
       name: '',
-      country_id: 0,
-      countries: []
+      tracking: '',
+      active: true
     }
   },
   components: {
     AppDashboard
   },
-  created () {
-    get('/shop/countries', null, function (rst) {
-      this.countries = rst
-    }.bind(this))
-  },
   methods: {
     onSubmit () {
       postForm(
-        '/shop/states',
+        '/shop/shipping-methods',
         {
+          type: this.type,
           name: this.name,
-          country_id: this.country_id
+          active: this.active,
+          tracking: this.tracking
         },
         function (result) {
-          this.$router.push({name: 'shop.states.index'})
+          this.$router.push({name: 'shop.shipping-methods.index'})
         }.bind(this)
       )
     }

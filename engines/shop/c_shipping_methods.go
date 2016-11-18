@@ -6,13 +6,12 @@ import (
 )
 
 type fmShippingMethod struct {
-	Type     string `form:"type" binding:"required,max=16"`
 	Name     string `form:"name" binding:"required,max=255"`
 	Tracking string `form:"tracking" binding:"required,max=255"`
 	Active   bool   `form:"active"`
 }
 
-func (p *Engine) shipmentMethodsIndex(c *gin.Context) (interface{}, error) {
+func (p *Engine) shippingMethodsIndex(c *gin.Context) (interface{}, error) {
 	var items []ShippingMethod
 	if err := p.Db.Order("updated_at DESC").Find(&items).Error; err != nil {
 		return nil, err
@@ -21,7 +20,7 @@ func (p *Engine) shipmentMethodsIndex(c *gin.Context) (interface{}, error) {
 	return items, nil
 }
 
-func (p *Engine) shipmentMethodsCreate(c *gin.Context) (interface{}, error) {
+func (p *Engine) shippingMethodsCreate(c *gin.Context) (interface{}, error) {
 	lang := c.MustGet(web.LOCALE).(string)
 	var fm fmShippingMethod
 	if err := c.Bind(&fm); err != nil {
@@ -38,7 +37,6 @@ func (p *Engine) shipmentMethodsCreate(c *gin.Context) (interface{}, error) {
 	}
 
 	item := ShippingMethod{
-		Type:     fm.Type,
 		Name:     fm.Name,
 		Tracking: fm.Tracking,
 		Active:   fm.Active,
@@ -47,13 +45,13 @@ func (p *Engine) shipmentMethodsCreate(c *gin.Context) (interface{}, error) {
 	return item, err
 }
 
-func (p *Engine) shipmentMethodsShow(c *gin.Context) (interface{}, error) {
+func (p *Engine) shippingMethodsShow(c *gin.Context) (interface{}, error) {
 	var item ShippingMethod
 	e := p.Db.Where("id = ?", c.Param("id")).Limit(1).Find(&item).Error
 	return item, e
 }
 
-func (p *Engine) shipmentMethodsUpdate(c *gin.Context) (interface{}, error) {
+func (p *Engine) shippingMethodsUpdate(c *gin.Context) (interface{}, error) {
 	lang := c.MustGet(web.LOCALE).(string)
 
 	var fm fmShippingMethod
@@ -77,7 +75,6 @@ func (p *Engine) shipmentMethodsUpdate(c *gin.Context) (interface{}, error) {
 	}
 
 	err := p.Db.Model(&item).Updates(map[string]interface{}{
-		"type":     fm.Type,
 		"name":     fm.Name,
 		"tracking": fm.Tracking,
 		"active":   fm.Active,
@@ -86,7 +83,7 @@ func (p *Engine) shipmentMethodsUpdate(c *gin.Context) (interface{}, error) {
 	return item, err
 }
 
-func (p *Engine) shipmentMethodsDestroy(c *gin.Context) (interface{}, error) {
+func (p *Engine) shippingMethodsDestroy(c *gin.Context) (interface{}, error) {
 	id := c.Param("id")
 
 	var item ShippingMethod

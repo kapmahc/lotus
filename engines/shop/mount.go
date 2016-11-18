@@ -7,47 +7,38 @@ import (
 
 //Mount web points
 func (p *Engine) Mount(rt *gin.Engine) {
-	sg := rt.Group("/shop")
-
-	sg.GET("/countries", web.JSON(p.countriesIndex))
-	sg.POST("/countries",
-		p.Jwt.CurrentUserHandler(true), p.Jwt.MustAdminHandler(),
-		web.JSON(p.countriesCreate),
+	//guest
+	//member
+	// admin
+	ag := rt.Group("/shop",
+		p.Jwt.CurrentUserHandler(true),
+		p.Jwt.MustAdminHandler(),
 	)
-	sg.GET("/countries/:id", web.JSON(p.countriesShow))
-	sg.POST("/countries/:id",
+
+	ag.GET("/countries", web.JSON(p.countriesIndex))
+	ag.POST("/countries", web.JSON(p.countriesCreate))
+	ag.GET("/countries/:id", web.JSON(p.countriesShow))
+	ag.POST("/countries/:id",
 		p.Jwt.CurrentUserHandler(true), p.Jwt.MustAdminHandler(),
 		web.JSON(p.countriesUpdate),
 	)
-	sg.DELETE("/countries/:id",
-		p.Jwt.CurrentUserHandler(true), p.Jwt.MustAdminHandler(),
-		web.JSON(p.countriesDestroy))
+	ag.DELETE("/countries/:id", web.JSON(p.countriesDestroy))
 
-	sg.GET("/states", web.JSON(p.statesIndex))
-	sg.POST("/states",
-		p.Jwt.CurrentUserHandler(true), p.Jwt.MustAdminHandler(),
-		web.JSON(p.statesCreate),
-	)
-	sg.GET("/states/:id", web.JSON(p.statesShow))
-	sg.POST("/states/:id",
-		p.Jwt.CurrentUserHandler(true), p.Jwt.MustAdminHandler(),
-		web.JSON(p.statesUpdate),
-	)
-	sg.DELETE("/states/:id",
-		p.Jwt.CurrentUserHandler(true), p.Jwt.MustAdminHandler(),
-		web.JSON(p.statesDestroy))
+	ag.GET("/states", web.JSON(p.statesIndex))
+	ag.POST("/states", web.JSON(p.statesCreate))
+	ag.GET("/states/:id", web.JSON(p.statesShow))
+	ag.POST("/states/:id", web.JSON(p.statesUpdate))
+	ag.DELETE("/states/:id", web.JSON(p.statesDestroy))
 
-	sg.GET("/payment-methods", web.JSON(p.paymentMethodsIndex))
-	sg.POST("/payment-methods",
-		p.Jwt.CurrentUserHandler(true), p.Jwt.MustAdminHandler(),
-		web.JSON(p.paymentMethodsCreate),
-	)
-	sg.GET("/payment-methods/:id", web.JSON(p.paymentMethodsShow))
-	sg.POST("/payment-methods/:id",
-		p.Jwt.CurrentUserHandler(true), p.Jwt.MustAdminHandler(),
-		web.JSON(p.paymentMethodsUpdate),
-	)
-	sg.DELETE("/payment-methods/:id",
-		p.Jwt.CurrentUserHandler(true), p.Jwt.MustAdminHandler(),
-		web.JSON(p.paymentMethodsDestroy))
+	ag.GET("/payment-methods", web.JSON(p.paymentMethodsIndex))
+	ag.POST("/payment-methods", web.JSON(p.paymentMethodsCreate))
+	ag.GET("/payment-methods/:id", web.JSON(p.paymentMethodsShow))
+	ag.POST("/payment-methods/:id", web.JSON(p.paymentMethodsUpdate))
+	ag.DELETE("/payment-methods/:id", web.JSON(p.paymentMethodsDestroy))
+
+	ag.GET("/shipping-methods", web.JSON(p.shippingMethodsIndex))
+	ag.POST("/shipping-methods", web.JSON(p.shippingMethodsCreate))
+	ag.GET("/shipping-methods/:id", web.JSON(p.shippingMethodsShow))
+	ag.POST("/shipping-methods/:id", web.JSON(p.shippingMethodsUpdate))
+	ag.DELETE("/shipping-methods/:id", web.JSON(p.shippingMethodsDestroy))
 }

@@ -142,7 +142,7 @@ create table shop_payments(
 create index idx_shop_payments_state on shop_payments(state);
 
 create table shop_shipping_methods(
-  id serial primary key,
+  id serial primary key,  
   name varchar(255) not null,
   active boolean not null,
   tracking varchar(255) not null,

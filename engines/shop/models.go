@@ -221,7 +221,6 @@ func (p *Payment) TableName() string {
 type ShippingMethod struct {
 	web.Model
 
-	Type     string `json:"type"`
 	Name     string `json:"name"`
 	Active   bool   `json:"active"`
 	Tracking string `json:"tracking"`
