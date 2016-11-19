@@ -12,11 +12,11 @@
             <span class="sr-only">(current)</span>
           </router-link>
         </li>
-        <drop-link v-if="user.uid"
+        <drop-link v-if="isSignIn"
           v-for="(item, index) in member"
           v-bind:item="item"
           v-bind:id="index" />
-        <drop-link v-if="user.roles && user.roles.includes('admin')"
+        <drop-link v-if="isAdmin"
           v-for="(item, index) in admin"
           v-bind:item="item"
           v-bind:id="index" />
@@ -29,8 +29,8 @@
      </nav>
     <div class="container">
       <slot>
-        <nav-pane v-if="user.uid" :items="member" />
-        <nav-pane v-if="user.roles && user.roles.includes('admin')" :items="admin" />
+        <nav-pane v-if="isSignIn" :items="member" />
+        <nav-pane v-if="isAdmin" :items="admin" />
       </slot>
       <layout-footer/>
     </div>
@@ -43,6 +43,7 @@ import LangBar from '../components/LangBar'
 import PersonalBar from '../components/PersonalBar'
 import NavPane from '../components/NavPane'
 import DropLink from '../components/DropLink'
+import {isSignIn, isAdmin} from './auth/utils'
 
 export default {
   name: 'app-dashboard',
@@ -57,6 +58,16 @@ export default {
         {label: 'auth.pages.info', href: 'users.info'},
         {label: 'auth.pages.change-password', href: 'users.change-password'},
         {label: 'auth.pages.logs', href: 'users.logs'}
+      ]
+    })
+
+    member.push({
+      id: 'forum',
+      title: 'forum.pages.profile',
+      links: [
+        {label: 'forum.pages.new-article', href: 'forum.articles.new'},
+        {label: 'forum.pages.my-articles', href: 'forum.articles.my'},
+        {label: 'forum.pages.my-comments', href: 'forum.comments.my'}
       ]
     })
 
@@ -111,8 +122,11 @@ export default {
     info () {
       return this.$store.state.siteInfo
     },
-    user () {
-      return this.$store.state.currentUser
+    isSignIn () {
+      return isSignIn(this.$store.state.currentUser)
+    },
+    isAdmin () {
+      return isAdmin(this.$store.state.currentUser)
     }
   },
   components: {
