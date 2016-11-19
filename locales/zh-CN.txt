@@ -160,7 +160,7 @@ reading.attributes.book-file = 文件
 
 reading.messages.scan-run-on-back = 扫描任务后台运行中，请稍后刷新页面。
 
-forum.pages.profile = 论坛模块
+forum.pages.profile = 交流论坛
 forum.pages.tags = 标签列表
 forum.pages.new-tag = 添加标签
 forum.pages.edit-tag = 编辑标签 [{id}]

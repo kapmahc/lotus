@@ -12,12 +12,8 @@
             <span class="sr-only">(current)</span>
           </router-link>
         </li>
-        <drop-link v-if="isSignIn"
-          v-for="(item, index) in member"
-          v-bind:item="item"
-          v-bind:id="index" />
-        <drop-link v-if="isAdmin"
-          v-for="(item, index) in admin"
+        <drop-link
+          v-for="(item, index) in links"
           v-bind:item="item"
           v-bind:id="index" />
       </ul>
@@ -29,8 +25,7 @@
      </nav>
     <div class="container">
       <slot>
-        <nav-pane v-if="isSignIn" :items="member" />
-        <nav-pane v-if="isAdmin" :items="admin" />
+        <nav-pane :items="links" />
       </slot>
       <layout-footer/>
     </div>
@@ -48,85 +43,89 @@ import {isSignIn, isAdmin} from './auth/utils'
 export default {
   name: 'app-dashboard',
   data () {
-    var member = []
-    var admin = []
-
-    member.push({
-      id: 'auth-users',
-      title: 'auth.pages.profile',
-      links: [
-        {label: 'auth.pages.info', href: 'users.info'},
-        {label: 'auth.pages.change-password', href: 'users.change-password'},
-        {label: 'auth.pages.logs', href: 'users.logs'}
-      ]
-    })
-
-    member.push({
-      id: 'forum',
-      title: 'forum.pages.profile',
-      links: [
-        {label: 'forum.pages.new-article', href: 'forum.articles.new'},
-        {label: 'forum.pages.my-articles', href: 'forum.articles.my'},
-        {label: 'forum.pages.my-comments', href: 'forum.comments.my'}
-      ]
-    })
-
-    admin.push({
-      id: 'auth-site',
-      title: 'auth.pages.admin-profile',
-      links: [
-        {label: 'auth.pages.admin-author', href: 'admin.author'},
-        {label: 'auth.pages.admin-base', href: 'admin.base'},
-        {label: 'auth.pages.admin-locales', href: 'admin.locales'},
-        {label: 'auth.pages.admin-seo', href: 'admin.seo'},
-        {label: 'auth.pages.admin-smtp', href: 'admin.smtp'},
-        {label: 'auth.pages.admin-status', href: 'admin.status'},
-        {label: 'auth.pages.admin-users', href: 'admin.users'},
-        {label: 'auth.pages.leavewords', href: 'leavewords.index'},
-        {label: 'auth.pages.notices', href: 'notices.admin'}
-      ]
-    })
-
-    member.push({
-      id: 'shop-member',
-      title: 'shop.pages.self-profile',
-      links: [
-        {label: 'shop.pages.self-addresses', href: 'home'},
-        {label: 'shop.pages.self-cart', href: 'home'},
-        {label: 'shop.pages.self-orders', href: 'home'},
-        {label: 'shop.pages.self-returns', href: 'home'},
-        {label: 'shop.pages.self-messages', href: 'home'},
-        {label: 'shop.pages.self-history', href: 'home'}
-      ]
-    })
-    admin.push({
-      id: 'shop-admin',
-      title: 'shop.pages.admin-profile',
-      links: [
-        {label: 'shop.pages.admin-countries-states', href: 'shop.countries.index'},
-        {label: 'shop.pages.admin-payments-methods', href: 'shop.payment-methods.index'},
-        {label: 'shop.pages.admin-shipping-methods', href: 'shop.shipping-methods.index'},
-        {label: 'shop.pages.admin-products', href: 'home'},
-        {label: 'shop.pages.admin-promotions', href: 'home'},
-        {label: 'shop.pages.admin-orders', href: 'home'},
-        {label: 'shop.pages.admin-returns', href: 'home'}
-      ]
-    })
-
     return {
-      member,
-      admin
+      links: []
     }
   },
   computed: {
+    links () {
+      var user = this.$store.state.currentUser
+      var links = []
+      var admin = isAdmin(this.$store.state.currentUser)
+      if (isSignIn(user)) {
+        links.push({
+          id: 'auth-users',
+          title: 'auth.pages.profile',
+          links: [
+            {label: 'auth.pages.info', href: 'users.info'},
+            {label: 'auth.pages.change-password', href: 'users.change-password'},
+            {label: 'auth.pages.logs', href: 'users.logs'}
+          ]
+        })
+        if (admin) {
+          links.push({
+            id: 'auth-site',
+            title: 'auth.pages.admin-profile',
+            links: [
+              {label: 'auth.pages.admin-author', href: 'admin.author'},
+              {label: 'auth.pages.admin-base', href: 'admin.base'},
+              {label: 'auth.pages.admin-locales', href: 'admin.locales'},
+              {label: 'auth.pages.admin-seo', href: 'admin.seo'},
+              {label: 'auth.pages.admin-smtp', href: 'admin.smtp'},
+              {label: 'auth.pages.admin-status', href: 'admin.status'},
+              {label: 'auth.pages.admin-users', href: 'admin.users'},
+              {label: 'auth.pages.leavewords', href: 'leavewords.index'},
+              {label: 'auth.pages.notices', href: 'notices.admin'}
+            ]
+          })
+        }
+
+        var forum = {
+          id: 'forum',
+          title: 'forum.pages.profile',
+          links: [
+            {label: 'forum.pages.new-article', href: 'forum.articles.new'},
+            {label: 'forum.pages.my-articles', href: 'forum.articles.my'},
+            {label: 'forum.pages.my-comments', href: 'forum.comments.my'}
+          ]
+        }
+        if (admin) {
+          forum.links.push({
+            label: 'forum.pages.tags',
+            href: 'forum.tags.admin'
+          })
+        }
+        links.push(forum)
+
+        var shop = {
+          id: 'shop-member',
+          title: 'shop.pages.self-profile',
+          links: [
+            {label: 'shop.pages.self-addresses', href: 'home'},
+            {label: 'shop.pages.self-cart', href: 'home'},
+            {label: 'shop.pages.self-orders', href: 'home'},
+            {label: 'shop.pages.self-returns', href: 'home'},
+            {label: 'shop.pages.self-messages', href: 'home'},
+            {label: 'shop.pages.self-history', href: 'home'}
+          ]
+        }
+        if (admin) {
+          shop.links.push(
+            {label: 'shop.pages.admin-countries-states', href: 'shop.countries.index'},
+            {label: 'shop.pages.admin-payments-methods', href: 'shop.payment-methods.index'},
+            {label: 'shop.pages.admin-shipping-methods', href: 'shop.shipping-methods.index'},
+            {label: 'shop.pages.admin-products', href: 'home'},
+            {label: 'shop.pages.admin-promotions', href: 'home'},
+            {label: 'shop.pages.admin-orders', href: 'home'},
+            {label: 'shop.pages.admin-returns', href: 'home'}
+          )
+        }
+        links.push(shop)
+      }
+      return links
+    },
     info () {
       return this.$store.state.siteInfo
-    },
-    isSignIn () {
-      return isSignIn(this.$store.state.currentUser)
-    },
-    isAdmin () {
-      return isAdmin(this.$store.state.currentUser)
     }
   },
   components: {
