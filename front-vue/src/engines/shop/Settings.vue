@@ -20,6 +20,16 @@
         {{$t('shop.models.shipping-method')}}
       </router-link>
     </li>
+    <li class="nav-item">
+      <router-link class="nav-link" :to="{name: 'shop.currencies.index'}">
+        {{$t('shop.models.currency')}}
+      </router-link>
+    </li>
+    <li class="nav-item">
+      <router-link class="nav-link" :to="{name: 'shop.postal-codes.index'}">
+        {{$t('shop.models.postal-code')}}
+      </router-link>
+    </li>
   </ul>
 </template>
 

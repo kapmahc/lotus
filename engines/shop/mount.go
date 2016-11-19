@@ -41,4 +41,10 @@ func (p *Engine) Mount(rt *gin.Engine) {
 	ag.GET("/shipping-methods/:id", web.JSON(p.shippingMethodsShow))
 	ag.POST("/shipping-methods/:id", web.JSON(p.shippingMethodsUpdate))
 	ag.DELETE("/shipping-methods/:id", web.JSON(p.shippingMethodsDestroy))
+
+	ag.GET("/currencies", web.JSON(p.currenciesIndex))
+	ag.GET("/currencies/:id", web.JSON(p.currenciesShow))
+	ag.POST("/currencies/:id", web.JSON(p.currenciesUpdate))
+
+	ag.GET("/postal-codes", web.JSON(p.postalCodesIndex))
 }

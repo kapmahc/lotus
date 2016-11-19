@@ -10,8 +10,10 @@ import PaymentMethodsEdit from './payment-methods/Edit'
 import ShippingMethodsIndex from './shipping-methods/Index'
 import ShippingMethodsNew from './shipping-methods/New'
 import ShippingMethodsEdit from './shipping-methods/Edit'
+import CurrenciesIndex from './currencies/Index'
 
 export default [
+  {name: 'shop.currencies.index', path: '/shop/currencies', component: CurrenciesIndex},
   {name: 'shop.shipping-methods.index', path: '/shop/shipping-methods', component: ShippingMethodsIndex},
   {name: 'shop.shipping-methods.new', path: '/shop/shipping-methods/new', component: ShippingMethodsNew},
   {name: 'shop.shipping-methods.edit', path: '/shop/shipping-methods/:id/edit', component: ShippingMethodsEdit},

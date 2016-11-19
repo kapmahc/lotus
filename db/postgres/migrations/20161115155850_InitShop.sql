@@ -8,8 +8,8 @@ create table shop_postal_codes(
   state varchar(255) not null,
   state_abbreviation varchar(3) not null,
   county varchar(255) not null,
-  latitude varchar(12) not null,
-  longitude varchar(12) not null,
+  latitude numeric(8,4) not null,
+  longitude numeric(8,4) not null,
   created_at timestamp without time zone not null default now(),
   updated_at timestamp without time zone not null
 );

@@ -237,6 +237,10 @@ shop.models.country = 国家/地区
 shop.models.state = 省份/州
 shop.models.payment-method = 支付方式
 shop.models.shipping-method = 快递方式
+shop.models.currency = 货币
+shop.models.postal-code = 邮政编码
 
 shop.attributes.country-states = 省份/州列表
 shop.attributes.shipping-method-tracking = 追踪地址
+shop.attributes.currency-cid = 代号
+shop.attributes.currency-rate = 汇率

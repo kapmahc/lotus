@@ -23,8 +23,8 @@ type PostalCode struct {
 	State             string
 	StateAbbreviation string
 	County            string
-	Latitude          string
-	Longitude         string
+	Latitude          float64
+	Longitude         float64
 }
 
 //TableName table name

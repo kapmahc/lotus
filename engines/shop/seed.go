@@ -5,6 +5,7 @@ import (
 	"encoding/xml"
 	"io"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -197,15 +198,20 @@ func (p *Engine) _initPostalCodes() error {
 			return nil
 		}
 		if line[0] != "Postal Code" {
-			if err := p.Db.Create(&PostalCode{
+			pc := PostalCode{
 				Cid:               line[0],
 				PlaceName:         line[1],
 				State:             line[2],
 				StateAbbreviation: line[3],
 				County:            line[4],
-				Latitude:          line[5],
-				Longitude:         line[6],
-			}).Error; err != nil {
+			}
+			if pc.Latitude, err = strconv.ParseFloat(line[5], 64); err != nil {
+				return err
+			}
+			if pc.Longitude, err = strconv.ParseFloat(line[6], 64); err != nil {
+				return err
+			}
+			if err = p.Db.Create(&pc).Error; err != nil {
 				return err
 			}
 		}
