@@ -170,6 +170,51 @@ func (p *Engine) _initCurrencies() error {
 	return nil
 }
 
+func (p *Engine) _initPostalCodes() error {
+	var count int
+	if err := p.Db.
+		Model(&PostalCode{}).
+		Count(&count).Error; err != nil {
+		return err
+	}
+	if count > 0 {
+		return nil
+	}
+
+	fd, err := os.Open("db/seed/us_postal_codes.csv")
+	if err != nil {
+		return err
+	}
+	defer fd.Close()
+
+	rd := csv.NewReader(fd)
+	for {
+		line, err := rd.Read()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			return nil
+		}
+		if line[0] != "Postal Code" {
+			if err := p.Db.Create(&PostalCode{
+				Cid:               line[0],
+				PlaceName:         line[1],
+				State:             line[2],
+				StateAbbreviation: line[3],
+				County:            line[4],
+				Latitude:          line[5],
+				Longitude:         line[6],
+			}).Error; err != nil {
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
 //Seed Insert seed data
 func (p *Engine) Seed() error {
 	if err := p._initCountries(); err != nil {
@@ -181,6 +226,12 @@ func (p *Engine) Seed() error {
 	if err := p._initShippingMethods(); err != nil {
 		return err
 	}
+	if err := p._initCurrencies(); err != nil {
+		return err
+	}
+	if err := p._initPostalCodes(); err != nil {
+		return err
+	}
 
-	return p._initCurrencies()
+	return nil
 }

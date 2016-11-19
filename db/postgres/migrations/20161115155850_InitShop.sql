@@ -1,6 +1,23 @@
 
 -- +goose Up
 -- SQL in section 'Up' is executed when this migration is applied
+create table shop_postal_codes(
+  id serial primary key,
+  cid varchar(6) not null,
+  place_name varchar(255) not null,
+  state varchar(255) not null,
+  state_abbreviation varchar(3) not null,
+  county varchar(255) not null,
+  latitude varchar(12) not null,
+  longitude varchar(12) not null,
+  created_at timestamp without time zone not null default now(),
+  updated_at timestamp without time zone not null
+);
+create index idx_shop_postal_codes_cid on shop_postal_codes(cid);
+create index idx_shop_postal_codes_place_name on shop_postal_codes(place_name);
+create index idx_shop_postal_codes_state on shop_postal_codes(state);
+create index idx_shop_postal_codes_state_abbreviation on shop_postal_codes(state_abbreviation);
+create index idx_shop_postal_codes_county on shop_postal_codes(county);
 
 create table shop_currencies(
   id serial primary key,
@@ -264,3 +281,4 @@ drop table shop_products_categories;
 drop table shop_categories;
 drop table shop_products;
 drop table shop_currencies;
+drop table shop_postal_codes;

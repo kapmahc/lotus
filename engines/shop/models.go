@@ -11,6 +11,27 @@ import (
 	"github.com/kapmahc/lotus/web"
 )
 
+//PostalCode postal code
+//http://download.geonames.org/export/zip/
+//http://www.geopostcodes.com/resources
+//https://www.aggdata.com/download_sample.php?file=us_postal_codes.zip
+type PostalCode struct {
+	web.Model
+
+	Cid               string
+	PlaceName         string
+	State             string
+	StateAbbreviation string
+	County            string
+	Latitude          string
+	Longitude         string
+}
+
+//TableName table name
+func (p *PostalCode) TableName() string {
+	return "shop_postal_codes"
+}
+
 //Currency currency
 type Currency struct {
 	web.Model
