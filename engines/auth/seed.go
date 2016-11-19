@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/spf13/viper"
@@ -14,12 +15,26 @@ func (p *Engine) Seed() error {
 		return err
 	}
 	if count == 0 {
-		email := viper.GetString("server.manager")
+		defEmail := viper.GetString("server.manager")
+		defPassword := "change-me"
+		var email, password string
+		fmt.Printf("Your email address[%s]:\n", defEmail)
+		fmt.Scanf("%s", &email)
+
+		fmt.Printf("Password[%s]:\n", defPassword)
+		fmt.Scanf("%s", &password)
+		if email == "" {
+			email = defEmail
+		}
+		if password == "" {
+			password = defPassword
+		}
+
 		user, err := p.Dao.AddEmailUser(
 			language.AmericanEnglish.String(),
 			email,
 			"administrator",
-			"change-me",
+			password,
 		)
 		if err != nil {
 			return err
