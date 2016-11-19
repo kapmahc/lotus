@@ -11,6 +11,30 @@ import (
 	"github.com/kapmahc/lotus/web"
 )
 
+//Currency currency
+type Currency struct {
+	web.Model
+
+	// Ccy
+	Cid string `json:"cid"`
+	// CcyNbr
+	Code string `json:"code"`
+	// CcyNm
+	Name string `json:"name"`
+	// CtryNm
+	Country string `json:"country"`
+	// CcyMnrUnts
+	Units string `json:"units"`
+
+	Rate   float64 `json:"rate"`
+	Active bool    `json:"active"`
+}
+
+//TableName table name
+func (p *Currency) TableName() string {
+	return "shop_currencies"
+}
+
 //Category category
 type Category struct {
 	web.Model
@@ -49,9 +73,11 @@ type Variant struct {
 	CostPrice float64 `json:"cost_price"`
 	Price     float64 `json:"price"`
 
-	ProductID uint       `json:"product_id"`
-	Product   Product    `json:"product"`
-	Poperties []Property `json:"properties"`
+	ProductID  uint       `json:"product_id"`
+	Product    Product    `json:"product"`
+	Poperties  []Property `json:"properties"`
+	Currency   Currency   `json:"currency"`
+	CurrencyID uint       `json:"currency_id"`
 }
 
 //TableName table name
@@ -148,11 +174,15 @@ func (p *Property) TableName() string {
 type Order struct {
 	web.Model
 
-	UID             string  `json:"uid"`
-	ItemTotal       float64 `json:"item_total"`
-	Total           float64 `json:"total"`
+	UID string `json:"uid"`
+	// only products
+	ItemTotal float64 `json:"item_total"`
+	// all
+	Total float64 `json:"total"`
+	// except products
 	AdjustmentTotal float64 `json:"adjustment_total"`
-	PaymentTotal    float64 `json:"payment_total"`
+	// actual pay
+	PaymentTotal float64 `json:"payment_total"`
 
 	//:cart, :address, :delivery, :payment, :confirm, :complete
 	State string `json:"state"`
@@ -163,10 +193,12 @@ type Order struct {
 
 	CompletedAt *time.Time `json:"completed_at"`
 
-	AddressID uint    `json:"address_id"`
-	Address   Address `json:"address"`
-	User      string  `json:"user"`
-	UserID    uint    `json:"user_id"`
+	AddressID  uint      `json:"address_id"`
+	Address    Address   `json:"address"`
+	User       auth.User `json:"user"`
+	UserID     uint      `json:"user_id"`
+	Currency   Currency  `json:"currency"`
+	CurrencyID uint      `json:"currency_id"`
 }
 
 //TableName table name

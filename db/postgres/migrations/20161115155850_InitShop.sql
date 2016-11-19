@@ -1,6 +1,24 @@
 
 -- +goose Up
 -- SQL in section 'Up' is executed when this migration is applied
+
+create table shop_currencies(
+  id serial primary key,
+  cid char(3) not null,
+  code char(3) not null,
+  name varchar(255) not null,
+  country varchar(255) not null,
+  rate numeric(12,6) not null,
+  units varchar(8) not null,
+  active boolean not null,
+  created_at timestamp without time zone not null default now(),
+  updated_at timestamp without time zone not null
+);
+create index idx_shop_currencies_cid on shop_currencies(cid);
+create index idx_shop_currencies_code on shop_currencies(code);
+create index idx_shop_currencies_name on shop_currencies(name);
+create index idx_shop_currencies_country on shop_currencies(country);
+
 create table shop_products(
   id serial primary key,
   name varchar(255) not null,
@@ -17,7 +35,7 @@ create table shop_categories(
   created_at timestamp without time zone not null default now(),
   updated_at timestamp without time zone not null
 );
-create unique index idx_shop_categories on shop_categories(name);
+create unique index idx_shop_categories_name on shop_categories(name);
 
 create table shop_products_categories(
   id serial primary key,
@@ -36,6 +54,7 @@ create table shop_variants(
   weight numeric(12,2) not null,
   height numeric(12,2) not null,
   product_id int not null,
+  currency_id int not null,
   created_at timestamp without time zone not null default now(),
   updated_at timestamp without time zone not null
 );
@@ -114,6 +133,7 @@ create table shop_orders(
   user_id int not null,
   completed_at timestamp without time zone,
   address_id int not null,
+  currency_id int not null,
   created_at timestamp without time zone not null default now(),
   updated_at timestamp without time zone not null
 );
@@ -243,3 +263,4 @@ drop table shop_variants;
 drop table shop_products_categories;
 drop table shop_categories;
 drop table shop_products;
+drop table shop_currencies;

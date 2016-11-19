@@ -1,5 +1,10 @@
 package shop
 
+import (
+	"encoding/xml"
+	"net/http"
+)
+
 func (p *Engine) _initPaymentMethods(t, n string) error {
 
 	var count int
@@ -56,6 +61,44 @@ func (p *Engine) _initCountry(name string, states ...string) error {
 	return nil
 }
 
+func (p *Engine) _initCurrencies() error {
+	var count int
+	if err := p.Db.Model(&Currency{}).Count(&count).Error; err != nil {
+		return err
+	}
+	if count > 0 {
+		return nil
+	}
+
+	res, err := http.Get(iso4217)
+	// res.Header.Add("Accept", "application/xml")
+	// res.Header.Add("Content-Type", "application/xml; charset=utf-8")
+	if err != nil {
+		return err
+	}
+	defer res.Body.Close()
+
+	var val ISO4217
+	dec := xml.NewDecoder(res.Body)
+	if err = dec.Decode(&val); err != nil {
+		return err
+	}
+
+	for _, it := range val.CcyTbl.CcyNtry {
+		if err = p.Db.Create(&Currency{
+			Country: it.CtryNm,
+			Name:    it.CcyNm,
+			Cid:     it.Ccy,
+			Code:    it.CcyNbr,
+			Units:   it.CcyMnrUnts,
+		}).Error; err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
 //Seed Insert seed data
 func (p *Engine) Seed() error {
 	if err := p._initCountry(
@@ -109,5 +152,5 @@ func (p *Engine) Seed() error {
 		return nil
 	}
 
-	return nil
+	return p._initCurrencies()
 }
