@@ -1,8 +1,8 @@
 package shop
 
-import "encoding/xml"
+// http://www.currency-iso.org/dam/downloads/lists/list_one.xml
 
-const iso4217 = "http://www.currency-iso.org/dam/downloads/lists/list_one.xml"
+import "encoding/xml"
 
 //ISO4217 iso-4217
 type ISO4217 struct {

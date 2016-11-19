@@ -9,7 +9,7 @@ import (
 )
 
 func TestISO4217(t *testing.T) {
-	fd, err := os.Open("list_one.xml")
+	fd, err := os.Open("../../db/seed/list_one.xml")
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -97,7 +97,7 @@ export default {
         }
         links.push(forum)
 
-        var shop = {
+        links.push({
           id: 'shop-member',
           title: 'shop.pages.self-profile',
           links: [
@@ -108,19 +108,22 @@ export default {
             {label: 'shop.pages.self-messages', href: 'home'},
             {label: 'shop.pages.self-history', href: 'home'}
           ]
-        }
+        })
         if (admin) {
-          shop.links.push(
-            {label: 'shop.pages.admin-countries-states', href: 'shop.countries.index'},
-            {label: 'shop.pages.admin-payments-methods', href: 'shop.payment-methods.index'},
-            {label: 'shop.pages.admin-shipping-methods', href: 'shop.shipping-methods.index'},
-            {label: 'shop.pages.admin-products', href: 'home'},
-            {label: 'shop.pages.admin-promotions', href: 'home'},
-            {label: 'shop.pages.admin-orders', href: 'home'},
-            {label: 'shop.pages.admin-returns', href: 'home'}
-          )
+          links.push({
+            id: 'shop-admin',
+            title: 'shop.pages.admin-profile',
+            links: [
+              {label: 'shop.pages.admin-countries-states', href: 'shop.countries.index'},
+              {label: 'shop.pages.admin-payments-methods', href: 'shop.payment-methods.index'},
+              {label: 'shop.pages.admin-shipping-methods', href: 'shop.shipping-methods.index'},
+              {label: 'shop.pages.admin-products', href: 'home'},
+              {label: 'shop.pages.admin-promotions', href: 'home'},
+              {label: 'shop.pages.admin-orders', href: 'home'},
+              {label: 'shop.pages.admin-returns', href: 'home'}
+            ]
+          })
         }
-        links.push(shop)
       }
       return links
     },
