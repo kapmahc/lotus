@@ -1,5 +1,6 @@
 <template>
   <app-dashboard>
+    <admin-settings />
     <br/>
     <h3>
       {{ $t('shop.models.shipping-method') }}
@@ -41,6 +42,7 @@
 
 <script>
 import AppDashboard from '../../Dashboard'
+import AdminSettings from '../Settings'
 import {get, _delete} from '../../../utils'
 
 export default {
@@ -54,7 +56,8 @@ export default {
     this.refresh()
   },
   components: {
-    AppDashboard
+    AppDashboard,
+    AdminSettings
   },
   methods: {
     refresh () {

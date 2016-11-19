@@ -114,9 +114,7 @@ export default {
             id: 'shop-admin',
             title: 'shop.pages.admin-profile',
             links: [
-              {label: 'shop.pages.admin-countries-states', href: 'shop.countries.index'},
-              {label: 'shop.pages.admin-payments-methods', href: 'shop.payment-methods.index'},
-              {label: 'shop.pages.admin-shipping-methods', href: 'shop.shipping-methods.index'},
+              {label: 'shop.pages.admin-settings', href: 'shop.countries.index'},
               {label: 'shop.pages.admin-products', href: 'home'},
               {label: 'shop.pages.admin-promotions', href: 'home'},
               {label: 'shop.pages.admin-orders', href: 'home'},

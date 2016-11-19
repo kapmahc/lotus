@@ -1,6 +1,6 @@
 <template>
   <app-dashboard>
-    <shipment-zone/>
+    <admin-settings/>
     <br/>
     <h3>
       {{ $t('shop.models.state') }}
@@ -38,7 +38,7 @@
 
 <script>
 import AppDashboard from '../../Dashboard'
-import ShipmentZone from '../shared/ShipmentZone'
+import AdminSettings from '../Settings'
 import {get, _delete} from '../../../utils'
 
 export default {
@@ -53,7 +53,7 @@ export default {
   },
   components: {
     AppDashboard,
-    ShipmentZone
+    AdminSettings
   },
   methods: {
     refresh () {

@@ -10,11 +10,21 @@
         {{$t('shop.models.state')}}
       </router-link>
     </li>
+    <li class="nav-item">
+      <router-link class="nav-link" :to="{name: 'shop.payment-methods.index'}">
+        {{$t('shop.models.payment-method')}}
+      </router-link>
+    </li>
+    <li class="nav-item">
+      <router-link class="nav-link" :to="{name: 'shop.shipping-methods.index'}">
+        {{$t('shop.models.shipping-method')}}
+      </router-link>
+    </li>
   </ul>
 </template>
 
 <script>
 export default {
-  name: 'shop-shipment-zone'
+  name: 'shop-admin-settings'
 }
 </script>
