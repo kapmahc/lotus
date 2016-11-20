@@ -18,13 +18,14 @@ import (
 type PostalCode struct {
 	web.Model
 
-	Cid               string
-	PlaceName         string
-	State             string
-	StateAbbreviation string
-	County            string
-	Latitude          float64
-	Longitude         float64
+	Cid               string  `json:"cid"`
+	PlaceName         string  `json:"place_name"`
+	Country           string  `json:"country"`
+	State             string  `json:"state"`
+	StateAbbreviation string  `json:"state_abbreviation"`
+	County            string  `json:"county"`
+	Latitude          float64 `json:"latitude"`
+	Longitude         float64 `json:"longitude"`
 }
 
 //TableName table name

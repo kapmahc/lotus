@@ -199,6 +199,7 @@ func (p *Engine) _initPostalCodes() error {
 		}
 		if line[0] != "Postal Code" {
 			pc := PostalCode{
+				Country:           "United States of America",
 				Cid:               line[0],
 				PlaceName:         line[1],
 				State:             line[2],

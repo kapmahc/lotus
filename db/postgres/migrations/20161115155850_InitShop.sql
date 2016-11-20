@@ -5,6 +5,7 @@ create table shop_postal_codes(
   id serial primary key,
   cid varchar(6) not null,
   place_name varchar(255) not null,
+  country varchar(255) not null,
   state varchar(255) not null,
   state_abbreviation varchar(3) not null,
   county varchar(255) not null,
@@ -13,6 +14,7 @@ create table shop_postal_codes(
   created_at timestamp without time zone not null default now(),
   updated_at timestamp without time zone not null
 );
+create index idx_shop_postal_codes_country on shop_postal_codes(country);
 create index idx_shop_postal_codes_cid on shop_postal_codes(cid);
 create index idx_shop_postal_codes_place_name on shop_postal_codes(place_name);
 create index idx_shop_postal_codes_state on shop_postal_codes(state);

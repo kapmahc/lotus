@@ -16,15 +16,12 @@ func TestDatabase(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	wrt, err := web.OpenLogger("test")
-	if err != nil {
-		t.Fatal(err)
-	}
+
 	db.LogMode(true)
 	db.AutoMigrate(&web.Locale{})
 	db.Model(&web.Locale{}).AddUniqueIndex("idx_locales_lang_code", "lang", "code")
 
-	p := web.I18n{Db: db, Logger: &web.Logger{Writer: wrt}}
+	p := web.I18n{Db: db}
 	key := "hello"
 	val := "你好"
 	p.Set(lang, key, val)
@@ -32,7 +29,7 @@ func TestDatabase(t *testing.T) {
 	if val1, _ := p.Get(lang, key); val != val1 {
 		t.Errorf("want %s, get %s", val, val1)
 	}
-	ks, err := p.Codes(lang)
+	ks := p.Codes(lang)
 	if err != nil {
 		t.Fatal(err)
 	}

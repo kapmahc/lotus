@@ -1,10 +1,10 @@
 <template>
   <app-dashboard>
-    <h3>{{$t('buttons.edit')}} {{ $t('shop.models.country') }} [{{id}}]</h3>
+    <h3>{{$t('buttons.edit')}} {{ $t('shop.models.currency') }} [{{id}}]</h3>
     <hr/>
     <form v-on:submit.prevent="onSubmit">
       <div class="form-group">
-        <label for="cid">{{ $t("shop.attributes.model-cid") }}</label>
+        <label for="cid">{{ $t("shop.attributes.currency-cid") }}</label>
         <input readonly v-model="cid" type="text" class="form-control" id="cid">
       </div>
       <div class="form-group">
@@ -62,6 +62,7 @@ export default {
       postForm(
         `/shop/currencies/${this.id}`,
         {
+          rate: this.rate,
           active: this.active
         },
         function (result) {

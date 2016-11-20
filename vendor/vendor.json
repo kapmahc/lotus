@@ -157,6 +157,24 @@
 			"revisionTime": "2016-11-08T17:37:21Z"
 		},
 		{
+			"checksumSHA1": "qKySYS70MxMe0R3Hu+2W/NOHo1Y=",
+			"path": "github.com/go-playground/locales",
+			"revision": "7832011dcf5c8b82caa7d6b379c5df17d5681fea",
+			"revisionTime": "2016-11-08T16:14:13Z"
+		},
+		{
+			"checksumSHA1": "7QFECKqCr78JnG3/+Tb9aCyqN8U=",
+			"path": "github.com/go-playground/locales/currency",
+			"revision": "7832011dcf5c8b82caa7d6b379c5df17d5681fea",
+			"revisionTime": "2016-11-08T16:14:13Z"
+		},
+		{
+			"checksumSHA1": "l93KinvWRpOyqihh4GoDzfhgd3c=",
+			"path": "github.com/go-playground/universal-translator",
+			"revision": "fc73d0c4bd37070e0d34e3647253565ff7847264",
+			"revisionTime": "2016-09-14T18:35:43Z"
+		},
+		{
 			"checksumSHA1": "B4ms07W5j46/O57fJwGPpFcgM1I=",
 			"path": "github.com/go-sql-driver/mysql",
 			"revision": "8f6c67f0228a4a6a962008d6c3d1e694e4532e71",
@@ -443,12 +461,12 @@
 			"path": "gopkg.in/alexcesaro/quotedprintable.v3",
 			"revision": "2caba252f4dc53eaf6b553000885530023f54623",
 			"revisionTime": "2015-07-16T17:19:45Z"
-		},
+		},		
 		{
-			"checksumSHA1": "39V1idWER42Lmcmg2Uy40wMzOlo=",
-			"path": "gopkg.in/go-playground/validator.v8",
-			"revision": "5f57d2222ad794d0dffb07e664ea05e2ee07d60c",
-			"revisionTime": "2016-07-18T13:41:25Z"
+			"checksumSHA1": "D2myEt8AD5pMZ+Ps9OYON5dCd/Q=",
+			"path": "gopkg.in/go-playground/validator.v9",
+			"revision": "597f93b3164831ef370e4cf0b219907ab5bb4154",
+			"revisionTime": "2016-11-16T01:36:43Z"
 		},
 		{
 			"checksumSHA1": "iq5WdjScmTU+LfNoerLuwcnXpdM=",
